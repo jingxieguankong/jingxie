@@ -752,6 +752,7 @@
     <Content Include="Scripts\easyui\themes\gray\window.css" />
     <Content Include="Scripts\easyui\themes\icon.css" />
     <Content Include="Scripts\easyui\themes\icons\back.png" />
+    <Content Include="Scripts\easyui\themes\icons\clock.png" />
     <Content Include="Scripts\easyui\themes\icons\blank.gif" />
     <Content Include="Scripts\easyui\themes\icons\cancel.png" />
     <Content Include="Scripts\easyui\themes\icons\clear.png" />
@@ -898,10 +899,14 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AnonymousController.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\BasicController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\MenuModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -947,7 +952,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
+    <Folder Include="Filters\" />
+    <Folder Include="Views\Anonymous\" />
+    <Folder Include="Views\Auth\" />
+    <Folder Include="Views\Basic\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
