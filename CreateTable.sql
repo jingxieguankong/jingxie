@@ -1,20 +1,25 @@
-﻿drop table "tb_ActionLog" cascade constraints;
+﻿
+drop table "tb_AllopatryEquipmentPosition" cascade constraints;
 
 drop table "tb_Cabinet" cascade constraints;
+
+drop table "tb_DispatchEquipmentPosition" cascade constraints;
 
 drop table "tb_EqtCategory" cascade constraints;
 
 drop table "tb_Equipment" cascade constraints;
 
-drop table "tb_Feature" cascade constraints;
+drop table "tb_EquipmentAllopatryExcept" cascade constraints;
+
+drop table "tb_EquipmentDispatch" cascade constraints;
+
+drop table "tb_Hit" cascade constraints;
 
 drop table "tb_Officer" cascade constraints;
 
 drop table "tb_Organization" cascade constraints;
 
 drop table "tb_PoliceType" cascade constraints;
-
-drop table "tb_Role" cascade constraints;
 
 drop table "tb_StandardEquipment" cascade constraints;
 
@@ -24,33 +29,48 @@ drop table "tb_StockAlert" cascade constraints;
 
 drop table "tb_Storage" cascade constraints;
 
-drop table "tb_menu" cascade constraints;
+drop table "tb_TagMoveTrail" cascade constraints;
+
+drop table "tb_sys_ActionLog" cascade constraints;
+
+drop table "tb_sys_Feature" cascade constraints;
+
+drop table "tb_sys_Menu" cascade constraints;
+
+drop table "tb_sys_Role" cascade constraints;
+
+drop table "tb_sys_User" cascade constraints;
 
 /*==============================================================*/
-/* Table: "tb_ActionLog"                                        */
+/* Table: "tb_AllopatryEquipmentPosition"                       */
 /*==============================================================*/
-create table "tb_ActionLog" 
+create table "tb_AllopatryEquipmentPosition" 
 (
    "Id"                 varchar(32)          not null,
-   "IsDel"              smallint             not null,
-   "UserId"             varchar(32)          not null,
-   "StartTime"          number(18,0)         not null,
-   "EndTime"            number(18,0)         not null,
-   "IPv4"               varchar(32),
-   "IPv6"               varchar(128),
-   "Mac"                varchar(128),
-   "FeatureId"          varchar(32)          not null,
-   constraint PK_TB_ACTIONLOG primary key ("Id")
+   "AeId"               varchar(32)          not null,
+   "EquipId"            varchar(32)          not null,
+   "Lon"                float                not null,
+   "Lat"                float                not null,
+   constraint PK_TB_ALLOPATRYEQUIPMENTPOSITI primary key ("Id")
 );
 
-comment on table "tb_ActionLog" is
-'用户操作日志';
+comment on table "tb_AllopatryEquipmentPosition" is
+'警员警械异地异常警械位置信息';
 
-comment on column "tb_ActionLog"."Id" is
+comment on column "tb_AllopatryEquipmentPosition"."Id" is
 '主键';
 
-comment on column "tb_ActionLog"."IsDel" is
-'逻辑删除标识。1：标识已删除；0：标识未删除';
+comment on column "tb_AllopatryEquipmentPosition"."AeId" is
+'关联警员警械异地异常主键，描述当前警械位置变化隶属于那一次警械异地变化异常';
+
+comment on column "tb_AllopatryEquipmentPosition"."EquipId" is
+'关联警械主键，标识当前位置出现的警械';
+
+comment on column "tb_AllopatryEquipmentPosition"."Lon" is
+'描述警械出现位置的 GPS 经度';
+
+comment on column "tb_AllopatryEquipmentPosition"."Lat" is
+'描述警械出现位置的 GPS 维度';
 
 /*==============================================================*/
 /* Table: "tb_Cabinet"                                          */
@@ -61,10 +81,10 @@ create table "tb_Cabinet"
    "IsDel"              smallint             not null,
    "OrgId"              varchar(32)          not null,
    "Name"               varchar(128)         not null,
-   "StationId"          int                  not null,
+   "StationId"          varchar(32)          not null,
    "Lon"                float                not null,
    "Lat"                float                not null,
-   "OfficerId"          varchar(32),
+   "OfficerId"          varchar(32)          default '0',
    constraint PK_TB_CABINET primary key ("Id")
 );
 
@@ -84,7 +104,7 @@ comment on column "tb_Cabinet"."Name" is
 '名称';
 
 comment on column "tb_Cabinet"."StationId" is
-'绑定的基站ID，每个警械柜都有一个基站与之绑定';
+'基站主键';
 
 comment on column "tb_Cabinet"."Lon" is
 'GPS 经度';
@@ -93,7 +113,50 @@ comment on column "tb_Cabinet"."Lat" is
 'GPS 纬度';
 
 comment on column "tb_Cabinet"."OfficerId" is
-'警械柜负责人，关联警员表主键，NULL 标识未指定负责警员';
+'警械柜负责人，关联警员表主键，NULL 或者 “0” 标识未指定负责警员';
+
+/*==============================================================*/
+/* Table: "tb_DispatchEquipmentPosition"                        */
+/*==============================================================*/
+create table "tb_DispatchEquipmentPosition" 
+(
+   "Id"                 varchar(32)          not null,
+   "AeId"               varchar(32)          not null,
+   "EquipId"            varchar(32)          not null,
+   "Lon"                float                not null,
+   "Lat"                float                not null,
+   "HdStatus"           smallint             not null,
+   "SiteId"             varchar(32)          not null,
+   "PtStatus"           smallint             not null,
+   constraint PK_TB_DISPATCHEQUIPMENTPOSITIO primary key ("Id")
+);
+
+comment on table "tb_DispatchEquipmentPosition" is
+'警械布控警械位置信息。当警械在布控的过程中，被布控的警械发生任何位置变化时，应将警械发生的位置变化添加到当前列表';
+
+comment on column "tb_DispatchEquipmentPosition"."Id" is
+'主键';
+
+comment on column "tb_DispatchEquipmentPosition"."AeId" is
+'关联警械布控主键，描述当前位置变化隶属于那一次警械布控';
+
+comment on column "tb_DispatchEquipmentPosition"."EquipId" is
+'关联警械主键，描述当前位置出现的警械';
+
+comment on column "tb_DispatchEquipmentPosition"."Lon" is
+'描述警械出现位置的 GPS 经度';
+
+comment on column "tb_DispatchEquipmentPosition"."Lat" is
+'描述警械出现位置的 GPS 维度';
+
+comment on column "tb_DispatchEquipmentPosition"."HdStatus" is
+'描述当前内容的处理状态。0：未处理；1：已处理。';
+
+comment on column "tb_DispatchEquipmentPosition"."SiteId" is
+'关联基站主键，标识当前警械出现的基站范围';
+
+comment on column "tb_DispatchEquipmentPosition"."PtStatus" is
+'描述警械进入或者离开当前位置。1：进入；2：离开。';
 
 /*==============================================================*/
 /* Table: "tb_EqtCategory"                                      */
@@ -103,9 +166,10 @@ create table "tb_EqtCategory"
    "Id"                 varchar(32)          not null,
    "Name"               varchar(128)         not null,
    "Code"               varchar(32)          not null,
-   "Pid"                varchar(32),
+   "Pid"                varchar(32)          default '0' not null,
    "Layer"              smallint             not null,
    "IsDel"              smallint             not null,
+   "HitCount"           smallint             not null,
    constraint PK_TB_EQTCATEGORY primary key ("Id")
 );
 
@@ -127,6 +191,9 @@ comment on column "tb_EqtCategory"."Layer" is
 comment on column "tb_EqtCategory"."IsDel" is
 '逻辑删除标识。1：标识已删除；0：标识未删除';
 
+comment on column "tb_EqtCategory"."HitCount" is
+'强撞击次数。这是一个大于 0 的值，0 ：不限制，其它表示最大被允许撞击的次数。';
+
 /*==============================================================*/
 /* Table: "tb_Equipment"                                        */
 /*==============================================================*/
@@ -146,7 +213,6 @@ create table "tb_Equipment"
    "InputTime"          number(18,0)         not null,
    "Status"             smallint             not null,
    "Power"              smallint             not null,
-   "HitCount"           smallint             not null,
    "IsLost"             smallint             not null,
    "IsChanged"          smallint             not null,
    "ChangeTime"         number(18,0)         not null,
@@ -202,9 +268,6 @@ comment on column "tb_Equipment"."Status" is
 comment on column "tb_Equipment"."Power" is
 '标签电池电量';
 
-comment on column "tb_Equipment"."HitCount" is
-'强撞击次数。这是一个大于 0 的值，0 ：不限制，其它表示最大被允许撞击的次数。';
-
 comment on column "tb_Equipment"."IsLost" is
 '是否遗失。0：未遗失；1：遗失。';
 
@@ -227,40 +290,93 @@ comment on column "tb_Equipment"."Dispatched" is
 '布控状态。0：从未进行过布控，1：正在布控，2：已撤控。';
 
 /*==============================================================*/
-/* Table: "tb_Feature"                                          */
+/* Table: "tb_EquipmentAllopatryExcept"                         */
 /*==============================================================*/
-create table "tb_Feature" 
+create table "tb_EquipmentAllopatryExcept" 
 (
    "Id"                 varchar(32)          not null,
-   "IsDel"              smallint             not null,
-   "RoleId"             varchar(32)          not null,
-   "MenuId"             varchar(32)          not null,
-   "ActId"              varchar(128)         not null,
+   "OfficerId"          varchar(32)          not null,
+   "CTime"              number(18,0)         not null,
    "Status"             smallint             not null,
-   "ActRemark"          varchar(512),
-   constraint PK_TB_FEATURE primary key ("Id")
+   constraint PK_TB_EQUIPMENTALLOPATRYEXCEPT primary key ("Id")
 );
 
-comment on table "tb_Feature" is
-'描述角色功能内容';
+comment on table "tb_EquipmentAllopatryExcept" is
+'警员警械异地异常';
 
-comment on column "tb_Feature"."Id" is
+comment on column "tb_EquipmentAllopatryExcept"."Id" is
 '主键';
 
-comment on column "tb_Feature"."IsDel" is
-'逻辑删除标识。1：标识已删除；0：标识未删除';
+comment on column "tb_EquipmentAllopatryExcept"."OfficerId" is
+'关联警员主键，标识被布控的警员，同时标识警员布控';
 
-comment on column "tb_Feature"."RoleId" is
-'角色主键';
+comment on column "tb_EquipmentAllopatryExcept"."CTime" is
+'描述警械布控或者撤控发生的时间';
 
-comment on column "tb_Feature"."MenuId" is
-'菜单主键';
+comment on column "tb_EquipmentAllopatryExcept"."Status" is
+'描述当前异常的处理状态。0：未处理；1：已处理。';
 
-comment on column "tb_Feature"."ActId" is
-'功能键标识。例如：添加，编辑，删除，查看，导入，导出 ... 等等';
+/*==============================================================*/
+/* Table: "tb_EquipmentDispatch"                                */
+/*==============================================================*/
+create table "tb_EquipmentDispatch" 
+(
+   "Id"                 varchar(32)          not null,
+   "EquipId"            varchar(32)          not null,
+   "OfficerId"          varchar(32)          default '0' not null,
+   "Category"           smallint             not null,
+   "CTime"              number(18,0)         not null,
+   constraint PK_TB_EQUIPMENTDISPATCH primary key ("Id")
+);
 
-comment on column "tb_Feature"."Status" is
-'功能状态。0：正常；-1：禁止；';
+comment on table "tb_EquipmentDispatch" is
+'警械或者警员布控记录，没发生一条布控或者撤控时，当前列表需要添加一条记录';
+
+comment on column "tb_EquipmentDispatch"."Id" is
+'主键';
+
+comment on column "tb_EquipmentDispatch"."EquipId" is
+'关联警械ID，标识布控的警械';
+
+comment on column "tb_EquipmentDispatch"."OfficerId" is
+'关联警员主键，标识被布控的警员，同时标识警员布控';
+
+comment on column "tb_EquipmentDispatch"."Category" is
+'警械布控类型。1：布控；2：撤控。';
+
+comment on column "tb_EquipmentDispatch"."CTime" is
+'描述警械布控或者撤控发生的时间';
+
+/*==============================================================*/
+/* Table: "tb_Hit"                                              */
+/*==============================================================*/
+create table "tb_Hit" 
+(
+   "Id"                 varchar(32)          not null,
+   "TagId"              varchar(32)          not null,
+   "SiteId"             varchar(32)          not null,
+   "UpTime"             number(18,0)         not null,
+   "CTime"              number(18,0)         not null,
+   constraint PK_TB_HIT primary key ("Id")
+);
+
+comment on table "tb_Hit" is
+'标签上报撞击信息记录';
+
+comment on column "tb_Hit"."Id" is
+'主键';
+
+comment on column "tb_Hit"."TagId" is
+'描述当前记录隶属于哪一个标签';
+
+comment on column "tb_Hit"."SiteId" is
+'描述当前标签在哪一个位置的基站范围内';
+
+comment on column "tb_Hit"."UpTime" is
+'描述基站上传标签的时间，标签的运动位置的排序应该以当前字段为准';
+
+comment on column "tb_Hit"."CTime" is
+'描述系统记录当前标签位置信息的时间';
 
 /*==============================================================*/
 /* Table: "tb_Officer"                                          */
@@ -278,17 +394,13 @@ create table "tb_Officer"
    "Tel"                varchar(64),
    "AtrUrl"             varchar(256),
    "DigitalID"          varchar(128),
-   "Account"            varchar(32)          not null,
-   "Passwd"             varchar(128)         not null,
-   "Status"             smallint             not null,
-   "SigninStatus"       smallint             not null,
-   "SignupDate"         long                 not null,
-   "RoleId"             varchar(32)          not null,
+   "SignupDate"         number(18,0)         not null,
+   "UserId"             varchar(32)          not null,
    constraint PK_TB_OFFICER primary key ("Id")
 );
 
 comment on table "tb_Officer" is
-'描述警员的详细信息，并描述警员的登录账户信息';
+'描述警员的详细信息';
 
 comment on column "tb_Officer"."Id" is
 '主键';
@@ -323,17 +435,11 @@ comment on column "tb_Officer"."AtrUrl" is
 comment on column "tb_Officer"."DigitalID" is
 '绑定的警员数字证书。提供警员登录系统的另一种方式，使用数字证书认证登录，需要校验数字证书的一致性，不适用登录密码。同时在验证之前需要校验账户的状态，在账户处于“ 异常 ”状态时，数据一律无效';
 
-comment on column "tb_Officer"."Passwd" is
-'警员登录密码。登录时，需要结合登录账户ID，或者警号，或者手机号码同时进行一致性验证数据有效性。同时在验证之前需要校验账户的状态，在账户处于“ 异常 ”状态时，数据一律无效';
-
-comment on column "tb_Officer"."Status" is
-'说明警员登录账户的状态。0：正常；-1：异常；-2：已锁定；';
-
-comment on column "tb_Officer"."SigninStatus" is
-'警员账户登录状态。1：在线；0：未登录；-1：离线；-2：超时离线；';
-
 comment on column "tb_Officer"."SignupDate" is
 '警员账户创建时间，这是一个精确到秒级的时间戳';
+
+comment on column "tb_Officer"."UserId" is
+'当前警员绑定的登录账户信息';
 
 /*==============================================================*/
 /* Table: "tb_Organization"                                     */
@@ -343,14 +449,14 @@ create table "tb_Organization"
    "Id"                 varchar(32)          not null,
    "Name"               varchar(128)         not null,
    "Code"               varchar(128)         not null,
-   "Pid"                varchar(32),
+   "Pid"                varchar(32)          default '0' not null,
    "Layer"              smallint             not null,
    "IsDel"              smallint             not null,
    constraint PK_TB_ORGANIZATION primary key ("Id")
 );
 
 comment on table "tb_Organization" is
-'组织机构内容';
+'组织机构内容，系统的数据边界是根据组织结构来划分的，本组织机构只能访问本组织机构的数据，其它组织机构是禁止访问的。但是当用户为超级管理员时，数据边界是无效的，也就是说超级管理员可以访问任何平台内的任何数据，因此谨慎保护好超级管理员账户';
 
 comment on column "tb_Organization"."Id" is
 '组织机构主键标识';
@@ -362,7 +468,7 @@ comment on column "tb_Organization"."Code" is
 '组织机构代码，总是等于上一级组织机构代码+当前组织机构代码';
 
 comment on column "tb_Organization"."Pid" is
-'自引用外键，上一级组织机构主键';
+'自引用外键，上一级组织机构主键，“0” 标识顶级';
 
 comment on column "tb_Organization"."Layer" is
 '标识当前组织机构在组织机构树种的位置，它总是上一级组织机构的层级 + 1';
@@ -393,41 +499,6 @@ comment on column "tb_PoliceType"."OrgId" is
 
 comment on column "tb_PoliceType"."Name" is
 '名称';
-
-/*==============================================================*/
-/* Table: "tb_Role"                                             */
-/*==============================================================*/
-create table "tb_Role" 
-(
-   "Id"                 varchar(32)          not null,
-   "Name"               varchar(256)         not null,
-   "Remarks"            varchar(512),
-   "Status"             smallint             not null,
-   "IsDel"              smallint             not null,
-   "OrgId"              varchar(32)          not null,
-   constraint PK_TB_ROLE primary key ("Id")
-);
-
-comment on table "tb_Role" is
-'系统角色';
-
-comment on column "tb_Role"."Id" is
-'主键';
-
-comment on column "tb_Role"."Name" is
-'名称';
-
-comment on column "tb_Role"."Remarks" is
-'备注';
-
-comment on column "tb_Role"."Status" is
-'状态，0：正常；-1：异常；-2：冻结。';
-
-comment on column "tb_Role"."IsDel" is
-'逻辑删除标识。1：标识已删除；0：标识未删除';
-
-comment on column "tb_Role"."OrgId" is
-'管理组织机构表主键，标识角色所属组织机构';
 
 /*==============================================================*/
 /* Table: "tb_StandardEquipment"                                */
@@ -476,14 +547,15 @@ create table "tb_Station"
    "Id"                 varchar(32)          not null,
    "IsDel"              smallint             not null,
    "OrgId"              varchar(32)          not null,
-   "Code"               int                  not null,
+   "SiteId"             varchar(32)          not null,
    "Lon"                float                not null,
    "Lat"                float                not null,
+   "Category"           smallint             not null,
    constraint PK_TB_STATION primary key ("Id")
 );
 
 comment on table "tb_Station" is
-'基站内容';
+'基站内容，描述平台内基站的内容';
 
 comment on column "tb_Station"."Id" is
 '主键';
@@ -494,7 +566,7 @@ comment on column "tb_Station"."IsDel" is
 comment on column "tb_Station"."OrgId" is
 '关联组织机构表主键，标识所属组织机构';
 
-comment on column "tb_Station"."Code" is
+comment on column "tb_Station"."SiteId" is
 '绑定的基站ID，每个警械柜都有一个基站与之绑定';
 
 comment on column "tb_Station"."Lon" is
@@ -502,6 +574,9 @@ comment on column "tb_Station"."Lon" is
 
 comment on column "tb_Station"."Lat" is
 'GPS 纬度';
+
+comment on column "tb_Station"."Category" is
+'基站类型。0：一般性基站；1：绑定库房基站；2：门口基站。';
 
 /*==============================================================*/
 /* Table: "tb_StockAlert"                                       */
@@ -547,10 +622,10 @@ create table "tb_Storage"
    "IsDel"              smallint             not null,
    "OrgId"              varchar(32)          not null,
    "Name"               varchar(128)         not null,
-   "StationId"          int                  not null,
+   "StationId"          varchar(32)          not null,
    "Lon"                float                not null,
    "Lat"                float                not null,
-   "OfficerId"          varchar(32),
+   "OfficerId"          varchar(32)          default '0',
    constraint PK_TB_STORAGE primary key ("Id")
 );
 
@@ -570,7 +645,7 @@ comment on column "tb_Storage"."Name" is
 '警械库名称';
 
 comment on column "tb_Storage"."StationId" is
-'绑定的基站ID';
+'基站主键';
 
 comment on column "tb_Storage"."Lon" is
 'GPS 经度';
@@ -579,12 +654,141 @@ comment on column "tb_Storage"."Lat" is
 'GPS 纬度';
 
 comment on column "tb_Storage"."OfficerId" is
-'警械库负责人，关联警员表主键，NULL 标识未指定负责警员';
+'警械库负责人，关联警员表主键，NULL 或者 “0” 标识未指定负责警员';
 
 /*==============================================================*/
-/* Table: "tb_menu"                                             */
+/* Table: "tb_TagMoveTrail"                                     */
 /*==============================================================*/
-create table "tb_menu" 
+create table "tb_TagMoveTrail" 
+(
+   "Id"                 varchar(32)          not null,
+   "TagId"              varchar(32)          not null,
+   "SiteId"             varchar(32)          not null,
+   "Status"             SMALLINT             not null,
+   "UpTime"             number(18,0)         not null,
+   "CTime"              number(18,0)         not null,
+   constraint PK_TB_TAGMOVETRAIL primary key ("Id")
+);
+
+comment on table "tb_TagMoveTrail" is
+'标签运动轨迹，标签发生位置变化时，应该在当前列表中添加相应的记录';
+
+comment on column "tb_TagMoveTrail"."Id" is
+'主键';
+
+comment on column "tb_TagMoveTrail"."TagId" is
+'描述当前记录隶属于哪一个标签';
+
+comment on column "tb_TagMoveTrail"."SiteId" is
+'描述当前标签在哪一个位置的基站范围内';
+
+comment on column "tb_TagMoveTrail"."Status" is
+'描述当前是进入或者离开当前基站。1：进入；2：离开。';
+
+comment on column "tb_TagMoveTrail"."UpTime" is
+'描述基站上传标签的时间，标签的运动位置的排序应该以当前字段为准';
+
+comment on column "tb_TagMoveTrail"."CTime" is
+'描述系统记录当前标签位置信息的时间';
+
+/*==============================================================*/
+/* Table: "tb_sys_ActionLog"                                    */
+/*==============================================================*/
+create table "tb_sys_ActionLog" 
+(
+   "Id"                 varchar(32)          not null,
+   "IsDel"              smallint             not null,
+   "StartTime"          number(18,0)         not null,
+   "EndTime"            number(18,0)         not null,
+   "IPv4"               varchar(32),
+   "IPv6"               varchar(128),
+   "Mac"                varchar(128),
+   "FeatureId"          varchar(32)          not null,
+   "UserId"             varchar(32)          not null,
+   "IsOk"               smallint             not null,
+   "ErrorMsg"           varchar(2048),
+   constraint PK_TB_SYS_ACTIONLOG primary key ("Id")
+);
+
+comment on table "tb_sys_ActionLog" is
+'记录用户操作日志，用户在平台发生的任何操作，都应该在当前列表中添加一条相应的记录';
+
+comment on column "tb_sys_ActionLog"."Id" is
+'主键';
+
+comment on column "tb_sys_ActionLog"."IsDel" is
+'逻辑删除标识。1：标识已删除；0：标识未删除';
+
+comment on column "tb_sys_ActionLog"."StartTime" is
+'当前操作开始发生的时间';
+
+comment on column "tb_sys_ActionLog"."EndTime" is
+'当前操作结束的时间';
+
+comment on column "tb_sys_ActionLog"."IPv4" is
+'当前操作设备IPV4地址';
+
+comment on column "tb_sys_ActionLog"."IPv6" is
+'当前操作设备IPV6地址';
+
+comment on column "tb_sys_ActionLog"."Mac" is
+'当前操作设备MAC地址';
+
+comment on column "tb_sys_ActionLog"."FeatureId" is
+'关联菜单功能主键，描述当前操作发生哪一个业务功能';
+
+comment on column "tb_sys_ActionLog"."UserId" is
+'关联操作用户主键，描述当前操作是哪一个用户发生的';
+
+comment on column "tb_sys_ActionLog"."IsOk" is
+'描述当前操作完成状态。0：成功；-1：失败。';
+
+comment on column "tb_sys_ActionLog"."ErrorMsg" is
+'操作失败原因';
+
+/*==============================================================*/
+/* Table: "tb_sys_Feature"                                      */
+/*==============================================================*/
+create table "tb_sys_Feature" 
+(
+   "Id"                 varchar(32)          not null,
+   "IsDel"              smallint             not null,
+   "RoleId"             varchar(32)          default '0' not null,
+   "MenuId"             varchar(32)          default '0' not null,
+   "ActId"              varchar(128)         not null,
+   "Status"             smallint             not null,
+   "ActRemark"          varchar(512),
+   constraint PK_TB_SYS_FEATURE primary key ("Id")
+);
+
+comment on table "tb_sys_Feature" is
+'描述角色功能内容，记录每一个角色允许访问平台的功能，没有指明角色或者角色为“0”的功能为全局业务功能，任何用户都能够访问。';
+
+comment on column "tb_sys_Feature"."Id" is
+'主键';
+
+comment on column "tb_sys_Feature"."IsDel" is
+'逻辑删除标识。1：标识已删除；0：标识未删除';
+
+comment on column "tb_sys_Feature"."RoleId" is
+'角色主键';
+
+comment on column "tb_sys_Feature"."MenuId" is
+'菜单主键';
+
+comment on column "tb_sys_Feature"."ActId" is
+'功能键标识。例如：添加，编辑，删除，查看，导入，导出 ... 等等';
+
+comment on column "tb_sys_Feature"."Status" is
+'功能状态。0：正常；-1：禁止；';
+
+comment on column "tb_sys_Feature"."ActRemark" is
+'当前操作功能说明';
+
+/*==============================================================*/
+/* Table: "tb_sys_Menu"                                         */
+/*==============================================================*/
+create table "tb_sys_Menu" 
 (
    "Id"                 varchar(32)          not null,
    "Title"              varchar(128)         not null,
@@ -592,30 +796,116 @@ create table "tb_menu"
    "Src"                varchar(512)         not null,
    "Remarks"            varchar(1024),
    "IsDel"              smallint             not null,
-   "Pid"                varchar(32),
-   constraint PK_TB_MENU primary key ("Id")
+   "Pid"                varchar(32)          default '0' not null,
+   constraint PK_TB_SYS_MENU primary key ("Id")
 );
 
-comment on table "tb_menu" is
+comment on table "tb_sys_Menu" is
 '功能菜单';
 
-comment on column "tb_menu"."Id" is
+comment on column "tb_sys_Menu"."Id" is
 '主键';
 
-comment on column "tb_menu"."Title" is
+comment on column "tb_sys_Menu"."Title" is
 '标题';
 
-comment on column "tb_menu"."Order" is
+comment on column "tb_sys_Menu"."Order" is
 '序列标识，用于排序';
 
-comment on column "tb_menu"."Src" is
+comment on column "tb_sys_Menu"."Src" is
 '功能页面路径';
 
-comment on column "tb_menu"."Remarks" is
+comment on column "tb_sys_Menu"."Remarks" is
 '菜单的备注内容';
 
-comment on column "tb_menu"."IsDel" is
+comment on column "tb_sys_Menu"."IsDel" is
 '逻辑删除标识。1：标识已删除；0：标识未删除';
 
-comment on column "tb_menu"."Pid" is
-'上一级菜单主键';
+comment on column "tb_sys_Menu"."Pid" is
+'上一级菜单主键，“0” 标识顶级';
+
+/*==============================================================*/
+/* Table: "tb_sys_Role"                                         */
+/*==============================================================*/
+create table "tb_sys_Role" 
+(
+   "Id"                 varchar(32)          not null,
+   "Name"               varchar(256)         not null,
+   "Remarks"            varchar(512),
+   "Status"             smallint             not null,
+   "IsDel"              smallint             not null,
+   "OrgId"              varchar(32)          not null,
+   constraint PK_TB_SYS_ROLE primary key ("Id")
+);
+
+comment on table "tb_sys_Role" is
+'系统角色，用来批量分配用户的权限的一种方式，每一个用户都有且仅有一个角色。相同角色的用户拥有相同权限的平台访问权限。';
+
+comment on column "tb_sys_Role"."Id" is
+'主键';
+
+comment on column "tb_sys_Role"."Name" is
+'名称';
+
+comment on column "tb_sys_Role"."Remarks" is
+'备注';
+
+comment on column "tb_sys_Role"."Status" is
+'状态，0：正常；-1：异常；-2：冻结。';
+
+comment on column "tb_sys_Role"."IsDel" is
+'逻辑删除标识。1：标识已删除；0：标识未删除';
+
+comment on column "tb_sys_Role"."OrgId" is
+'管理组织机构表主键，标识角色所属组织机构';
+
+/*==============================================================*/
+/* Table: "tb_sys_User"                                         */
+/*==============================================================*/
+create table "tb_sys_User" 
+(
+   "Id"                 varchar(32)          not null,
+   "IsDel"              smallint             not null,
+   "OrgId"              varchar(32)          not null,
+   "Account"            varchar(32)          not null,
+   "Passwd"             varchar(128)         not null,
+   "Status"             smallint             not null,
+   "SigninStatus"       smallint             not null,
+   "SignupDate"         number(18,0)         not null,
+   "RoleId"             varchar(32)          not null,
+   "Category"           smallint             not null,
+   constraint PK_TB_SYS_USER primary key ("Id")
+);
+
+comment on table "tb_sys_User" is
+'描述系统登录账户信息，包含两类信息：超级管理员；一般性用户。一般性管理员通常提供给警员';
+
+comment on column "tb_sys_User"."Id" is
+'主键';
+
+comment on column "tb_sys_User"."IsDel" is
+'逻辑删除标识。1：标识已删除；0：标识未删除';
+
+comment on column "tb_sys_User"."OrgId" is
+'管理组织机构表主键，标识警员所属组织机构';
+
+comment on column "tb_sys_User"."Account" is
+'登录账户';
+
+comment on column "tb_sys_User"."Passwd" is
+'警员登录密码。登录时，需要结合登录账户ID，或者警号，或者手机号码同时进行一致性验证数据有效性。同时在验证之前需要校验账户的状态，在账户处于“ 异常 ”状态时，数据一律无效';
+
+comment on column "tb_sys_User"."Status" is
+'说明警员登录账户的状态。0：正常；-1：异常；-2：已锁定；';
+
+comment on column "tb_sys_User"."SigninStatus" is
+'警员账户登录状态。1：在线；0：未登录；-1：离线；-2：超时离线；';
+
+comment on column "tb_sys_User"."SignupDate" is
+'警员账户创建时间，这是一个精确到秒级的时间戳';
+
+comment on column "tb_sys_User"."RoleId" is
+'关键系统角色主键，描述用户的角色，用当前字段来确定用户的平台访问功能权限';
+
+comment on column "tb_sys_User"."Category" is
+'系统账户类型。1：超级管理员；2：系统用户。';
