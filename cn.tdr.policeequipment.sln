@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26020.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "20 documents", "20 documents", "{EE2108D0-4678-4303-904E-FCE4E233C707}"
 	ProjectSection(SolutionItems) = preProject
@@ -25,6 +25,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cn.tdr.common", "cn.tdr.com
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cn.tdr.policeequipment.web", "cn.tdr.policeequipment.web\cn.tdr.policeequipment.web.csproj", "{B8188562-0863-4841-B4E6-90771E181EBE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cn.tdr.policeequipment.interfaces", "cn.tdr.policeequipment.interfaces\cn.tdr.policeequipment.interfaces.csproj", "{9B5976BE-E588-471C-BAE5-D9F7E299896B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cn.tdr.policeequipment.data.entity", "cn.tdr.policeequipment.data.entity\cn.tdr.policeequipment.data.entity.csproj", "{5ADBDA21-300D-42B2-92B9-716470B01334}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "11 test", "11 test", "{B3091E53-CA59-45D6-9BC8-25657C4E14E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +45,14 @@ Global
 		{B8188562-0863-4841-B4E6-90771E181EBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8188562-0863-4841-B4E6-90771E181EBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8188562-0863-4841-B4E6-90771E181EBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B5976BE-E588-471C-BAE5-D9F7E299896B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B5976BE-E588-471C-BAE5-D9F7E299896B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B5976BE-E588-471C-BAE5-D9F7E299896B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B5976BE-E588-471C-BAE5-D9F7E299896B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ADBDA21-300D-42B2-92B9-716470B01334}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ADBDA21-300D-42B2-92B9-716470B01334}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ADBDA21-300D-42B2-92B9-716470B01334}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ADBDA21-300D-42B2-92B9-716470B01334}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,5 +60,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{4AE15A83-549E-4C60-9001-E4CBD278620A} = {03B982FF-F690-4094-A3AD-90EBC6E2089D}
 		{B8188562-0863-4841-B4E6-90771E181EBE} = {F0BAB9B1-7397-4835-B185-D506FE001EBF}
+		{9B5976BE-E588-471C-BAE5-D9F7E299896B} = {49DFB863-D8F6-4B6E-A6EE-FD68E4DDADE9}
+		{5ADBDA21-300D-42B2-92B9-716470B01334} = {59E4E101-73A1-45C8-A94D-41429135A2FB}
 	EndGlobalSection
 EndGlobal
