@@ -9,7 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "20 documents", "20 document
 		CreateTable.sql = CreateTable.sql
 		..\..\..\警械项目设计\Database.pdm = ..\..\..\警械项目设计\Database.pdm
 		Query.sql = Query.sql
-		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 user interface", "01 user interface", "{F0BAB9B1-7397-4835-B185-D506FE001EBF}"
