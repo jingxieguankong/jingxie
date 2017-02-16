@@ -1,5 +1,4 @@
-﻿
-drop table "tb_AllopatryEquipmentPosition" cascade constraints;
+﻿drop table "tb_AllopatryEquipmentPosition" cascade constraints;
 
 drop table "tb_Cabinet" cascade constraints;
 
@@ -49,8 +48,8 @@ create table "tb_AllopatryEquipmentPosition"
    "Id"                 varchar(32)          not null,
    "AeId"               varchar(32)          not null,
    "EquipId"            varchar(32)          not null,
-   "Lon"                float                not null,
-   "Lat"                float                not null,
+   "Lon"                number(15,8)         not null,
+   "Lat"                number(15,8)         not null,
    constraint PK_TB_ALLOPATRYEQUIPMENTPOSITI primary key ("Id")
 );
 
@@ -78,12 +77,12 @@ comment on column "tb_AllopatryEquipmentPosition"."Lat" is
 create table "tb_Cabinet" 
 (
    "Id"                 varchar(32)          not null,
-   "IsDel"              smallint             not null,
+   "IsDel"              number(4,0)          not null,
    "OrgId"              varchar(32)          not null,
    "Name"               varchar(128)         not null,
    "StationId"          varchar(32)          not null,
-   "Lon"                float                not null,
-   "Lat"                float                not null,
+   "Lon"                number(15,8)         not null,
+   "Lat"                number(15,8)         not null,
    "OfficerId"          varchar(32)          default '0',
    constraint PK_TB_CABINET primary key ("Id")
 );
@@ -123,11 +122,11 @@ create table "tb_DispatchEquipmentPosition"
    "Id"                 varchar(32)          not null,
    "AeId"               varchar(32)          not null,
    "EquipId"            varchar(32)          not null,
-   "Lon"                float                not null,
-   "Lat"                float                not null,
-   "HdStatus"           smallint             not null,
+   "Lon"                number(15,8)         not null,
+   "Lat"                number(15,8)         not null,
+   "HdStatus"           number(4,0)          not null,
    "SiteId"             varchar(32)          not null,
-   "PtStatus"           smallint             not null,
+   "PtStatus"           number(4,0)          not null,
    constraint PK_TB_DISPATCHEQUIPMENTPOSITIO primary key ("Id")
 );
 
@@ -167,9 +166,9 @@ create table "tb_EqtCategory"
    "Name"               varchar(128)         not null,
    "Code"               varchar(32)          not null,
    "Pid"                varchar(32)          default '0' not null,
-   "Layer"              smallint             not null,
-   "IsDel"              smallint             not null,
-   "HitCount"           smallint             not null,
+   "Layer"              number(4,0)          not null,
+   "IsDel"              number(4,0)          not null,
+   "HitCount"           number(4,0)          not null,
    constraint PK_TB_EQTCATEGORY primary key ("Id")
 );
 
@@ -200,7 +199,7 @@ comment on column "tb_EqtCategory"."HitCount" is
 create table "tb_Equipment" 
 (
    "Id"                 varchar(32)          not null,
-   "IsDel"              smallint             not null,
+   "IsDel"              number(4,0)          not null,
    "OrgId"              varchar(32)          not null,
    "LibId"              varchar(32)          not null,
    "CabId"              varchar(32),
@@ -211,15 +210,15 @@ create table "tb_Equipment"
    "FactorCode"         varchar(128),
    "TagId"              varchar(128),
    "InputTime"          number(18,0)         not null,
-   "Status"             smallint             not null,
-   "Power"              smallint             not null,
-   "IsLost"             smallint             not null,
-   "IsChanged"          smallint             not null,
+   "Status"             number(4,0)          not null,
+   "Power"              number(4,0)          not null,
+   "IsLost"             number(4,0)          not null,
+   "IsChanged"          number(4,0)          not null,
    "ChangeTime"         number(18,0)         not null,
    "FactorTime"         number(18,0)         not null,
    "ExpiredTime"        number(18,0)         not null,
    "PurchaseTime"       number(18,0)         not null,
-   "Dispatched"         smallint             not null,
+   "Dispatched"         number(4,0)          not null,
    constraint PK_TB_EQUIPMENT primary key ("Id")
 );
 
@@ -297,7 +296,7 @@ create table "tb_EquipmentAllopatryExcept"
    "Id"                 varchar(32)          not null,
    "OfficerId"          varchar(32)          not null,
    "CTime"              number(18,0)         not null,
-   "Status"             smallint             not null,
+   "Status"             number(4,0)          not null,
    constraint PK_TB_EQUIPMENTALLOPATRYEXCEPT primary key ("Id")
 );
 
@@ -324,8 +323,10 @@ create table "tb_EquipmentDispatch"
    "Id"                 varchar(32)          not null,
    "EquipId"            varchar(32)          not null,
    "OfficerId"          varchar(32)          default '0' not null,
-   "Category"           smallint             not null,
-   "CTime"              number(18,0)         not null,
+   "DispatchTime"       number(18,0)         not null,
+   "IsCancel"           number(4,0)          not null,
+   "CancelTime"         number(18,0)         not null,
+   "CancelMsg"          varchar(1024),
    constraint PK_TB_EQUIPMENTDISPATCH primary key ("Id")
 );
 
@@ -341,11 +342,17 @@ comment on column "tb_EquipmentDispatch"."EquipId" is
 comment on column "tb_EquipmentDispatch"."OfficerId" is
 '关联警员主键，标识被布控的警员，同时标识警员布控';
 
-comment on column "tb_EquipmentDispatch"."Category" is
-'警械布控类型。1：布控；2：撤控。';
-
-comment on column "tb_EquipmentDispatch"."CTime" is
+comment on column "tb_EquipmentDispatch"."DispatchTime" is
 '描述警械布控或者撤控发生的时间';
+
+comment on column "tb_EquipmentDispatch"."IsCancel" is
+'是否撤控。0：未撤控；1：已撤控。';
+
+comment on column "tb_EquipmentDispatch"."CancelTime" is
+'撤控时间';
+
+comment on column "tb_EquipmentDispatch"."CancelMsg" is
+'撤控原因';
 
 /*==============================================================*/
 /* Table: "tb_Hit"                                              */
@@ -384,12 +391,12 @@ comment on column "tb_Hit"."CTime" is
 create table "tb_Officer" 
 (
    "Id"                 varchar(32)          not null,
-   "IsDel"              smallint             not null,
+   "IsDel"              number(4,0)          not null,
    "OrgId"              varchar(32)          not null,
    "PtId"               varchar(32)          not null,
    "CabId"              varchar(32),
    "Name"               varchar(128)         not null,
-   "Sex"                smallint             not null,
+   "Sex"                number(4,0)          not null,
    "IdentyCode"         varchar(32)          not null,
    "Tel"                varchar(64),
    "AtrUrl"             varchar(256),
@@ -450,8 +457,8 @@ create table "tb_Organization"
    "Name"               varchar(128)         not null,
    "Code"               varchar(128)         not null,
    "Pid"                varchar(32)          default '0' not null,
-   "Layer"              smallint             not null,
-   "IsDel"              smallint             not null,
+   "Layer"              number(4,0)          not null,
+   "IsDel"              number(4,0)          not null,
    constraint PK_TB_ORGANIZATION primary key ("Id")
 );
 
@@ -482,7 +489,7 @@ comment on column "tb_Organization"."IsDel" is
 create table "tb_PoliceType" 
 (
    "Id"                 varchar(32)          not null,
-   "IsDel"              smallint             not null,
+   "IsDel"              number(4,0)          not null,
    "OrgId"              varchar(32)          not null,
    "Name"               varchar(128)         not null,
    constraint PK_TB_POLICETYPE primary key ("Id")
@@ -506,12 +513,12 @@ comment on column "tb_PoliceType"."Name" is
 create table "tb_StandardEquipment" 
 (
    "Id"                 varchar(32)          not null,
-   "IsDel"              smallint             not null,
+   "IsDel"              number(4,0)          not null,
    "PtId"               varchar(32)          not null,
    "CateId"             varchar(32)          not null,
-   "Num"                smallint             default 0 not null,
-   "IsPrimary"          smallint             not null,
-   "IsRequire"          smallint             not null,
+   "Num"                number(4,0)          default 0 not null,
+   "IsPrimary"          number(4,0)          not null,
+   "IsRequire"          number(4,0)          not null,
    constraint PK_TB_STANDARDEQUIPMENT primary key ("Id")
 );
 
@@ -545,12 +552,12 @@ comment on column "tb_StandardEquipment"."IsRequire" is
 create table "tb_Station" 
 (
    "Id"                 varchar(32)          not null,
-   "IsDel"              smallint             not null,
+   "IsDel"              number(4,0)          not null,
    "OrgId"              varchar(32)          not null,
    "SiteId"             varchar(32)          not null,
-   "Lon"                float                not null,
-   "Lat"                float                not null,
-   "Category"           smallint             not null,
+   "Lon"                number(15,8)         not null,
+   "Lat"                number(15,8)         not null,
+   "Category"           number(4,0)          not null,
    constraint PK_TB_STATION primary key ("Id")
 );
 
@@ -584,11 +591,11 @@ comment on column "tb_Station"."Category" is
 create table "tb_StockAlert" 
 (
    "Id"                 varchar(32)          not null,
-   "IsDel"              smallint             not null,
+   "IsDel"              number(4,0)          not null,
    "OrgId"              varchar(32)          not null,
    "LibId"              varchar(32)          not null,
    "CateId"             varchar(32)          not null,
-   "MinCount"           int                  default 0 not null,
+   "MinCount"           number(9,0)          default 0 not null,
    constraint PK_TB_STOCKALERT primary key ("Id")
 );
 
@@ -619,12 +626,12 @@ comment on column "tb_StockAlert"."MinCount" is
 create table "tb_Storage" 
 (
    "Id"                 varchar(32)          not null,
-   "IsDel"              smallint             not null,
+   "IsDel"              number(4,0)          not null,
    "OrgId"              varchar(32)          not null,
    "Name"               varchar(128)         not null,
    "StationId"          varchar(32)          not null,
-   "Lon"                float                not null,
-   "Lat"                float                not null,
+   "Lon"                number(15,8)         not null,
+   "Lat"                number(15,8)         not null,
    "OfficerId"          varchar(32)          default '0',
    constraint PK_TB_STORAGE primary key ("Id")
 );
@@ -664,7 +671,7 @@ create table "tb_TagMoveTrail"
    "Id"                 varchar(32)          not null,
    "TagId"              varchar(32)          not null,
    "SiteId"             varchar(32)          not null,
-   "Status"             SMALLINT             not null,
+   "Status"             number(4,0)          not null,
    "UpTime"             number(18,0)         not null,
    "CTime"              number(18,0)         not null,
    constraint PK_TB_TAGMOVETRAIL primary key ("Id")
@@ -697,7 +704,7 @@ comment on column "tb_TagMoveTrail"."CTime" is
 create table "tb_sys_ActionLog" 
 (
    "Id"                 varchar(32)          not null,
-   "IsDel"              smallint             not null,
+   "IsDel"              number(4,0)          not null,
    "StartTime"          number(18,0)         not null,
    "EndTime"            number(18,0)         not null,
    "IPv4"               varchar(32),
@@ -705,7 +712,7 @@ create table "tb_sys_ActionLog"
    "Mac"                varchar(128),
    "FeatureId"          varchar(32)          not null,
    "UserId"             varchar(32)          not null,
-   "IsOk"               smallint             not null,
+   "IsOk"               number(4,0)          not null,
    "ErrorMsg"           varchar(2048),
    constraint PK_TB_SYS_ACTIONLOG primary key ("Id")
 );
@@ -752,11 +759,11 @@ comment on column "tb_sys_ActionLog"."ErrorMsg" is
 create table "tb_sys_Feature" 
 (
    "Id"                 varchar(32)          not null,
-   "IsDel"              smallint             not null,
+   "IsDel"              number(4,0)          not null,
    "RoleId"             varchar(32)          default '0' not null,
    "MenuId"             varchar(32)          default '0' not null,
    "ActId"              varchar(128)         not null,
-   "Status"             smallint             not null,
+   "Status"             number(4,0)          not null,
    "ActRemark"          varchar(512),
    constraint PK_TB_SYS_FEATURE primary key ("Id")
 );
@@ -792,10 +799,10 @@ create table "tb_sys_Menu"
 (
    "Id"                 varchar(32)          not null,
    "Title"              varchar(128)         not null,
-   "Order"              smallint             not null,
+   "Order"              number(4,0)          not null,
    "Src"                varchar(512)         not null,
    "Remarks"            varchar(1024),
-   "IsDel"              smallint             not null,
+   "IsDel"              number(4,0)          not null,
    "Pid"                varchar(32)          default '0' not null,
    constraint PK_TB_SYS_MENU primary key ("Id")
 );
@@ -832,8 +839,8 @@ create table "tb_sys_Role"
    "Id"                 varchar(32)          not null,
    "Name"               varchar(256)         not null,
    "Remarks"            varchar(512),
-   "Status"             smallint             not null,
-   "IsDel"              smallint             not null,
+   "Status"             number(4,0)          not null,
+   "IsDel"              number(4,0)          not null,
    "OrgId"              varchar(32)          not null,
    constraint PK_TB_SYS_ROLE primary key ("Id")
 );
@@ -865,15 +872,15 @@ comment on column "tb_sys_Role"."OrgId" is
 create table "tb_sys_User" 
 (
    "Id"                 varchar(32)          not null,
-   "IsDel"              smallint             not null,
+   "IsDel"              number(4,0)          not null,
    "OrgId"              varchar(32)          not null,
    "Account"            varchar(32)          not null,
    "Passwd"             varchar(128)         not null,
-   "Status"             smallint             not null,
-   "SigninStatus"       smallint             not null,
+   "Status"             number(4,0)          not null,
+   "SigninStatus"       number(4,0)          not null,
    "SignupDate"         number(18,0)         not null,
    "RoleId"             varchar(32)          not null,
-   "Category"           smallint             not null,
+   "Category"           number(4,0)          not null,
    constraint PK_TB_SYS_USER primary key ("Id")
 );
 
