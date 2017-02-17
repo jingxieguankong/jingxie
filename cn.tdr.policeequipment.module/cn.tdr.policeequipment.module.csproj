@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.3.0\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Module.cs" />
     <Compile Include="MyModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -48,9 +53,21 @@
       <Project>{4ae15a83-549e-4c60-9001-e4cbd278620a}</Project>
       <Name>cn.tdr.common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\cn.tdr.policeequipment.configuration\cn.tdr.policeequipment.configuration.csproj">
+      <Project>{a7c34e0a-3ef6-4d5a-ae0d-e728c524bdd8}</Project>
+      <Name>cn.tdr.policeequipment.configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\cn.tdr.policeequipment.data.entity\cn.tdr.policeequipment.data.entity.csproj">
       <Project>{5adbda21-300d-42b2-92b9-716470b01334}</Project>
       <Name>cn.tdr.policeequipment.data.entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cn.tdr.policeequipment.data.oracle\cn.tdr.policeequipment.data.oracle.csproj">
+      <Project>{ac8833c1-d7cf-418e-98dd-ac7ddef62eab}</Project>
+      <Name>cn.tdr.policeequipment.data.oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cn.tdr.policeequipment.data.repository\cn.tdr.policeequipment.data.repository.csproj">
+      <Project>{a70f4ffb-2907-4a2a-ac8d-178a4c13851d}</Project>
+      <Name>cn.tdr.policeequipment.data.repository</Name>
     </ProjectReference>
     <ProjectReference Include="..\cn.tdr.policeequipment.handle\cn.tdr.policeequipment.handle.csproj">
       <Project>{14a3773a-a7ae-4a2d-a862-05fa150ae848}</Project>
@@ -60,6 +77,10 @@
       <Project>{9b5976be-e588-471c-bae5-d9f7e299896b}</Project>
       <Name>cn.tdr.policeequipment.interfaces</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
