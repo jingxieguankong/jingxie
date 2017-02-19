@@ -42,6 +42,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cn.tdr.policeequipment.conf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cn.tdr.policeequipment.enumerates", "cn.tdr.policeequipment.enumerates\cn.tdr.policeequipment.enumerates.csproj", "{8F584FF1-7375-43A6-B07B-86AA73D1A1A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cn.tdr.policeequipment.module.test", "cn.tdr.policeequipment.module.test\cn.tdr.policeequipment.module.test.csproj", "{57F1E05C-8749-4DFE-8636-73D3C45ED22C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,6 +90,10 @@ Global
 		{8F584FF1-7375-43A6-B07B-86AA73D1A1A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F584FF1-7375-43A6-B07B-86AA73D1A1A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F584FF1-7375-43A6-B07B-86AA73D1A1A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57F1E05C-8749-4DFE-8636-73D3C45ED22C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57F1E05C-8749-4DFE-8636-73D3C45ED22C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57F1E05C-8749-4DFE-8636-73D3C45ED22C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57F1E05C-8749-4DFE-8636-73D3C45ED22C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,5 +109,6 @@ Global
 		{71706A8D-5D52-4A83-84BC-DE86EFF36D3A} = {327CEA5A-FDAE-4019-8AE6-F2F037A3318C}
 		{A7C34E0A-3EF6-4D5A-AE0D-E728C524BDD8} = {59E4E101-73A1-45C8-A94D-41429135A2FB}
 		{8F584FF1-7375-43A6-B07B-86AA73D1A1A4} = {49DFB863-D8F6-4B6E-A6EE-FD68E4DDADE9}
+		{57F1E05C-8749-4DFE-8636-73D3C45ED22C} = {B3091E53-CA59-45D6-9BC8-25657C4E14E3}
 	EndGlobalSection
 EndGlobal
