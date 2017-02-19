@@ -1,10 +1,13 @@
 ﻿namespace cn.tdr.policeequipment.data.oracle
 {
-    public class EfRepository : repository.EntityFrameworkRepository
+    public sealed class EfRepository : repository.EntityFrameworkRepository
     {
-        public EfRepository(string connectionStringName, string owner)
-            : base(new DbContext(connectionStringName, owner))
+        private static readonly string ConfigSectionName = "repository";
+
+        protected override System.Data.Entity.DbContext GetDbContext()
         {
+            var cfg = ConfigurationSectionHandler.RepositoryConfig(ConfigSectionName);
+            return new DbContext(cfg.ConnectionStringOrName, cfg.Owner);
         }
     }
 }

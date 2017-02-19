@@ -11,16 +11,14 @@
     {
         private DbContext _db;
         private bool _disposed;
-
-        protected EntityFrameworkRepository(DbContext dbContext)
+        
+        protected EntityFrameworkRepository()
         {
-            if (dbContext == null)
-            {
-                throw new ArgumentNullException(nameof(dbContext));
-            }
-            this._db = dbContext;
             this._disposed = false;
+            this._db = GetDbContext();
         }
+
+        protected abstract DbContext GetDbContext();
 
         TEntity IRepository.Insert<TEntity>(TEntity entity)
         {

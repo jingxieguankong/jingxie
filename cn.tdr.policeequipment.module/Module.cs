@@ -4,7 +4,6 @@
 
     public abstract class Module
     {
-        //private static readonly string 
         private static readonly IContainer Container;
 
         static Module()
@@ -17,7 +16,7 @@
             Container = builder.Build();
         }
 
-        protected interfaces.IRepository Repository { get; private set; }
+        public interfaces.IRepository Repository { get; private set; }
 
         protected Module()
         {

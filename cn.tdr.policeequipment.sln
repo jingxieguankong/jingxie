@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26020.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "20 documents", "20 documents", "{EE2108D0-4678-4303-904E-FCE4E233C707}"
 	ProjectSection(SolutionItems) = preProject
@@ -39,6 +39,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cn.tdr.policeequipment.module", "cn.tdr.policeequipment.module\cn.tdr.policeequipment.module.csproj", "{71706A8D-5D52-4A83-84BC-DE86EFF36D3A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cn.tdr.policeequipment.configuration", "cn.tdr.policeequipment.configuration\cn.tdr.policeequipment.configuration.csproj", "{A7C34E0A-3EF6-4D5A-AE0D-E728C524BDD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cn.tdr.policeequipment.enumerates", "cn.tdr.policeequipment.enumerates\cn.tdr.policeequipment.enumerates.csproj", "{8F584FF1-7375-43A6-B07B-86AA73D1A1A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,6 +84,10 @@ Global
 		{A7C34E0A-3EF6-4D5A-AE0D-E728C524BDD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7C34E0A-3EF6-4D5A-AE0D-E728C524BDD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7C34E0A-3EF6-4D5A-AE0D-E728C524BDD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F584FF1-7375-43A6-B07B-86AA73D1A1A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F584FF1-7375-43A6-B07B-86AA73D1A1A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F584FF1-7375-43A6-B07B-86AA73D1A1A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F584FF1-7375-43A6-B07B-86AA73D1A1A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +101,7 @@ Global
 		{AC8833C1-D7CF-418E-98DD-AC7DDEF62EAB} = {59E4E101-73A1-45C8-A94D-41429135A2FB}
 		{14A3773A-A7AE-4A2D-A862-05FA150AE848} = {49DFB863-D8F6-4B6E-A6EE-FD68E4DDADE9}
 		{71706A8D-5D52-4A83-84BC-DE86EFF36D3A} = {327CEA5A-FDAE-4019-8AE6-F2F037A3318C}
-		{A7C34E0A-3EF6-4D5A-AE0D-E728C524BDD8} = {327CEA5A-FDAE-4019-8AE6-F2F037A3318C}
+		{A7C34E0A-3EF6-4D5A-AE0D-E728C524BDD8} = {59E4E101-73A1-45C8-A94D-41429135A2FB}
+		{8F584FF1-7375-43A6-B07B-86AA73D1A1A4} = {49DFB863-D8F6-4B6E-A6EE-FD68E4DDADE9}
 	EndGlobalSection
 EndGlobal
