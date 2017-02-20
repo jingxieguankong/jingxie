@@ -44,8 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthModule.cs" />
+    <Compile Include="FeatureModule.cs" />
+    <Compile Include="MenuModule.cs" />
+    <Compile Include="MessageModule.cs" />
+    <Compile Include="models\UserInfo.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="MyModule.cs" />
+    <Compile Include="PasswdModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +74,10 @@
     <ProjectReference Include="..\cn.tdr.policeequipment.data.repository\cn.tdr.policeequipment.data.repository.csproj">
       <Project>{a70f4ffb-2907-4a2a-ac8d-178a4c13851d}</Project>
       <Name>cn.tdr.policeequipment.data.repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cn.tdr.policeequipment.enumerates\cn.tdr.policeequipment.enumerates.csproj">
+      <Project>{8f584ff1-7375-43a6-b07b-86aa73d1a1a4}</Project>
+      <Name>cn.tdr.policeequipment.enumerates</Name>
     </ProjectReference>
     <ProjectReference Include="..\cn.tdr.policeequipment.handle\cn.tdr.policeequipment.handle.csproj">
       <Project>{14a3773a-a7ae-4a2d-a862-05fa150ae848}</Project>

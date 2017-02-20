@@ -43,6 +43,7 @@
     <Compile Include="FeatureHandle.cs" />
     <Compile Include="Handle.cs" />
     <Compile Include="MenuHandle.cs" />
+    <Compile Include="OfficerHandle.cs" />
     <Compile Include="OrganizationHandle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleHandle.cs" />

@@ -9,7 +9,7 @@ namespace cn.tdr.policeequipment.module.test
         [TestMethod]
         public void Constructor()
         {
-            var module = new MyModule();
+            var module = new AuthModule();
             Assert.IsNotNull(module.Repository);
         }
     }

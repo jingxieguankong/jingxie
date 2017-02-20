@@ -43,6 +43,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.3.0\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.6\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -76,6 +88,14 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.12.1.24160719\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess.EntityFramework, Version=6.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.EntityFramework.12.1.2400\lib\net45\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -953,6 +973,44 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Filters\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cn.tdr.common\cn.tdr.common.csproj">
+      <Project>{4ae15a83-549e-4c60-9001-e4cbd278620a}</Project>
+      <Name>cn.tdr.common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cn.tdr.policeequipment.configuration\cn.tdr.policeequipment.configuration.csproj">
+      <Project>{a7c34e0a-3ef6-4d5a-ae0d-e728c524bdd8}</Project>
+      <Name>cn.tdr.policeequipment.configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cn.tdr.policeequipment.data.entity\cn.tdr.policeequipment.data.entity.csproj">
+      <Project>{5adbda21-300d-42b2-92b9-716470b01334}</Project>
+      <Name>cn.tdr.policeequipment.data.entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cn.tdr.policeequipment.data.oracle\cn.tdr.policeequipment.data.oracle.csproj">
+      <Project>{ac8833c1-d7cf-418e-98dd-ac7ddef62eab}</Project>
+      <Name>cn.tdr.policeequipment.data.oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cn.tdr.policeequipment.data.repository\cn.tdr.policeequipment.data.repository.csproj">
+      <Project>{a70f4ffb-2907-4a2a-ac8d-178a4c13851d}</Project>
+      <Name>cn.tdr.policeequipment.data.repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cn.tdr.policeequipment.enumerates\cn.tdr.policeequipment.enumerates.csproj">
+      <Project>{8f584ff1-7375-43a6-b07b-86aa73d1a1a4}</Project>
+      <Name>cn.tdr.policeequipment.enumerates</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cn.tdr.policeequipment.handle\cn.tdr.policeequipment.handle.csproj">
+      <Project>{14a3773a-a7ae-4a2d-a862-05fa150ae848}</Project>
+      <Name>cn.tdr.policeequipment.handle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cn.tdr.policeequipment.interfaces\cn.tdr.policeequipment.interfaces.csproj">
+      <Project>{9b5976be-e588-471c-bae5-d9f7e299896b}</Project>
+      <Name>cn.tdr.policeequipment.interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cn.tdr.policeequipment.module\cn.tdr.policeequipment.module.csproj">
+      <Project>{71706a8d-5d52-4a83-84bc-de86eff36d3a}</Project>
+      <Name>cn.tdr.policeequipment.module</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

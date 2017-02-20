@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26020.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "20 documents", "20 documents", "{EE2108D0-4678-4303-904E-FCE4E233C707}"
 	ProjectSection(SolutionItems) = preProject
@@ -43,6 +43,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cn.tdr.policeequipment.enumerates", "cn.tdr.policeequipment.enumerates\cn.tdr.policeequipment.enumerates.csproj", "{8F584FF1-7375-43A6-B07B-86AA73D1A1A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cn.tdr.policeequipment.module.test", "cn.tdr.policeequipment.module.test\cn.tdr.policeequipment.module.test.csproj", "{57F1E05C-8749-4DFE-8636-73D3C45ED22C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cn.tdr.common.Test", "cn.tdr.common.Test\cn.tdr.common.Test.csproj", "{D7DB4A01-059C-4785-B236-F6A3E0290D2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cn.tdr.policeequipment.enumerates.Test", "cn.tdr.policeequipment.enumerates.Test\cn.tdr.policeequipment.enumerates.Test.csproj", "{403AA1B6-2054-4129-80B5-BE4E50DCEFAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,6 +98,14 @@ Global
 		{57F1E05C-8749-4DFE-8636-73D3C45ED22C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57F1E05C-8749-4DFE-8636-73D3C45ED22C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57F1E05C-8749-4DFE-8636-73D3C45ED22C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7DB4A01-059C-4785-B236-F6A3E0290D2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7DB4A01-059C-4785-B236-F6A3E0290D2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7DB4A01-059C-4785-B236-F6A3E0290D2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7DB4A01-059C-4785-B236-F6A3E0290D2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{403AA1B6-2054-4129-80B5-BE4E50DCEFAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{403AA1B6-2054-4129-80B5-BE4E50DCEFAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{403AA1B6-2054-4129-80B5-BE4E50DCEFAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{403AA1B6-2054-4129-80B5-BE4E50DCEFAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,5 +122,7 @@ Global
 		{A7C34E0A-3EF6-4D5A-AE0D-E728C524BDD8} = {59E4E101-73A1-45C8-A94D-41429135A2FB}
 		{8F584FF1-7375-43A6-B07B-86AA73D1A1A4} = {49DFB863-D8F6-4B6E-A6EE-FD68E4DDADE9}
 		{57F1E05C-8749-4DFE-8636-73D3C45ED22C} = {B3091E53-CA59-45D6-9BC8-25657C4E14E3}
+		{D7DB4A01-059C-4785-B236-F6A3E0290D2F} = {B3091E53-CA59-45D6-9BC8-25657C4E14E3}
+		{403AA1B6-2054-4129-80B5-BE4E50DCEFAC} = {B3091E53-CA59-45D6-9BC8-25657C4E14E3}
 	EndGlobalSection
 EndGlobal
