@@ -138,7 +138,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\common.css" />
+    <Content Include="Content\img\account.png" />
+    <Content Include="Content\img\jinghui_1.png" />
     <Content Include="Content\img\male.gif" />
+    <Content Include="Content\img\password.png" />
+    <Content Include="Content\img\police_1.png" />
+    <Content Include="Content\img\ship_login_bg.png" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\easyui\changelog.txt" />
     <Content Include="Scripts\easyui\demo-mobile\accordion\basic.html" />
@@ -923,6 +928,7 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BasicController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SigninController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -963,6 +969,7 @@
     <Content Include="Scripts\easyui\demo\tree\tree_data1.json" />
     <Content Include="Scripts\easyui\demo\tree\tree_data2.json" />
     <Content Include="Scripts\easyui\themes\material\images\Thumbs.db" />
+    <Content Include="Views\Signin\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

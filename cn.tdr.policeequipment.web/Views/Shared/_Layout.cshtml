@@ -4,10 +4,15 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    <link type="text/css" href="@Url.Content("~/Scripts/easyui/themes/bootstrap/easyui.css")" rel="stylesheet" />
+    <link type="text/css" href="@Url.Content("~/Scripts/easyui/themes/icon.css")" rel="stylesheet" />
+    <link type="text/css" href="@Url.Content("~/Content/common.css")" rel="stylesheet" />
+    @RenderSection("styles", required: false)
 </head>
-<body>
-    <div>
-        @RenderBody()
-    </div>
+<body class="easyui-layout">
+    @RenderBody()
+    <script type="text/javascript" src="@Url.Content("~/Scripts/easyui/jquery.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/easyui/jquery.easyui.min.js")"></script>
+    @RenderSection("scripts", required: false)
 </body>
 </html>

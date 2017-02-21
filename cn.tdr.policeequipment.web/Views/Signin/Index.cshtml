@@ -1,0 +1,41 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title - 登录</title>
+    <link type="text/css" href="@Url.Content("~/Content/common.css")" rel="stylesheet" />
+</head>
+<body class="x-login-body">
+    <div class="x-login-header">
+        <div class="x-login-header-l">
+            <span class="x-login-header-c" />
+            @ViewBag.Title<span style="color:gray">|系统登录</span>
+        </div>
+    </div>
+    <div class="x-login-loginBody">
+        <div class="x-login-login-r">
+            @using (Html.BeginForm("Valid", "Signin", FormMethod.Post))
+            {
+                <div class="x-login-form-header"><h1>用户登录</h1></div>
+                <div class="x-login-login-r-input x-login-account">
+                    <input type="text" id="userId" name="userId" value="@ViewBag.UserId" />
+                </div>
+
+                <div class="x-login-login-r-input x-login-password">
+                    <input type="password" id="passwd" name="passwd" value="@ViewBag.Passwd" />
+                </div>
+                <div style="margin:25px auto !important">
+                    <button class="x-login-submit">登录</button>
+                </div>
+                <div id="x-form-msg" style="height:26px; line-height:26px; color:red;">@ViewBag.ErrorMsg</div>
+            }
+        </div>
+    </div>
+</body>
+</html>

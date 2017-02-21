@@ -121,11 +121,10 @@
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed) return;
-            //if (disposing)
-            //{
-
-            //}
-            Repository.Dispose();
+            if (disposing)
+            {
+                Repository.Dispose();
+            }            
             _disposed = true;
         }
 

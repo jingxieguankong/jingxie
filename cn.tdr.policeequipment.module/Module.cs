@@ -19,12 +19,12 @@
 
         public interfaces.IRepository Repository { get; private set; }
 
+        public ILifetimeScope Scope { get; private set; }
+
         protected Module()
         {
-            using (var scope = Container.BeginLifetimeScope())
-            {
-                Repository = scope.Resolve<interfaces.IRepository>();
-            }
+            Scope = Container.BeginLifetimeScope();
+            Repository = Scope.Resolve<interfaces.IRepository>();
         }
 
         private bool _disposed = false;
@@ -35,7 +35,7 @@
             {
                 return;
             }
-
+            Scope.Dispose();
             Repository.Dispose();
             Repository = null;
             _disposed = true;

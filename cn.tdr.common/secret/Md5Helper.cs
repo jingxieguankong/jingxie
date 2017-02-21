@@ -1,5 +1,6 @@
 ﻿namespace cn.tdr.common.secret
 {
+    using System;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
@@ -16,7 +17,7 @@
         /// <param name="encodingName">编码</param>
         /// <param name="extentions">加密扩展数据</param>
         /// <returns></returns>
-        public static string ToMd5(this string source, string encodingName, params string[] extentions)
+        public static string ToMd5(this string source, Encoding encoding, params string[] extentions)
         {
             using (var md5 = new MD5CryptoServiceProvider())
             {
@@ -26,10 +27,9 @@
                 .Where(t => !string.IsNullOrWhiteSpace(t))
                 .OrderBy(t => t);
                 var valstr = string.Join("", arr);
-                var encode = Encoding.GetEncoding(encodingName);
-                var buffer = encode.GetBytes(valstr);
+                var buffer = encoding.GetBytes(valstr);
                 buffer = md5.ComputeHash(buffer, 0, buffer.Length);
-                valstr = encode.GetString(buffer);
+                valstr = Convert.ToBase64String(buffer);
                 return valstr;
             }
         }
@@ -42,7 +42,7 @@
         /// <returns></returns>
         public static string ToMd5(this string source, params string[] extentions)
         {
-            return source.ToMd5("utf-8", extentions);
+            return source.ToMd5(Encoding.UTF8, extentions);
         }
     }
 }

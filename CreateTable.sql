@@ -800,7 +800,7 @@ create table "tb_sys_Menu"
    "Id"                 varchar(32)          not null,
    "Title"              varchar(128)         not null,
    "Order"              number(4,0)          not null,
-   "Src"                varchar(512)         not null,
+   "Src"                varchar(512),
    "Remarks"            varchar(1024),
    "IsDel"              number(4,0)          not null,
    "Pid"                varchar(32)          default '0' not null,
@@ -915,4 +915,4 @@ comment on column "tb_sys_User"."RoleId" is
 '关键系统角色主键，描述用户的角色，用当前字段来确定用户的平台访问功能权限';
 
 comment on column "tb_sys_User"."Category" is
-'系统账户类型。1：超级管理员；2：系统用户。';
+'系统账户类型。1：超级管理员；2：管理员；3：普通用户。';
