@@ -141,9 +141,12 @@
     <Content Include="Content\img\account.png" />
     <Content Include="Content\img\jinghui_1.png" />
     <Content Include="Content\img\male.gif" />
+    <Content Include="Content\img\tools.png" />
     <Content Include="Content\img\password.png" />
     <Content Include="Content\img\police_1.png" />
     <Content Include="Content\img\ship_login_bg.png" />
+    <Content Include="Content\map.css" />
+    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\easyui\changelog.txt" />
     <Content Include="Scripts\easyui\demo-mobile\accordion\basic.html" />
@@ -928,6 +931,7 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BasicController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\SigninController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -970,6 +974,8 @@
     <Content Include="Scripts\easyui\demo\tree\tree_data2.json" />
     <Content Include="Scripts\easyui\themes\material\images\Thumbs.db" />
     <Content Include="Views\Signin\Index.cshtml" />
+    <Content Include="Views\Map\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutNoUI.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

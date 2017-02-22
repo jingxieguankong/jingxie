@@ -1,0 +1,15 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link type="text/css" href="@Url.Content("~/Content/common.css")" rel="stylesheet" />
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    @RenderBody()
+    <script type="text/javascript" src="@Url.Content("~/Scripts/easyui/jquery.min.js")"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

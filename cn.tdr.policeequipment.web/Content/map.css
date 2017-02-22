@@ -1,0 +1,139 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: #000000;
+}
+
+#x-map-header{
+    height:60px;
+    line-height:60px;
+    background-color: #f7f5f5;
+    overflow:hidden;
+}
+
+#x-boxopt {
+    padding-right: 12px;
+    line-height: 34px;
+    float: left;
+    cursor: pointer;
+    display: inline-block;
+}
+
+    #x-boxopt .x-tool-icon {
+        float: left;
+        height: 34px;
+        width: 29px;
+        background-image: url(img/tools.png);
+        background-repeat: no-repeat;
+        padding-right: 7px;
+        background-position: -34px -116px;
+    }
+
+    #x-boxopt i {
+        float: left;
+        font-size: 12px;
+        font-style: normal;
+        height: 34px;
+        line-height: 34px;
+        display: inline-block;
+    }
+
+    #x-boxopt em {
+        width: 7px;
+        height: 7px;
+        float: left;
+        margin-top: 13px;
+        margin-left: 8px;
+        background-image: url(img/tools.png);
+        background-repeat: no-repeat;
+        background-position: -13px -17px;
+    }
+
+    #x-boxopt em .active {
+        background-position: -12px -177px;
+    }
+
+
+#x-box-detail {
+    position: absolute;
+    width: 86px;
+    background: #ffffff;
+    box-shadow: 1px 2px 1px rgba(0,0,0,.15);
+    top: 34px;
+    right: 0;
+    float: left;
+    display: block;
+    z-index: 80000;
+    /*display:none;*/
+}
+
+#x-map-content {
+    max-width: 500px;
+    min-width: 0px;
+    width: 420px;
+    max-height: 520px;
+    margin: 0px auto;
+    position: fixed;
+    top: 80px;
+    left: 30px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border:1px solid #d0d0d0;
+}
+
+#x-map-tool-content {
+    max-height: 40px;
+    height: 34px;
+    line-height: 34px;
+    position: fixed;
+    top: 26px;
+    right: 20px;
+}
+    #x-map-tool-content b {
+        float: left;
+        height: 21px;
+        display: inline-block;
+        border-right: 1px solid lightgray;
+        top: 7px;
+        position: relative;
+    }
+
+
+.x-boxinfo{
+    list-style-type: none;
+}
+
+    .x-boxinfo li {
+        box-sizing: border-box;
+        width: 100%;
+        cursor: pointer;
+        height: 34px;
+        line-height: 34px;
+        padding-left: 7px;
+        margin: 0;
+        padding: 0;
+    }
+
+        .x-boxinfo li span {
+            height: 34px;
+            width: 29px;
+            background-image: url(img/tools.png);
+            background-repeat: no-repeat;
+        }
+
+        .x-boxinfo li .x-kx {
+            float: left;
+            background-position: -80px -117px;
+        }
+
+        .x-boxinfo li i {
+            float: left;
+            font-size: 12px;
+            font-style: normal;
+            height: 34px;
+            line-height: 34px;
+            display: inline-block;
+            margin-left: 2px;
+        }

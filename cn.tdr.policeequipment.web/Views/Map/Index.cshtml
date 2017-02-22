@@ -1,0 +1,44 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutNoUI.cshtml";
+}
+
+@section  styles{
+<link type="text/css" href="@Url.Content("~/Content/map.css")" rel="stylesheet" />
+}
+
+<div id="x-map-header">
+    <div class="x-login-header-l" style="margin-top:10px; margin-left:35px;">
+        <span class="x-login-header-c" />
+        @ViewBag.Title<span style="color:gray">|系统登录</span>
+    </div>
+</div>
+
+<div id="x-map-tool-content">
+    <b></b>
+    <div id="x-boxopt">
+        <span class="x-tool-icon"></span>
+        <i>工具</i>
+        <em></em>
+    </div>
+    <div id="x-box-detail">
+        <ul class="x-boxinfo">
+            <li>
+                @*<span class="x-kx"></span>*@
+                <i>框选</i>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="x-map-content" style="height:520px;">
+
+</div>
+
+@section scripts{
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+    });
+</script>
+}
