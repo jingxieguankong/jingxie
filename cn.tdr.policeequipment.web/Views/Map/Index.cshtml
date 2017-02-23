@@ -14,31 +14,84 @@
     </div>
 </div>
 
-<div id="x-map-tool-content">
-    <b></b>
-    <div id="x-boxopt">
-        <span class="x-tool-icon"></span>
+<div class="x-map-tool-menu">
+    <div id="x-menu-tls" class="x-map-menu-item">
+        <span class="x-menu-icon-bg x-menu-icon-pkg"></span>
         <i>工具</i>
-        <em></em>
+        <em class="x-menu-icon-bg"></em>
+        <div id="x-menu-tls-items">
+            <ul class="x-ul-clear-style">
+                <li class="x-ul-clear-style x-menu-tls-item">
+                    <span class="x-menu-icon-bg x-menu-icon-blank"></span>
+                    <b class="x-b-v"></b>
+                    <i>矩形选择器</i>
+                </li>
+                <li class="x-ul-clear-style x-menu-tls-item">
+                    <span class="x-menu-icon-bg x-menu-icon-blank"></span>
+                    <b class="x-b-v"></b>
+                    <i>圆形选择器</i>
+                </li>
+                <li class="x-ul-clear-style x-menu-tls-item">
+                    <span class="x-menu-icon-bg x-menu-icon-blank"></span>
+                    <b class="x-b-v"></b>
+                    <i>不规则选择器</i>
+                    <b class="x-b-h"></b>
+                </li>
+                <li class="x-ul-clear-style x-menu-tls-item">
+                    <span class="x-menu-icon-bg x-menu-icon-blank"></span>
+                    <b class="x-b-v"></b>
+                    <i>其它工具</i>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div id="x-box-detail">
-        <ul class="x-boxinfo">
-            <li>
-                @*<span class="x-kx"></span>*@
-                <i>框选</i>
+    <b class="x-b-v"></b>
+    <div id="x-menu-msg" class="x-map-menu-item">
+        <span class="x-menu-icon-bg x-menu-icon-msg"></span>
+        <i>消息</i>
+        <span class="x-tls-msg-tip">0</span>
+    </div>
+</div>
+
+<div id="x-map-content" style="height:520px;">
+    <!--结果提示-->
+    <div id="x-rst-tip">
+        耗时：0.00435 秒。查询到警种数 8，警员数 32
+    </div>
+    <div id="x-rst-contaner">
+        <ul class="x-ul-clear-style">
+            <li class="x-ul-clear-style x-rst-item">
+                <div class="x-rst-item-header">
+                    
+                    <span class="x-span-number">8</span>
+                    <i>交通警察</i>
+                </div>
             </li>
         </ul>
     </div>
 </div>
 
-<div id="x-map-content" style="height:520px;">
-
-</div>
-
 @section scripts{
 <script type="text/javascript">
+    function toolitemHd()
+    {
+        var detail = $("#x-menu-tls-items");
+        var tltp = $("#x-menu-tls > em");
+        var cls = "x-em-active";
+        tltp.toggleClass(cls);
+        if (tltp.hasClass(cls)) {
+            detail.css('display', 'block');
+        } else {
+            detail.css('display', 'none');
+        }
+    }
+
     $(document).ready(function () {
         
+        $("#x-menu-tls").click(function () {
+            toolitemHd();
+        });
+
     });
 </script>
 }

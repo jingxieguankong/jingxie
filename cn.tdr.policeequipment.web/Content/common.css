@@ -1,5 +1,33 @@
 ﻿
 .x-clear-border{border-width:0px;}
+.x-border-bottom{
+    padding-bottom:2px;
+    border-bottom: 1px solid lightgray;
+}
+.x-border-left{
+    border-left: 1px solid lightgray;
+}
+.x-border-right{
+    border-right: 1px solid lightgray;
+}
+
+.x-b-v {
+    float: left;
+    height: 50%;
+    display: inline-block;
+    border-left: 1px solid lightgray;
+    top: 25%;
+    position: relative;
+    padding-right:5px;
+}
+
+.x-b-h {
+    float: left;
+    border-bottom: 1px solid lightgray;
+    position: relative;
+    left: 3%;
+    width: 94%;
+}
 
 .x-cicle{
     border-bottom-left-radius:50%;
