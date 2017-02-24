@@ -922,6 +922,7 @@
     <Content Include="Scripts\easyui\themes\metro\validatebox.css" />
     <Content Include="Scripts\easyui\themes\metro\window.css" />
     <Content Include="Scripts\easyui\themes\mobile.css" />
+    <Content Include="Scripts\mapcallback.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -936,7 +937,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DispatchModels.cs" />
     <Compile Include="Models\MenuModels.cs" />
+    <Compile Include="Models\Pointer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

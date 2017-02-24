@@ -21,24 +21,24 @@
         <em class="x-menu-icon-bg"></em>
         <div id="x-menu-tls-items">
             <ul class="x-ul-clear-style">
-                <li class="x-ul-clear-style x-menu-tls-item">
+                <li class="x-ul-clear-style x-menu-tls-item" onclick="toolRectangleClick()">
                     <span class="x-menu-icon-bg x-menu-icon-blank"></span>
                     <b class="x-b-v"></b>
                     <i>矩形选择器</i>
                 </li>
-                <li class="x-ul-clear-style x-menu-tls-item">
+                <li class="x-ul-clear-style x-menu-tls-item" onclick="toolCircleClick()">
                     <span class="x-menu-icon-bg x-menu-icon-blank"></span>
                     <b class="x-b-v"></b>
                     <i>圆形选择器</i>
                 </li>
-                <li class="x-ul-clear-style x-menu-tls-item">
+                <li class="x-ul-clear-style x-menu-tls-item" onclick="toolIrregularClick()">
                     <span class="x-menu-icon-bg x-menu-icon-blank"></span>
                     <b class="x-b-v"></b>
                     <i>不规则选择器</i>
                     <b class="x-b-h"></b>
                 </li>
-                <li class="x-ul-clear-style x-menu-tls-item">
-                    <span class="x-menu-icon-bg x-menu-icon-blank"></span>
+                <li class="x-ul-clear-style x-menu-tls-item" onclick="toolAnotherClick()">
+                    <span class="x-menu-icon-bg x-menu-icon-tip"></span>
                     <b class="x-b-v"></b>
                     <i>其它工具</i>
                 </li>
@@ -53,44 +53,164 @@
     </div>
 </div>
 
-<div id="x-map-content" style="height:520px;">
-    <!--结果提示-->
-    <div id="x-rst-tip">
-        耗时：0.00435 秒。查询到警种数 8，警员数 32
-    </div>
+<div id="x-map-content">
     <div id="x-rst-contaner">
-        <ul class="x-ul-clear-style">
-            <li class="x-ul-clear-style x-rst-item">
-                <div class="x-rst-item-header">
-                    
+        <ul id="x-rst-contaner-body" class="x-ul-clear-style">
+            @*<li class="x-ul-clear-style x-rst-item">
+                <div class="x-rst-item-header">                    
                     <span class="x-span-number">8</span>
                     <i>交通警察</i>
+                    <em class="x-menu-icon-bg"></em>
                 </div>
-            </li>
+                <ul class="x-ul-clear-style x-rst-item-body">
+                    <li class="x-ul-clear-style x-rst-item-item" onclick="resultItemClick(0,0,1)">
+                        <a href="javascript:void(0)">
+                            <span>{ 警员姓名 }</span>
+                            <em>{ 组织机构名称 }</em>
+                        </a>
+                    </li>
+                </ul>
+            </li>*@
         </ul>
     </div>
 </div>
 
 @section scripts{
+<script type="text/javascript" src="@Url.Content("~/Scripts/mapcallback.js")"></script>
 <script type="text/javascript">
+
     function toolitemHd()
     {
+        var itval = 0;
         var detail = $("#x-menu-tls-items");
         var tltp = $("#x-menu-tls > em");
         var cls = "x-em-active";
         tltp.toggleClass(cls);
         if (tltp.hasClass(cls)) {
-            detail.css('display', 'block');
+            detail.show(itval);
         } else {
-            detail.css('display', 'none');
+            detail.hide(itval);
         }
+    }
+
+    function resultItemHd(e) {
+        var cls = "x-rst-item-em-active";
+        var itval = 0;
+        var em = $(e).children("em");
+        em.toggleClass(cls);
+        var items = $(e).siblings(".x-rst-item-body");
+        if (!!em.hasClass(cls)) {
+            items.show(itval);
+        } else {
+            items.hide(itval);
+        }
+    }
+
+    // 警力分布结果 click 事件回调函数
+    function resultItemClick(x, y, type) {
+        location({
+            x: x,
+            y: y,
+            html: '<div style="height:23px;line-height:23px; width:30px;">target</div>'
+        });
+    }
+
+    function renderGroupItem(items, type) {
+        var html = '';
+        for (var i = 0; i < items.length;i++)
+        {
+            var item = items[i];
+            html += '\
+                <li class="x-ul-clear-style x-rst-item-item" onclick="resultItemClick(' + item.site.x + ',' + item.site.y + ',' + type + ')"> \
+                    <a href="javascript:void(0)"> \
+                        <span>'+item.name+'</span> \
+                        <em>' + item.orgName + '</em> \
+                    </a> \
+                </li> ';
+        }
+        return html;
+    }
+
+    // 渲染区间选择结果
+    function renderSelectResult(data) {
+        var html = "";
+        for (var i = 0; i < data.groups.length; i++) {
+            var group = data.groups[i];
+            html += '\
+                <li class="x-ul-clear-style x-rst-item"> \
+                    <div class="x-rst-item-header"> \
+                        <span class="x-span-number">'+ group.items.length + '</span> \
+                        <i>'+ group.name + '</i> \
+                        <em class="x-menu-icon-bg"></em> \
+                    </div> \
+                    <ul class="x-ul-clear-style x-rst-item-body"> \
+                        '+ renderGroupItem(group.items, group.type) + '\
+                    </ul> \
+                </li>';
+        }
+        $("#x-rst-contaner-body").html(html);
+
+        $(".x-rst-item-header").click(function () {
+            resultItemHd(this);
+        });
+
+        var contentId = $("#x-map-content")
+        if (!!html) {
+            contentId.show();
+        } else {
+            contentId.hide();
+        }
+    }
+
+    // 各类型区间选择器处理函数
+    function toolSelectHd(url, paramerters) {
+        $.post(url, paramerters, function (data) {
+            if (!!data.data && data.code === 0) {
+                renderSelectResult(data.data);
+            }
+        });
+    }
+
+    // 矩形区间选择 click 事件回调函数
+    function toolRectangleClick() {
+        var url = "@Url.Action("rectangle", "map")";
+        rectangleSelector({
+            callback: function (data) {
+                toolSelectHd(url, data);
+            }
+        });
+    }
+
+    // 圆形区间选择 click 事件回调函数
+    function toolCircleClick() {
+        var url = "@Url.Action("circle", "map")";
+        circleSelector({
+            callback: function (data) {
+                toolSelectHd(url, data);
+            }
+        });
+    }
+
+    // 不规则区间选择 click 事件回调函数
+    function toolIrregularClick() {
+        var url = "@Url.Action("irregular", "map")";
+        irregularSelector({
+            callback: function (data) {
+                toolSelectHd(url, { data: data });
+            }
+        });
+    }
+
+    // 其它工具 click 事件回调函数
+    function toolAnotherClick() {
+
     }
 
     $(document).ready(function () {
         
         $("#x-menu-tls").click(function () {
             toolitemHd();
-        });
+        });        
 
     });
 </script>
