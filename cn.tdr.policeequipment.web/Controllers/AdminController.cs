@@ -25,8 +25,8 @@
                     title = t.Title,
                     items = items.Where(x => x.Pid == t.Id).Select(x => new Models.MenuItemModel
                     {
-                        src = t.Src,
-                        title = t.Title,
+                        src = x.Src,
+                        title = x.Title,
                         items = new Models.MenuItemModel[0]
                     }).ToArray()
                 }).ToArray();
@@ -37,7 +37,8 @@
         // 登出系统
         public ActionResult SignOut()
         {
-            return View();
+            Session.Abandon();
+            return RedirectToAction("index", "signin");
         }
     }
 }
