@@ -88,6 +88,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <HintPath>..\packages\Oracle.ManagedDataAccess.12.1.24160719\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
       <Private>True</Private>
@@ -941,6 +945,9 @@
     <Compile Include="Models\DispatchModels.cs" />
     <Compile Include="Models\MenuModels.cs" />
     <Compile Include="Models\Pointer.cs" />
+    <Compile Include="Models\TableModels.cs" />
+    <Compile Include="Models\TableMenuModels.cs" />
+    <Compile Include="Models\TreeGridModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -981,6 +988,9 @@
     <Content Include="Views\Map\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutNoUI.cshtml" />
     <Content Include="Views\Menu\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutEditable.cshtml" />
+    <Content Include="Views\Shared\_PartialTreeGrid.cshtml" />
+    <Content Include="Views\Menu\_PartialTableRow.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

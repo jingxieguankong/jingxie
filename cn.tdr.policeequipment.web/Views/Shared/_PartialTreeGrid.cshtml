@@ -1,0 +1,25 @@
+﻿@model cn.tdr.policeequipment.web.Models.TreeGridPageModel
+@{ 
+    var tableHeight = Model.tableHeight - 10 - 23 - 10 - 10;
+}
+
+<div data-options="region:'center'" style="padding:10px;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="return false;"
+       style="text-align:center;height:23px;line-height:23px; width:45px;">新增</a>
+    <div style="margin-top:10px;">
+        <table id="x-tabletree" class="easyui-treegrid" height="@tableHeight"
+               style="min-height:150px;"
+               data-options="
+                   url:'@Model.dataAction',
+                   method:'get',
+                   rownumbers:true,
+                   fitColumns:true,
+                   collapsible:true,
+                   animate:true,
+                   idField:'@Model.fieldId.field' ,
+                   treeField:'@Model.fieldTree.field'
+               ">
+            @Html.Partial(Model.headerPartialPage, Model.headerPartialPageModel)
+        </table>
+    </div>
+</div>

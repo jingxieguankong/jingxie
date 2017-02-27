@@ -1,43 +1,156 @@
-﻿
+﻿@using cn.tdr.policeequipment.web.Models
+@model TableMenuHeaderModel
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    var tabHeight = ViewBag.ViewHeight - 10 - 23 - 10;
+    Layout = "~/Views/Shared/_LayoutEditable.cshtml";
+    var tabHeight = ViewBag.ViewHeight - 10 - 23 - 10 - 10;
+    ViewBag.OnSubmiting = "aa";
 }
 
-<div data-options="region:'center'" style="padding:10px;">
-    <a href="javascript:void(0)" class="easyui-linkbutton" style="text-align:center;height:23px;line-height:23px; width:45px;" >新增</a>
+@*<div data-options="region:'center'" style="padding:10px;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="onAddTop(); return false;"
+       style="text-align:center;height:23px;line-height:23px; width:45px;" >新增</a>
     <div style="margin-top:10px;">
-        <table id="" class="easyui-treegrid" title="" style="height:@tabHeight px; min-height:150px;"
+        <table id="x-tabletree" class="easyui-treegrid" height="@tabHeight" 
+               style="min-height:150px;"
                data-options="
-                   url:'@Url.Action("GetData")' ,
-                   method:'get' ,
+                   url:'@Url.Action("GetData")',
+                   method:'get',
                    rownumbers:true,
-                   pagination:true,
-                   pageSize:20,
-                   pageList:[20,50],
                    fitColumns:true,
-                   showFooter:true,
                    collapsible:true,
                    animate:true,
-                   idField:'id' ,
-                   treeField:'title'
+                   idField:'@Model.id.field' ,
+                   treeField:'@Model.title.field',
+                   onAfterEdit:onEditAfter
                ">
             <thead>
                 <tr>
-                    <th data-options="field:'title',width:1">标题</th>
-                    <th data-options="field:'src',width:2">跳转地址</th>
-                    <th data-options="field:'remark',width:4">备注</th>
-                    <th data-options="field:'id',width:1,formatter:fmtOper"></th>
+                    <th data-options="field:'@Model.title.field',align:'left',width:3,editor:'text'">@Model.title.title</th>
+                    <th data-options="field:'@Model.src.field',align:'left',width:3,editor:'text'">@Model.src.title</th>
+                    <th data-options="field:'@Model.order.field',align:'left',width:1,editor:'numberbox'">@Model.order.title</th>
+                    <th data-options="field:'@Model.remmark.field',align:'left',width:5">@Model.remmark.title</th>
+                    <th data-options="field:'@Model.id.field',formatter:fmtOper"></th>
                 </tr>
             </thead>
         </table>
     </div>
-</div>
+</div>*@
+
+@Html.Partial("_PartialTreeGrid.cshtml",
+    new TreeGridPageModel
+    {
+        dataAction = Url.Action("GetData"),
+        fieldTree = Model.title,
+        headerPartialPage = "_PartialTableRow.cshtml",
+        headerPartialPageModel = Model,
+        tableHeight = ViewBag.ViewHeight
+    })
 
 @section scripts{
     <script type="text/javascript">
+
+        var xtg = function () { return $("#x-tabletree"); };
+
+        function onSave(e, id) {
+            $.messager.confirm('保存数据：', '是否保存 ?', function (r) {
+                if (!!r) {
+                    xtg().treegrid('endEdit', id);
+                }
+            });
+        }
+
+        function onCancel(e, id) {
+            xtg().treegrid('cancelEdit', id);
+        }
+
+        function onAddTop() {
+            var pid = $('#x-parentId');
+            $('#x-parentId').hide();
+            $('#parentId').combotreegrid('setValue', '');
+            opendlg();
+        }
+
+        function onAddSub(e, id) {
+            $('#x-parentId').show();
+            var pid = $('#parentId');
+            pid.combobox("disable");
+            pid.combotreegrid('setValue', id);
+            opendlg();
+        }
+
+        function onEdit(e, id) {
+            xtg().treegrid('beginEdit', id);
+            var row = $(e).closest('tr.datagrid-row');
+            var container = row.children().last().children().first();
+
+            var html = '<a href="javascript:void(0)" style="color:red;" onclick="onSave(this, \'' + id + '\');return false;" class="easyui-linkbutton" data-options="plain:true">保存</a>\
+                        <a href="javascript:void(0)" style="color:red;" onclick="onCancel(this, \'' + id + '\');return false;" class="easyui-linkbutton" data-options="plain:true">取消</a>';
+            container.html(html);
+        }
+
+        function onDel(e, id, title) {
+            $.messager.confirm('删除：', '是否删除菜单: '+title+' ?', function (r) {
+                if (!!r) {
+                    
+                }
+            });
+        }
+
+        function onEditAfter(row, changes) {
+            
+        }
+
         function fmtOper(val, row) {
+            var html = "";
+            if (!row._parentId) {
+                html += '<a href="javascript:void(0)" style="color:red;margin-right:5px;" onclick="onAddSub(this, \'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">添加</a>';
+            }
+            html += '<a href="javascript:void(0)" style="color:red;" onclick="onEdit(this, \'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">编辑</a>\
+                     <a href="javascript:void(0)" style="color:red;" onclick="onDel(this, \'' + val + '\', \''+row.title+'\');return false;" class="easyui-linkbutton" data-options="plain:true">删除</a>';
+            return html;
+        }        
+
+        function aa() {
 
         }
     </script>
+}
+
+@section form{
+<div id="x-parentId" class="x-form-row">
+    <input id="parentId" name="parentId" style="width:100%;height:26px" class="easyui-combotreegrid"
+           data-options="
+               rownumbers:true,
+               fitColumns:true,
+               collapsible:true,
+               lines:true,
+               url:'@Url.Action("GetData")',
+               method:'get' ,
+               idField:'@Model.id.field',
+               treeField:'@Model.title.field',
+               prompt:'上一级菜单 ...',
+               columns:[[
+                    {field:'@Model.title.field',title:'@Model.title.title', width:1}
+               ]]" />
+</div>
+<div class="x-form-row" style="padding:3px;">
+    <input id="title" name="title" class="easyui-textbox" 
+           data-options="prompt:'菜单名称 ...',required:true" 
+           style="width:100%;height:26px" />
+</div>
+<div class="x-form-row" style="padding:3px;">
+    <input id="src" name="src" class="easyui-textbox" value="/" 
+           data-options="prompt:'跳转地址 ...',required:true" 
+           style="width:100%;height:26px" />
+</div>
+<div class="x-form-row" style="padding:3px;">
+    <input id="order" name="order" value="0" class="easyui-numberbox" 
+           data-options="prompt:'菜单序列。范围：0-65535 越大越靠前 ...',required:true" 
+           style="width:50%;height:26px" />
+</div>
+<div class="x-form-row" style="padding:3px;">
+    <input id="remark" name="remark" class="easyui-textbox" value="" 
+           data-options="multiline:true,prompt:'备注 ...'" 
+           style="width:100%;height:80px">
+</div>
 }

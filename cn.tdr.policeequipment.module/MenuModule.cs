@@ -66,7 +66,7 @@
                0 < Handler.RemoveAny(t => arr.Any(x => t.Id == x), true).Count();
         }
 
-        public IEnumerable<Menu> Query(Expression<Func<Menu, bool>> predicate)
+        public IEnumerable<Menu> Query(Expression<Func<Menu, bool>> predicate = null)
         {
             var noDel = (short)DeleteStatus.No;
             return Handler.All(predicate).Where(t => t.IsDel == noDel);

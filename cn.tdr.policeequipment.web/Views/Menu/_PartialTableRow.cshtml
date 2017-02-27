@@ -1,0 +1,11 @@
+﻿@model cn.tdr.policeequipment.web.Models.TableMenuHeaderModel
+
+<thead>
+    <tr>
+        <th data-options="field:'@Model.title.field',align:'left',width:3,editor:'text'">@Model.title.title</th>
+        <th data-options="field:'@Model.src.field',align:'left',width:3,editor:'text'">@Model.src.title</th>
+        <th data-options="field:'@Model.order.field',align:'left',width:1,editor:'numberbox'">@Model.order.title</th>
+        <th data-options="field:'@Model.remmark.field',align:'left',width:5">@Model.remmark.title</th>
+        <th data-options="field:'@Model.id.field',formatter:fmtOper"></th>
+    </tr>
+</thead>

@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link type="text/css" href="@Url.Content("~/Scripts/easyui/themes/bootstrap/easyui.css")" rel="stylesheet" />
+    <link type="text/css" href="@Url.Content("~/Scripts/easyui/themes/icon.css")" rel="stylesheet" />
+        @RenderSection("styles", required: false)
+</head>
+<body class="easyui-layout">
+    @RenderBody()
+    <script type="text/javascript" src="@Url.Content("~/Scripts/easyui/jquery.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/easyui/jquery.easyui.min.js")"></script>
+    <script type="text/javascript">
+
+        function formsubmit(onSubmiting) {
+            onSubmiting();
+        }
+
+        function opendlg() {
+            $('#x-dlg-editor').dialog('open');
+        }
+
+        function closedlg() {
+            $('#x-dlg-editor').dialog('close');
+        }
+    </script>
+    @RenderSection("scripts", required: false)
+
+    <div id="x-dlg-editor" class="easyui-dialog" 
+         style="width:50%; min-width:200px; max-height:400px; padding:10px 30px;"
+         data-options="modal:true,closed:true" buttons="#dlg-buttons">
+        <form id="x-form" method="post" action="@ViewBag.FormAction">
+            @RenderSection("form", required: false)
+        </form>
+    </div>
+    <div id="dlg-buttons">
+        <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-ok" onclick="formsubmit(@ViewBag.OnSubmiting); return false;">提&nbsp;交</a>
+        <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-cancel" onclick="closedlg(); return false;">取&nbsp;消</a>
+    </div>
+</body>
+</html>
