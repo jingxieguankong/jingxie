@@ -9,16 +9,20 @@ function rectangleSelector(opts) {
     };
     $.extend(defaults, opts)
 
-    // 此处获取选择区间各节点信息
-    var data = {
-        x1: 0,
-        y1: 0,
-        x2: 0,
-        y2: 0
-    }; // 后台业务处理参数，矩形对角线的两个顶点坐标
-    if (defaults.callback instanceof Function) {
-        defaults.callback(data);
-    }
+    //开启地图绘制矩形模式
+    pgisMap.DrawRect(function (points) {
+        var pointsArry = points.split(',');
+        var data = {
+            x1: pointsArry[0],
+            y1: pointsArry[1],
+            x2: pointsArry[2],
+            y2: pointsArry[3]
+        }; // 后台业务处理参数，矩形对角线的两个顶点坐标
+        if (defaults.callback instanceof Function) {
+            defaults.callback(data);
+            pgisMap.myEzMap.changeDragMode("");
+        }
+    });
 }
 
 // 圆形区间选择器
@@ -82,9 +86,19 @@ function location(opts) {
         x: 0, // 节点 x 坐标
         y: 0, // 节点 y 坐标
         html: '', // HTML 标记内容，
+        isCenter: false,//是否移动到当前位置
         callback: function () { } // 处理完成回调函数
     };
     $.extend(defaults, opts);
+    var vPoint = new Point(opts.x, opts.y);
+    var marker = new Marker(vPoint, pgisMap.MarkerIcon.BaseStation);
+    marker.addListener("click", function () {
+        marker.openInfoWindowHtml(opts.html);
+    });
+    pgisMap.AddMarker(marker, false);
+}
 
-    // 此处业务处理
+//移动到指定位置
+function move(opts) {
+
 }
