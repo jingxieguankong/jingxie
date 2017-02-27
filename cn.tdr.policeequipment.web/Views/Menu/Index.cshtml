@@ -1,0 +1,43 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var tabHeight = ViewBag.ViewHeight - 10 - 23 - 10;
+}
+
+<div data-options="region:'center'" style="padding:10px;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" style="text-align:center;height:23px;line-height:23px; width:45px;" >新增</a>
+    <div style="margin-top:10px;">
+        <table id="" class="easyui-treegrid" title="" style="height:@tabHeight px; min-height:150px;"
+               data-options="
+                   url:'@Url.Action("GetData")' ,
+                   method:'get' ,
+                   rownumbers:true,
+                   pagination:true,
+                   pageSize:20,
+                   pageList:[20,50],
+                   fitColumns:true,
+                   showFooter:true,
+                   collapsible:true,
+                   animate:true,
+                   idField:'id' ,
+                   treeField:'title'
+               ">
+            <thead>
+                <tr>
+                    <th data-options="field:'title',width:1">标题</th>
+                    <th data-options="field:'src',width:2">跳转地址</th>
+                    <th data-options="field:'remark',width:4">备注</th>
+                    <th data-options="field:'id',width:1,formatter:fmtOper"></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        function fmtOper(val, row) {
+
+        }
+    </script>
+}

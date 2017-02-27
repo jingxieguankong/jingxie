@@ -1,6 +1,5 @@
 ﻿@model System.Collections.Generic.IEnumerable<cn.tdr.policeequipment.web.Models.MenuItemModel>
 @{
-    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 <div data-options="region:'west',collapsed:false" class="easyui-layout" style="width:220px">
@@ -59,21 +58,27 @@
         var onExit = function () {
             $.messager.confirm('安全退出：', '是否安全退出系统平台 ?', function (r) {
                 if (r) {
-                    $.messager.alert('提示', '安全退出平台 !');
+                    top.location.href = '@Url.Action("signout", "admin")';
                 }
             });
             return false;
         };
 
         var onMenuItemClick = function (title, src) {
+            var barwidth = 0;
+            var bottomMargin = 5;
             var tbs = $("#x-main-center");
+            var firstp = tbs.tabs("getTab", 0);
+            var width = firstp.width() - barwidth;
+            var height = firstp.height() - bottomMargin;
+
             var f = tbs.tabs("exists", title);
             if (!f) {
                 tbs.tabs("add", {
                     title: title,
                     selected: true,
                     closable: true,
-                    content: '<iframe src="' + src + '" style="overflow-x:hidden; width:100%; height:100%;" class="x-clear-border" scrolling="auto"></iframe>'
+                    content: '<iframe src="' + src + '?h='+height+'&w='+width+'" frameBorder="0" style="overflow-x:hidden; width:' + (width) + 'px; height:' + (height) + 'px;" class="x-clear-border" scrolling="auto"></iframe>'
                 });
             }
             else {
