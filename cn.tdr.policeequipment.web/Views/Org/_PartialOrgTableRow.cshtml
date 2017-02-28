@@ -1,0 +1,11 @@
+﻿
+@using cn.tdr.policeequipment.web.Models
+@model GridRowModel<TableTreeHeaderModel>
+@{
+    var header = Model.headerModel as TableOrgHeaderModel;
+}
+<tr>
+    <th data-options="field:'@header.name.field',align:'left',width:1">@header.name.title</th>
+    <th data-options="field:'@header.code.field',align:'left',width:1">@header.code.title</th>
+    <th data-options="field:'@header.id.field',formatter:@Model.actionFormart"></th>
+</tr>

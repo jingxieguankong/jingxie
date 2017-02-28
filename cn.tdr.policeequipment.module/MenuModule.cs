@@ -43,7 +43,7 @@
                             f => f.MenuId,
                             (m, f) => m);
                     }
-                    menus = query.ToArray();
+                    menus = query.OrderByDescending(t => t.Order).ToArray();
                 }
             }
             return menus.Distinct();
@@ -56,7 +56,20 @@
 
         public bool Modify(Menu menu)
         {
-            return null != Handler.Modify(menu, true);
+            var count = Handler.ModifyAny(
+                    m =>
+                    {
+                        m.Order = menu.Order;
+                        m.Pid = menu.Pid;
+                        m.Remarks = menu.Remarks;
+                        m.Src = menu.Src;
+                        m.Title = menu.Title;
+                        m.Id = menu.Id;
+                        m.IsDel = menu.IsDel;
+                        return m;
+                    },
+                    m => m.Id == menu.Id, true).Count();
+            return 0 < count;
         }
 
         public bool Remove(params string[] idArray)

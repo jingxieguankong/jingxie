@@ -1,25 +1,88 @@
-﻿@model cn.tdr.policeequipment.web.Models.TreeGridPageModel
+﻿@using cn.tdr.policeequipment.web.Models
+@model TreeGridPageModel<TableTreeHeaderModel>
 @{ 
     var tableHeight = Model.tableHeight - 10 - 23 - 10 - 10;
 }
-
 <div data-options="region:'center'" style="padding:10px;">
-    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="return false;"
-       style="text-align:center;height:23px;line-height:23px; width:45px;">新增</a>
+    @if (Model.isAddTop)
+    {
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="@Model.topAddAction;return false;"
+           style="text-align:center;height:23px;line-height:23px; width:45px;">新增</a>
+    }
     <div style="margin-top:10px;">
-        <table id="x-tabletree" class="easyui-treegrid" height="@tableHeight"
+        <table id="@Model.gridId" class="easyui-treegrid" height="@tableHeight"
                style="min-height:150px;"
                data-options="
                    url:'@Model.dataAction',
                    method:'get',
-                   rownumbers:true,
-                   fitColumns:true,
-                   collapsible:true,
+                   rownumbers: true,
+                   showFooter: true,
+                   fitColumns: true,
+                   collapsible: false,
                    animate:true,
                    idField:'@Model.fieldId.field' ,
                    treeField:'@Model.fieldTree.field'
                ">
-            @Html.Partial(Model.headerPartialPage, Model.headerPartialPageModel)
+            <thead>
+           @Html.Partial(Model.headerPartialPage, new GridRowModel<TableTreeHeaderModel>
+           {
+               actionFormart = Model.headerPartialPageModel.actionFormart ?? "optFmt",
+               headerModel = Model.headerPartialPageModel.headerModel
+           })
+            </thead>            
         </table>
     </div>
 </div>
+
+@Html.Partial("_PartialForm", new GridEditFormModel
+{
+    cancelAction = Model.formModel.cancelAction ?? "xdlg.close()",
+    submitAction = Model.formModel.submitAction ?? "formSubmit()",
+    formId = Model.formModel.formId,
+    formAction = Model.formModel.formAction,
+    formPartialPage = Model.formModel.formPartialPage,
+    formModel = Model.formModel.formModel ?? Model.headerPartialPageModel
+})
+
+<script type="text/javascript">
+
+    var xdlg = (function (id) {
+        return {
+            open: function () { $(id).dialog('open'); },
+            close: function () { $(id).dialog('close'); }
+        };
+    })("#@Model.formModel.dlgId");
+
+    function grid() {
+        return $("#@Model.gridId");
+    }
+
+    function form() {
+        return $("#@Model.formModel.formId")
+    }
+
+    // form submit action
+    function formSubmit() {
+        form().form('submit',{
+            success:function(data){
+                xdlg.close();
+                var defaults = {code:0, msg:null, data:false};
+                var data = eval('(' + data + ')');
+                $.extend(defaults, data);
+                if (defaults.code == 0 && !!defaults.data) {
+                    grid().treegrid('reload');
+                }
+
+                if (!!defaults.code) {
+                    $.messager.alert('提示',defaults.msg+'\n代码：'+defaults.code);
+                }
+            }
+        });
+    }
+    
+
+    function optFmt(v, row) {
+        return v;
+    }
+
+</script>

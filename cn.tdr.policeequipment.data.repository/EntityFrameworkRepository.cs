@@ -51,7 +51,7 @@
             }
 
             return
-                query.Select(t => this.Update<TEntity>(reValue(t), set)).ToArray();
+                query.ToArray().Select(t => this.Update<TEntity>(reValue(t), set)).ToArray();
         }
 
         IEnumerable<TEntity> IRepository.Delete<TEntity>(Expression<Func<TEntity, bool>> predicate)

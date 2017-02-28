@@ -1,0 +1,15 @@
+﻿@using cn.tdr.policeequipment.web.Models
+@model GridEditFormModel
+
+<div id="@Model.dlgId" class="easyui-dialog" title="@Model.formTitle"
+     style="width:50%; min-width:200px; max-height:400px; padding:10px 30px;"
+     data-options="modal:true,closed:true" buttons="#dlg-buttons">
+    <form id="@Model.formId" method="post" action="@Model.formAction">
+        <input type="hidden" id="id" name="id" value="" />
+        @Html.Partial(Model.formPartialPage, Model.formModel)
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-ok" onclick="@Model.submitAction; return false;">提&nbsp;交</a>
+    <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-cancel" onclick="@Model.cancelAction; return false;">取&nbsp;消</a>
+</div>

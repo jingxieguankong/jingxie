@@ -1003,16 +1003,19 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\OrgController.cs" />
     <Compile Include="Controllers\SigninController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DispatchModels.cs" />
     <Compile Include="Models\MenuModels.cs" />
+    <Compile Include="Models\TableOrgModels.cs" />
     <Compile Include="Models\Pointer.cs" />
     <Compile Include="Models\TableModels.cs" />
     <Compile Include="Models\TableMenuModels.cs" />
-    <Compile Include="Models\TreeGridModels.cs" />
+    <Compile Include="Models\GridModels.cs" />
+    <Compile Include="Models\TreeModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1056,7 +1059,12 @@
     <Content Include="Views\Menu\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutEditable.cshtml" />
     <Content Include="Views\Shared\_PartialTreeGrid.cshtml" />
-    <Content Include="Views\Menu\_PartialTableRow.cshtml" />
+    <Content Include="Views\Menu\_PartialMenuTableRow.cshtml" />
+    <Content Include="Views\Menu\_PartialMenuForm.cshtml" />
+    <Content Include="Views\Shared\_PartialForm.cshtml" />
+    <Content Include="Views\Org\_PartialOrgTableRow.cshtml" />
+    <Content Include="Views\Org\_PartialOrgForm.cshtml" />
+    <Content Include="Views\Org\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

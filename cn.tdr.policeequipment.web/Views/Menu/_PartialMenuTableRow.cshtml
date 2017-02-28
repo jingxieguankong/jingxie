@@ -1,0 +1,12 @@
+﻿@using cn.tdr.policeequipment.web.Models
+@model GridRowModel<TableTreeHeaderModel>
+@{ 
+    var header = Model.headerModel as TableMenuHeaderModel;
+}
+<tr>
+    <th data-options="field:'@header.title.field',align:'left',width:3">@header.title.title</th>
+    <th data-options="field:'@header.src.field',align:'left',width:3">@header.src.title</th>
+    <th data-options="field:'@header.order.field',align:'left',width:1">@header.order.title</th>
+    <th data-options="field:'@header.remmark.field',align:'left',width:5">@header.remmark.title</th>
+    <th data-options="field:'@header.id.field',formatter:@Model.actionFormart"></th>
+</tr>

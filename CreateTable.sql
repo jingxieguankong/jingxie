@@ -1,4 +1,5 @@
-﻿drop table "tb_AllopatryEquipmentPosition" cascade constraints;
+﻿
+drop table "tb_AllopatryEquipmentPosition" cascade constraints;
 
 drop table "tb_Cabinet" cascade constraints;
 
@@ -165,7 +166,7 @@ create table "tb_EqtCategory"
    "Id"                 varchar(32)          not null,
    "Name"               varchar(128)         not null,
    "Code"               varchar(32)          not null,
-   "Pid"                varchar(32)          default '0' not null,
+   "Pid"                varchar(32),
    "Layer"              number(4,0)          not null,
    "IsDel"              number(4,0)          not null,
    "HitCount"           number(4,0)          not null,
@@ -456,7 +457,7 @@ create table "tb_Organization"
    "Id"                 varchar(32)          not null,
    "Name"               varchar(128)         not null,
    "Code"               varchar(128)         not null,
-   "Pid"                varchar(32)          default '0' not null,
+   "Pid"                varchar(32),
    "Layer"              number(4,0)          not null,
    "IsDel"              number(4,0)          not null,
    constraint PK_TB_ORGANIZATION primary key ("Id")
@@ -803,7 +804,7 @@ create table "tb_sys_Menu"
    "Src"                varchar(512),
    "Remarks"            varchar(1024),
    "IsDel"              number(4,0)          not null,
-   "Pid"                varchar(32)          default '0' not null,
+   "Pid"                varchar(32),
    constraint PK_TB_SYS_MENU primary key ("Id")
 );
 
@@ -873,13 +874,13 @@ create table "tb_sys_User"
 (
    "Id"                 varchar(32)          not null,
    "IsDel"              number(4,0)          not null,
-   "OrgId"              varchar(32)          not null,
+   "OrgId"              varchar(32)          ,
    "Account"            varchar(32)          not null,
    "Passwd"             varchar(128)         not null,
    "Status"             number(4,0)          not null,
    "SigninStatus"       number(4,0)          not null,
    "SignupDate"         number(18,0)         not null,
-   "RoleId"             varchar(32)          not null,
+   "RoleId"             varchar(32)          ,
    "Category"           number(4,0)          not null,
    constraint PK_TB_SYS_USER primary key ("Id")
 );

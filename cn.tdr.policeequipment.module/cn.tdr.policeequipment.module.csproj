@@ -51,6 +51,7 @@
     <Compile Include="models\UserInfo.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="MyModule.cs" />
+    <Compile Include="OrgModule.cs" />
     <Compile Include="PasswdModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

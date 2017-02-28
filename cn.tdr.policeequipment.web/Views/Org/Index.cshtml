@@ -1,5 +1,5 @@
 ﻿@using cn.tdr.policeequipment.web.Models
-@model TableMenuHeaderModel
+@model TableOrgHeaderModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -8,42 +8,39 @@
     new TreeGridPageModel<TableTreeHeaderModel>
     {
         dataAction = Url.Action("GetData"),
-        fieldTree = Model.title,
-        headerPartialPage = "_PartialMenuTableRow",
-        isAddTop=true,
-        topAddAction = "onAdd()",
-        tableHeight = ViewBag.ViewHeight,
-        headerPartialPageModel = new GridRowModel<TableTreeHeaderModel>
-        {
-            headerModel = Model,
-            actionFormart = "fmtOper"
-        },
+        fieldTree = Model.name,
         formModel = new GridEditFormModel
         {
-            formPartialPage = "_PartialMenuForm",
+            formPartialPage = "_PartialOrgForm",
             formAction = Url.Action("FormSubmit"),
             formModel = Model
-        }
+        },
+        headerPartialPage = "_PartialOrgTableRow",
+        headerPartialPageModel = new GridRowModel<TableTreeHeaderModel>
+        {
+            actionFormart = "fmtOper",
+            headerModel = Model
+        },
+        isAddTop = true,
+        tableHeight = ViewBag.ViewHeight,
+        topAddAction = "onAdd()"
     })
 
 @section scripts{
     <script type="text/javascript">
 
-        function formDefaultData(opts) {
+        function formDefaultData(data) {
             var defaults = {
                 id: null,
-                title: null,
-                src: '/',
-                order: 0,
-                remark: null,
+                name: null,
+                code: null,
                 parentId: null
             };
-            $.extend(defaults, opts);
+            $.extend(defaults, data);
             return defaults;
         }
 
         function showFormDlg(data) {
-            //$('#parentId').combobox("disable");
             if (!!data) {
                 form().form('load', data);
                 xdlg.open();
@@ -58,11 +55,20 @@
             showFormDlg(data);
         }
 
-        function onAddSub(e, id) {
-            onAdd(id);
+        function onDel(e, id, name) {
+            $.messager.confirm('删除：', '是否删除菜单: ' + name + ' ?', function (r) {
+                if (!!r) {
+                    $.post('@Url.Action("Remove")', { id: id }, function (data) {
+                        if (!data.code && data.code == 0) {
+                            grid().treegrid('reload');
+                        }
+                    });
+                }
+            });
         }
 
-        function getFormData(id, row) {
+        function getFormData(id, row)
+        {
             var data = null;
             if (id == row.id) {
                 row.parentId = row._parentId;
@@ -98,28 +104,16 @@
             showFormDlg(formData);
         }
 
-        function onDel(e, id, title) {
-
-            $.messager.confirm('删除：', '是否删除菜单: ' + title + ' ?', function (r) {
-                if (!!r) {
-                    $.post('@Url.Action("Remove")', { id: id }, function (data) {
-                        if (!data.code && data.code == 0) {
-                            grid().treegrid('reload');
-                        }
-                    });
-                }
-            });
+        function onAddSub(e, id) {
+            onAdd(id);
         }
 
-        function fmtOper(val, row) {
-            var html = "";
-            html += '<a href="javascript:void(0)" style="color:red;" onclick="onDel(this, \'' + val + '\', \'' + row.title + '\');return false;" class="easyui-linkbutton" data-options="plain:true">删除</a>\
-                     <a href="javascript:void(0)" style="color:red;" onclick="onEdit(this, \'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">编辑</a>';
-            if (!row._parentId) {
-                html += '<a href="javascript:void(0)" style="color:red;margin-left:5px;" onclick="onAddSub(this, \'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">添加</a>';
-            }
+        function fmtOper(v, row) {
+            var html = '<a href="javascript:void(0)" style="color:red;" onclick="onDel(this, \'' + val + '\', \'' + row.name + '\');return false;" class="easyui-linkbutton" data-options="plain:true">删除</a>\
+                     <a href="javascript:void(0)" style="color:red;" onclick="onEdit(this, \'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">编辑</a>\
+                     <a href="javascript:void(0)" style="color:red;" onclick="onAddSub(this, \'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">添加</a>';
+
             return html;
         }
-
     </script>
 }

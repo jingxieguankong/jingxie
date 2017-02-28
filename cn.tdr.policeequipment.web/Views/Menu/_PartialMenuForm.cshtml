@@ -1,0 +1,30 @@
+﻿@using cn.tdr.policeequipment.web.Models
+@model object
+@{ 
+    var header = Model as TableMenuHeaderModel;
+}
+
+<div id="x-parentId" class="x-form-row">
+    <input id="parentId" name="parentId" style="width:100%;height:26px" class="easyui-combotree"
+           data-options="url:'@Url.Action("MenuTree")',method:'get',prompt:'上一级菜单 ...'" />
+</div>
+<div class="x-form-row" style="padding:3px;">
+    <input id="title" name="title" class="easyui-textbox"
+           data-options="prompt:'菜单名称 ...',required:true"
+           style="width:100%;height:26px" />
+</div>
+<div class="x-form-row" style="padding:3px;">
+    <input id="src" name="src" class="easyui-textbox" value="/"
+           data-options="prompt:'跳转地址 ...'"
+           style="width:100%;height:26px" />
+</div>
+<div class="x-form-row" style="padding:3px;">
+    <input id="order" name="order" value="0" class="easyui-numberbox"
+           data-options="prompt:'菜单序列。范围：0-65535 越大越靠前 ...',required:true"
+           style="width:50%;height:26px" />
+</div>
+<div class="x-form-row" style="padding:3px;">
+    <input id="remark" name="remark" class="easyui-textbox" value=""
+           data-options="multiline:true,prompt:'备注 ...'"
+           style="width:100%;height:80px">
+</div>
