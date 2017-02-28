@@ -56,7 +56,7 @@
         }
 
         function onDel(e, id, name) {
-            $.messager.confirm('删除：', '是否删除菜单: ' + name + ' ?', function (r) {
+            $.messager.confirm('删除：', '是否删除组织机构: ' + name + ' ?', function (r) {
                 if (!!r) {
                     $.post('@Url.Action("Remove")', { id: id }, function (data) {
                         if (!data.code && data.code == 0) {
@@ -108,7 +108,7 @@
             onAdd(id);
         }
 
-        function fmtOper(v, row) {
+        function fmtOper(val, row) {
             var html = '<a href="javascript:void(0)" style="color:red;" onclick="onDel(this, \'' + val + '\', \'' + row.name + '\');return false;" class="easyui-linkbutton" data-options="plain:true">删除</a>\
                      <a href="javascript:void(0)" style="color:red;" onclick="onEdit(this, \'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">编辑</a>\
                      <a href="javascript:void(0)" style="color:red;" onclick="onAddSub(this, \'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">添加</a>';

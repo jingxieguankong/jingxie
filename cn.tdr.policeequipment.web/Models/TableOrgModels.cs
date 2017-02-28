@@ -21,6 +21,15 @@
 
     public class TableOrgDataModel : ConvertJson<Organization, TableOrgHeaderModel>
     {
+        private static TableOrgDataModel _m;
+
+        public static TableOrgDataModel Model
+        {
+            get { return _m = _m ?? new TableOrgDataModel(); }
+        }
+
+        private TableOrgDataModel() { }
+
         public override JObject GetJson(Organization data, TableOrgHeaderModel header)
         {
             var json = new JObject();

@@ -1,7 +1,9 @@
 ﻿namespace cn.tdr.policeequipment.module
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using data.entity;
     using enumerates;
     using handle;
@@ -15,6 +17,32 @@
         }
 
         public OrganizationHandle Handler { get; private set; }
+
+        public bool Add(Organization org)
+        {
+            return null != Handler.Add(org, true);
+        }
+
+        public bool Modify(Organization org, Expression<Func<Organization, bool>> predicate)
+        {
+            var count = Handler.ModifyAny(
+                m =>
+                {
+                    m.Code = org.Code;
+                    m.Name = org.Name;
+                    m.Pid = org.Pid;
+                    m.Id = org.Id;
+                    m.IsDel = org.IsDel;
+                    m.Layer = org.Layer;
+                    return m;
+                }, predicate, true).Count();
+            return 0 < count;
+        }
+
+        public bool Remove(Expression<Func<Organization, bool>> predicate)
+        {
+            return 0 < Handler.RemoveAny(predicate).Count();
+        }
 
         public IEnumerable<Organization> FetchAll()
         {
