@@ -22,7 +22,7 @@ function rectangleSelector(opts) {
             defaults.callback(data);
             pgisMap.myEzMap.changeDragMode("");
         }
-    });
+    }, true);
 }
 
 // 圆形区间选择器
@@ -30,17 +30,21 @@ function circleSelector(opts) {
     var defaults = {
         callback: function (d) { } // 获取到各区间节点之后的回调函数
     };
-    $.extend(defaults, opts)
+    $.extend(defaults, opts);
 
-    // 此处获取选择区间各节点信息
-    var data = {
-        x: 0, // 原点 x 坐标
-        y: 0, // 原点 y 坐标
-        r: 100 // 半径
-    }; // 后台业务处理参数
-    if (defaults.callback instanceof Function) {
-        defaults.callback(data);
-    }
+    //开启地图绘制圆模式
+    pgisMap.DrawCircle(function (points) {
+        var pointsArry = points.split(',');
+        var data = {
+            x: pointsArry[0],
+            y: pointsArry[1],
+            r: pointsArry[2]
+        }; // 后台业务处理参数，矩形对角线的两个顶点坐标
+        if (defaults.callback instanceof Function) {
+            defaults.callback(data);
+            pgisMap.myEzMap.changeDragMode("");
+        }
+    });
 }
 
 // 不规则区间选择器
@@ -48,22 +52,27 @@ function irregularSelector(opts) {
     var defaults = {
         callback: function (d) { } // 获取到各区间节点之后的回调函数
     };
-    $.extend(defaults, opts)
+    $.extend(defaults, opts);
 
-    // 此处获取选择区间各节点信息
-    var data = [{
-        x: 0, // 节点 x 坐标 
-        y: 0 // 节点 y 坐标
-    }, {
-        x: 1, // 节点 x 坐标 
-        y: 1 // 节点 y 坐标
-    }, {
-        x: 2, // 节点 x 坐标 
-        y: 2 // 节点 y 坐标
-    }]; // 后台业务处理参数
-    if (defaults.callback instanceof Function) {
-        defaults.callback(data);
-    }
+    //开启地图绘制多边形模式
+    pgisMap.DrawPolygon(function (points) {
+        var pointsArry = points.split(',');
+        //获取多边形的点位
+        var data = [];
+        for (var i = 0; i < pointsArry.length; i++) {
+            if (i % 2 != 0) {
+                continue;
+            }
+            data.push({
+                x: pointsArry[i],
+                y: pointsArry[i + 1]
+            });
+        }
+        if (defaults.callback instanceof Function) {
+            defaults.callback(data);
+            pgisMap.myEzMap.changeDragMode("");
+        }
+    });
 }
 
 // 轨迹移动
@@ -90,15 +99,24 @@ function location(opts) {
         callback: function () { } // 处理完成回调函数
     };
     $.extend(defaults, opts);
-    var vPoint = new Point(opts.x, opts.y);
+    var vPoint = new Point(defaults.x, defaults.y);
     var marker = new Marker(vPoint, pgisMap.MarkerIcon.BaseStation);
     marker.addListener("click", function () {
-        marker.openInfoWindowHtml(opts.html);
+        marker.openInfoWindowHtml(defaults.html);
     });
-    pgisMap.AddMarker(marker, false);
+    pgisMap.AddMarker(marker, defaults.isCenter);
 }
 
 //移动到指定位置
 function move(opts) {
-
+    var defaults = {
+        x: 0, // 节点 x 坐标
+        y: 0, // 节点 y 坐标
+        html: '', // HTML 标记内容，
+        isCenter: false,//是否移动到当前位置
+        callback: function () { } // 处理完成回调函数
+    };
+    $.extend(defaults, opts);
+    var vPoint = new Point(defaults.x, defaults.y);
+    pgisMap.myEzMap.centerAtLatLng(vPoint);
 }

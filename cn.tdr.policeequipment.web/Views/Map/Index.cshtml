@@ -117,11 +117,11 @@
 
         // 警力分布结果 click 事件回调函数
         function resultItemClick(x, y) {
-            //location({
-            //    x: x,
-            //    y: y,
-            //    html: '<div style="height:23px;line-height:23px; width:30px;">target</div>'
-            //});
+            move({
+                x: x,
+                y: y,
+                html: '<div style="height:23px;line-height:23px;">target</div>'
+            });
         }
 
         function addMarker(item) {
