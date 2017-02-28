@@ -90,6 +90,19 @@ PGisMap.prototype.DrawCircle = function (callback, isRemoveDrawGeometry) {
     });
 }
 
+//绘制多边形
+PGisMap.prototype.DrawPolygon = function (callback, isRemoveDrawGeometry) {
+    if (typeof callback != "function") {
+        throw EzErrorFactory.createError("DrawRect方法中参数类型必须为function");
+    }
+    this.myEzMap.changeDragMode('drawPolygon', null, null, function () {
+        callback(arguments[0]);
+        if (isRemoveDrawGeometry && isRemoveDrawGeometry == true) {
+            this.myEzMap.removeDrawGeometry()
+        }
+    });
+}
+
 //绘制轨迹线路
 PGisMap.prototype.AddTrack = function () {
     var thas = this;
