@@ -1,5 +1,6 @@
 ﻿namespace cn.tdr.policeequipment.web.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
     using Newtonsoft.Json.Linq;
@@ -25,12 +26,28 @@
             return json;
         }
 
+        [HttpGet]
         public JsonResult Tree()
         {
             var m = new OrgModule(CurrentUser);
             var items = m.FetchAll().ToArray();
-            //var data = 
-            return Json(new { });
+            var data = 
+                items
+                .Where(t => string.IsNullOrWhiteSpace(t.Pid) || t.Pid == "0")
+                .Select(t => GetTree(t, items))
+                .ToArray();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        private ComboTreeModel GetTree(data.entity.Organization parent, IEnumerable<data.entity.Organization> orgs)
+        {
+            var tree = new ComboTreeModel
+            {
+                id = parent.Id,
+                text = parent.Name,
+                children = orgs.Where(t => t.Pid == parent.Id).Select(t => GetTree(t, orgs)).ToArray()
+            };
+            return tree;
         }
 
         public JsonResult FormSubmit(string id, string name, string code, string parentId)

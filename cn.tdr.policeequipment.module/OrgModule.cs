@@ -41,7 +41,7 @@
 
         public bool Remove(Expression<Func<Organization, bool>> predicate)
         {
-            return 0 < Handler.RemoveAny(predicate).Count();
+            return 0 < Handler.RemoveAny(predicate, true).Count();
         }
 
         public IEnumerable<Organization> FetchAll()

@@ -77,30 +77,31 @@
             return data;
         }
 
-        function onEdit(e, id) {
-            var formData = undefined;
-            var data = grid().treegrid('getData');
-            for (var i = 0; i < data.length; i++) {
-                var row = data[i];
-                formData = getFormData(id, row);
-                if (!!formData) {
-                    break;
-                }
+        function getEditData(id, items)
+        {
+            if (!items || !items.length) {
+                return null;
+            }
 
-                if (!!row.children) {
-                    for (var j = 0; j < row.children.length; j++) {
-                        var item = row.children[j];
-                        formData = getFormData(id, item);
-                        if (!!formData) {
-                            break;
-                        }
-                    }
+            var data = null;
+            for (var i = 0; i < items.length; i++) {
+                var row = items[i];
+                var data = getFormData(id, row);
+                if (!data) {
+                    data = getEditData(id, row.children);
                 }
-
-                if (!!formData) {
+                
+                if (!!data) {
                     break;
                 }
             }
+            return data;
+        }
+
+        function onEdit(e, id) {
+            var data = grid().treegrid('getData');
+            var formData = getEditData(id, data);
+            
             showFormDlg(formData);
         }
 
