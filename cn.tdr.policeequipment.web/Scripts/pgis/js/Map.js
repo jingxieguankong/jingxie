@@ -5,14 +5,14 @@
     this.myEzMap = new EzMap(vContainer);
 
     //添加 ArcGis Online 图层
-    var arcgisolineUrl = "http://www.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer";
-    var arcgisGroupLayer = new EzServerClient.GroupLayer("ArcGis Online", [new EzServerClient.Layer.ArcGISTileLayer("arcgisLayer", arcgisolineUrl)]);
-    this.myEzMap.addGroupLayer(arcgisGroupLayer);
+    //var arcgisolineUrl = "http://www.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer";
+    //var arcgisGroupLayer = new EzServerClient.GroupLayer("ArcGis Online", [new EzServerClient.Layer.ArcGISTileLayer("arcgisLayer", arcgisolineUrl)]);
+    //this.myEzMap.addGroupLayer(arcgisGroupLayer);
 
     //添加百度地图图层
     //var baiduUrl = "http://online1.map.bdimg.com/onlinelabel";
     //var baiduGroupLayer = new EzServerClient.GroupLayer("百度地图", [new EzServerClient.Layer.BaiduTileLayer("baiduLayer", arcgisolineUrl)]);
-    //this.myEzMap.addGroupLayer(arcgisGroupLayer);
+    //this.myEzMap.addGroupLayer(baiduGroupLayer);
 
     this.MarkerIcon = (function () {
         var icons = {};
@@ -69,10 +69,11 @@ PGisMap.prototype.DrawRect = function (callback, isRemoveDrawGeometry) {
     if (typeof callback != "function") {
         throw EzErrorFactory.createError("DrawRect方法中参数类型必须为function");
     }
+    var thas = this;
     this.myEzMap.changeDragMode('drawRect', null, null, function () {
         callback(arguments[0]);
         if (isRemoveDrawGeometry && isRemoveDrawGeometry == true) {
-            this.myEzMap.removeDrawGeometry()
+            thas.myEzMap.removeDrawGeometry()
         }
     });
 }
@@ -82,10 +83,11 @@ PGisMap.prototype.DrawCircle = function (callback, isRemoveDrawGeometry) {
     if (typeof callback != "function") {
         throw EzErrorFactory.createError("DrawRect方法中参数类型必须为function");
     }
+    var thas = this;
     this.myEzMap.changeDragMode('drawCircle', null, null, function () {
         callback(arguments[0]);
         if (isRemoveDrawGeometry && isRemoveDrawGeometry == true) {
-            this.myEzMap.removeDrawGeometry()
+            thas.myEzMap.removeDrawGeometry()
         }
     });
 }
@@ -95,28 +97,34 @@ PGisMap.prototype.DrawPolygon = function (callback, isRemoveDrawGeometry) {
     if (typeof callback != "function") {
         throw EzErrorFactory.createError("DrawRect方法中参数类型必须为function");
     }
+    var thas = this;
     this.myEzMap.changeDragMode('drawPolygon', null, null, function () {
         callback(arguments[0]);
         if (isRemoveDrawGeometry && isRemoveDrawGeometry == true) {
-            this.myEzMap.removeDrawGeometry()
+            thas.myEzMap.removeDrawGeometry()
         }
     });
 }
 
-//绘制轨迹线路
-PGisMap.prototype.AddTrack = function () {
-    var thas = this;
-    var strPoints = "120.67668, 27.8501, 120.67674, 27.84941, 120.67683, 27.84875, 120.6743, 27.84847, 120.67408, 27.84909, 120.67211, 27.84888, 120.67193, 27.84959, 120.6694, 27.84922, 120.6693, 27.85032, 120.66728, 27.84971, 120.66736, 27.85012, 120.66932, 27.8507, 120.66906, 27.8521, 120.66878, 27.85351, 120.67127, 27.85418, 120.67148, 27.85278, 120.67382, 27.85326, 120.67359, 27.85467, 120.67582, 27.85506, 120.67646, 27.85227, 120.67861, 27.85278, 120.67968, 27.85306";
-    var a = strPoints.split(',');
-    for (var i = 0; i < a.length; i++) {
-        if (i < 2 || i % 2 != 0) {
-            continue;
-        }
-        (function () {
-            var pLine = new Polyline(a[i - 2] + "," + a[i - 1] + "," + a[i] + "," + a[i + 1], "#ff0000", 3, 0.8, 1);
-            thas.myEzMap.addOverlay(pLine);
-        })();
+//测距
+PGisMap.prototype.Measure = function (callback, isRemoveDrawGeometry) {
+    if (typeof callback != "function") {
+        throw EzErrorFactory.createError("DrawRect方法中参数类型必须为function");
     }
+    var thas = this;
+    this.myEzMap.changeDragMode('measure', null, null, function (mapLength) {
+        callback(arguments[0]);
+        if (isRemoveDrawGeometry && isRemoveDrawGeometry == true) {
+            thas.myEzMap.removeDrawGeometry()
+        }
+    });
+}
+
+
+//添加线段
+PGisMap.prototype.AddLine = function (x1, y1, x2, y2) {
+    var pLine = new Polyline(x1 + "," + y1 + "," + x2 + "," + y2, "#ff0000", 3, 0.8, 1);
+    this.myEzMap.addOverlay(pLine);
 }
 
 //清除地图上的绘制和加入的对象

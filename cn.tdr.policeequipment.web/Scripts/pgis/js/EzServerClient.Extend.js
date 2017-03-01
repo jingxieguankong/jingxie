@@ -1,6 +1,144 @@
 ﻿//此脚本用于重写覆盖 EzServerClient.gzjs 中的部分方法,解决 EzMap 浏览器兼容性等问题
 
 /**
+*重写地图地图初始化方法,使地图底图支持 ArcGis rest 服务
+**/
+MapsApp.prototype.initializeCompat = function (bIsInitialize) {
+    if (bIsInitialize) {
+        for (var i = 0; i < EzServerClient.GlobeParams.MapSrcURL.length; i++) {
+            var len = EzServerClient.GlobeParams.MapSrcURL[i].length;
+            var uGroupName = EzServerClient.GlobeParams.MapSrcURL[i][0];
+            var uGroupLyr = null;
+            var uLyrs = [];
+            var tileLyr = null;
+            if (typeof (EzServerClient.GlobeParams.MapSrcURL[i][len - 1]) == "string") {
+                var layerUrl = EzServerClient.GlobeParams.MapSrcURL[i];
+                var layerType = EzServerClient.GlobeParams.MapSrcURL[i][len - 1];
+                var posi = layerType.indexOf("_");
+                var type = null;
+                var cofParma = null;
+                var layerParmar = null;
+                if (posi != -1) {
+                    cofParma = layerType.substr(posi + 1);
+                    layerParmars = eval("(" + cofParma + ")");
+                    type = layerType.substr(0, posi)
+                } else {
+                    layerParmars = {};
+                    type = layerType
+                }
+                for (var j = 1; j < layerUrl.length - 1; j++) {
+                    var options = null;
+                    var url = layerUrl[j].toString();
+                    var name = i + 1;
+                    if (layerParmars instanceof Array) {
+                        options = layerParmars[j - 1]
+                    } else {
+                        options = layerParmars
+                    }
+                    switch (type) {
+                        case "2005":
+                            tileLyr = new EzServerClient.Layer.EzMapTileLayer2005(name, url, {
+                                tileWidth: EzServerClient.GlobeParams.MapUnitPixels,
+                                tileHeight: EzServerClient.GlobeParams.MapUnitPixels,
+                                originAnchor: EzServerClient.GlobeParams.TileAnchorPoint,
+                                zoomLevelSequence: EzServerClient.GlobeParams.ZoomLevelSequence,
+                                mapCoordinateType: EzServerClient.GlobeParams.MapCoordinateType,
+                                mapConvertScale: EzServerClient.GlobeParams.MapConvertScale
+                            });
+                            break;
+                        case "2010":
+                            tileLyr = new EzServerClient.Layer.EzMapTileLayer2010(name, url, {
+                                tileWidth: EzServerClient.GlobeParams.MapUnitPixels,
+                                tileHeight: EzServerClient.GlobeParams.MapUnitPixels,
+                                originAnchor: EzServerClient.GlobeParams.TileAnchorPoint,
+                                zoomLevelSequence: EzServerClient.GlobeParams.ZoomLevelSequence,
+                                mapCoordinateType: EzServerClient.GlobeParams.MapCoordinateType,
+                                mapConvertScale: EzServerClient.GlobeParams.MapConvertScale
+                            });
+                            break;
+                        case "JiAo":
+                            tileLyr = new EzServerClient.Layer.JiAoTileLayer(name, url, options);
+                            break;
+                        case "TDT":
+                            tileLyr = new EzServerClient.Layer.TianDiTuTileLayer(name, url, options);
+                            break;
+                        case "WMTS":
+                            tileLyr = new EzServerClient.Layer.WMTSTileLayer(name, url, options);
+                            break;
+                        case "EzMapTDT":
+                            tileLyr = new EzServerClient.Layer.EzMapTDTTileLayer(name, url, options);
+                            break;
+                        case "Google":
+                            tileLyr = new EzServerClient.Layer.GoogleTileLayer(name, url, options);
+                            break;
+                        case "ArcGis":
+                            tileLyr = new EzServerClient.Layer.ArcGISTileLayer(name, url, options);
+                            break;
+                        case "Amap":
+                            tileLyr = new EzServerClient.Layer.AmapTileLayer(name, url, options);
+                            break;
+                        default:
+                            tileLyr = new EzServerClient.Layer.EzMapTileLayer2010(name, url, {
+                                tileWidth: EzServerClient.GlobeParams.MapUnitPixels,
+                                tileHeight: EzServerClient.GlobeParams.MapUnitPixels,
+                                originAnchor: EzServerClient.GlobeParams.TileAnchorPoint,
+                                zoomLevelSequence: EzServerClient.GlobeParams.ZoomLevelSequence,
+                                mapCoordinateType: EzServerClient.GlobeParams.MapCoordinateType,
+                                mapConvertScale: EzServerClient.GlobeParams.MapConvertScale
+                            });
+                            break
+                    }
+                    uLyrs.push(tileLyr)
+                }
+            } else {
+                for (var j = 1; j < EzServerClient.GlobeParams.MapSrcURL[i].length; j++) {
+                    var tileLyr = null;
+                    var name = i + j;
+                    var url = EzServerClient.GlobeParams.MapSrcURL[i][j].join(",");
+                    switch (EzServerClient.GlobeParams.ZoomLevelSequence) {
+                        case 0:
+                        case 1:
+                            tileLyr = new EzServerClient.Layer.EzMapTileLayer2005(name, url, {
+                                tileWidth: EzServerClient.GlobeParams.MapUnitPixels,
+                                tileHeight: EzServerClient.GlobeParams.MapUnitPixels,
+                                originAnchor: EzServerClient.GlobeParams.TileAnchorPoint,
+                                zoomLevelSequence: EzServerClient.GlobeParams.ZoomLevelSequence,
+                                mapCoordinateType: EzServerClient.GlobeParams.MapCoordinateType,
+                                mapConvertScale: EzServerClient.GlobeParams.MapConvertScale
+                            });
+                            break;
+                        case 2:
+                        case 3:
+                            tileLyr = new EzServerClient.Layer.EzMapTileLayer2010(name, url, {
+                                tileWidth: EzServerClient.GlobeParams.MapUnitPixels,
+                                tileHeight: EzServerClient.GlobeParams.MapUnitPixels,
+                                originAnchor: EzServerClient.GlobeParams.TileAnchorPoint,
+                                zoomLevelSequence: EzServerClient.GlobeParams.ZoomLevelSequence,
+                                mapCoordinateType: EzServerClient.GlobeParams.MapCoordinateType,
+                                mapConvertScale: EzServerClient.GlobeParams.MapConvertScale
+                            });
+                            break;
+                        default:
+                            tileLyr = new EzServerClient.Layer.EzMapTileLayer2010(name, url, {
+                                tileWidth: EzServerClient.GlobeParams.MapUnitPixels,
+                                tileHeight: EzServerClient.GlobeParams.MapUnitPixels,
+                                originAnchor: EzServerClient.GlobeParams.TileAnchorPoint,
+                                zoomLevelSequence: EzServerClient.GlobeParams.ZoomLevelSequence,
+                                mapCoordinateType: EzServerClient.GlobeParams.MapCoordinateType,
+                                mapConvertScale: EzServerClient.GlobeParams.MapConvertScale
+                            });
+                            break
+                    }
+                    uLyrs.push(tileLyr)
+                }
+            }
+            uGroupLyr = new EzServerClient.GroupLayer(uGroupName, uLyrs);
+            this.addGroupLayer(uGroupLyr)
+        }
+    }
+};
+
+/**
 *解决地图右上角图层名称DIV高度显示的问题
 *在 h.style.cssText 里面添加样式  “HEIGHT: 16px; LINE-HEIGHT: 16px;”
 **/

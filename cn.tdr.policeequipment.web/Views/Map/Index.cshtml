@@ -38,6 +38,17 @@
                     <i>不规则选择器</i>
                     <b class="x-b-h"></b>
                 </li>
+                <li class="x-ul-clear-style x-menu-tls-item" onclick="toolTraceMoveClick()">
+                    <span class="x-menu-icon-bg x-menu-icon-blank"></span>
+                    <b class="x-b-v"></b>
+                    <i>轨迹回放</i>
+                    <b class="x-b-h"></b>
+                </li>
+                <li class="x-ul-clear-style x-menu-tls-item" onclick="toolMeasureClick()">
+                    <span class="x-menu-icon-bg x-menu-icon-blank"></span>
+                    <b class="x-b-v"></b>
+                    <i>测量距离</i>
+                </li>
                 <li class="x-ul-clear-style x-menu-tls-item" onclick="toolClearMapClick()">
                     <span class="x-menu-icon-bg x-menu-icon-blank"></span>
                     <b class="x-b-v"></b>
@@ -125,7 +136,7 @@
         }
 
         function addMarker(item) {
-            location({
+            locationMarker({
                 x: item.site.x,
                 y: item.site.y,
                 html: '<div style="height:23px;line-height:23px;">target ' + item.site.x + '</div>'
@@ -218,7 +229,68 @@
             });
         }
 
-        //清空地图工能 click 事件回调函数
+        //轨迹回放功能 click 事件回调函数
+        function toolTraceMoveClick() {
+            //...
+            //模拟数据
+            var data = [
+                     { x: 120.67668, y: 27.8501, html: "<div style='width:400px;background-color:red;'>sdfsadf</div>" },
+                     { x: 120.67674, y: 27.84941, html: "" },
+                     { x: 120.67683, y: 27.84875, html: "" },
+                     { x: 120.6743, y: 27.84847, html: "" },
+                     { x: 120.67408, y: 27.84909, html: "" },
+                     { x: 120.67211, y: 27.84888, html: "" },
+                     { x: 120.67193, y: 27.84959, html: "" },
+                     { x: 120.6694, y: 27.84922, html: "" },
+                     { x: 120.6693, y: 27.85032, html: "" },
+                     { x: 120.66728, y: 27.84971, html: "" },
+                     { x: 120.66736, y: 27.85012, html: "" },
+                     { x: 120.66932, y: 27.8507, html: "" },
+                     { x: 120.66906, y: 27.8521, html: "" },
+                     { x: 120.66878, y: 27.85351, html: "" },
+                     { x: 120.67127, y: 27.85418, html: "" },
+                     { x: 120.67148, y: 27.85278, html: "" },
+                     { x: 120.67382, y: 27.85326, html: "" },
+                     { x: 120.67359, y: 27.85467, html: "" },
+                     { x: 120.67582, y: 27.85506, html: "" },
+                     { x: 120.67646, y: 27.85227, html: "" },
+                     { x: 120.67861, y: 27.85278, html: "" },
+                     { x: 120.67968, y: 27.85306, html: "" }
+            ];
+
+            //一次性绘制完轨迹线段
+            traceLine({
+                items: data // 移动轨迹个节点位置
+            });
+
+            //动态绘制轨迹线段
+            //traceMove({
+            //    items: data // 移动轨迹个节点位置
+            //});
+
+            //添加基站标注
+            var markers = [];
+            for (var i = 0; i < data.length; i++) {
+                (function (j) {
+                    var vPoint = new Point(data[j].x, data[j].y);
+                    var marker = new Marker(vPoint, pgisMap.MarkerIcon.BaseStation);
+                    marker.addListener("click", function () {
+                        marker.openInfoWindowHtml(data[j].html);
+                    });
+                    markers.push(marker);
+                })(i);
+            }
+            pgisMap.AddMarkers(markers);
+        }
+
+        //测量距离 click 事件回调函数
+        function toolMeasureClick() {
+            pgisMap.Measure(function (mapLength) {
+                alert(mapLength);
+            });
+        }
+
+        //清空地图 click 事件回调函数
         function toolClearMapClick() {
             pgisMap.myEzMap.clear();
         }

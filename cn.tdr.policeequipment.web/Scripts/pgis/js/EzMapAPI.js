@@ -27,7 +27,8 @@
                                     "http://t6.tianditu.com/cva_c/wmts",
                                     "http://t7.tianditu.com/cva_c/wmts"],
                                     "WMTS_[{layer:'vec',style:'default',tileMatrixSet:'c',originAnchor:[-180,90],initResolution:1.40625,format:'tiles',tileMatrix:'%d',source:'wmts'},{layer:'cva',style:'default',tileMatrixSet:'c',originAnchor:[-180,90],initResolution:1.40625,format:'tiles',tileMatrix:'%d',source:'wmts'}]"],
-                                    ["Google地图", ["http://mt0.google.cn/vt/lyrs=m@158000000&hl=zh-CN&gl=cn", "http://mt1.google.cn/vt/lyrs=m@158000000&hl=zh-CN&gl=cn", "http://mt2.google.cn/vt/lyrs=m@158000000&hl=zh-CN&gl=cn", "http://mt3.google.cn/vt/lyrs=m@158000000&hl=zh-CN&gl=cn"], "Google"]
+                                    ["Google地图", ["http://mt0.google.cn/vt/lyrs=m@158000000&hl=zh-CN&gl=cn", "http://mt1.google.cn/vt/lyrs=m@158000000&hl=zh-CN&gl=cn", "http://mt2.google.cn/vt/lyrs=m@158000000&hl=zh-CN&gl=cn", "http://mt3.google.cn/vt/lyrs=m@158000000&hl=zh-CN&gl=cn"], "Google"],
+                                    ["ArcGis Online", ["http://www.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer"], "ArcGis"]
                    //["矢量地图", ["http://localhost:7625/PGIS_S_TileMapServer/Maps/PGISSL"], "2010"],
 	               //["影像地图", ["http://localhost:7625/PGIS_S_TileMapServer/Maps/PGISSL"], "2010"],
 	               //["矢影地图", ["http://localhost:7625/PGIS_S_TileMapServer/Maps/PGISSL"], "2010"],
