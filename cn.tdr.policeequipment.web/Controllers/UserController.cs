@@ -7,6 +7,8 @@
         // GET: User
         public ActionResult Index(int w, int h)
         {
+            ViewBag.ViewWidth = w;
+            ViewBag.ViewHeight = h;
             return View();
         }
     }
