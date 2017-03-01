@@ -1,6 +1,8 @@
 ﻿namespace cn.tdr.policeequipment.module
 {
+    using System.Collections.Generic;
     using System.Linq;
+    using data.entity;
     using enumerates;
     using handle;
     using models;
@@ -86,6 +88,36 @@
             var isTrue =
                 0 <= Handler.RemoveAny(t => t.ActId == actId && t.MenuId == menuId && t.RoleId == roleId).Count();
             return isTrue;
+        }
+
+        /// <summary>
+        /// 获取当前用户角色所属组织机构的功能
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Feature> MyOrgFeatures()
+        {
+            if (string.IsNullOrWhiteSpace(User.Organization?.Pid))
+            {
+                return FeatureTypeHelper.Items.Where(t => t.FeatureType != FeatureType.None).Select(t => new Feature
+                {
+                    ActId = t.Name,
+                    ActRemark = t.Summary
+                }).ToArray();
+            }
+
+            var noDel = (short)DeleteStatus.No;
+            var orgId = User.Organization?.Pid;
+            using (var roleHandler = new RoleHandle(Repository))
+            using (var featureHandler = new FeatureHandle(Repository))
+            {
+                var query =
+                    from role in roleHandler.All(t => t.IsDel == noDel && t.OrgId == orgId)
+                    join featureitem in featureHandler.All(t => t.IsDel == noDel) on role.Id equals featureitem.RoleId into features
+                    from feature in features.DefaultIfEmpty(new Feature { })
+                    select feature;
+
+                return query.ToArray();
+            }
         }
         
         public FeatureHandle Handler { get; private set; }

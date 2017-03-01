@@ -48,12 +48,14 @@
     <Compile Include="FeatureModule.cs" />
     <Compile Include="MenuModule.cs" />
     <Compile Include="MessageModule.cs" />
+    <Compile Include="models\RoleModels.cs" />
     <Compile Include="models\UserInfo.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="MyModule.cs" />
     <Compile Include="OrgModule.cs" />
     <Compile Include="PasswdModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoleModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cn.tdr.common\cn.tdr.common.csproj">

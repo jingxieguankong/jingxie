@@ -1,0 +1,16 @@
+﻿
+@using cn.tdr.policeequipment.web.Models
+@model GridRowModel<TableTreeHeaderModel>
+@{ 
+    var header = Model.headerModel as TableRoleHeaderModel;
+}
+<tr>
+    <th data-options="field:'@header.roleName.field',align:'left',width:4">@header.roleName.title</th>
+    <th data-options="field:'@header.menuName.field',align:'left',width:5">@header.menuName.title</th>
+    @*<th data-options="field:'@header.status.field',formatter:fmtStatus">@header.status.title</th>*@
+    @foreach (var item in header.features)
+    {
+        <th data-options="field:'@item.field',formatter:fmtFeature,align:'center',width:1">@item.title</th>
+    }
+    <th data-options="field:'@header.id.field',formatter:@Model.actionFormart"></th>
+</tr>

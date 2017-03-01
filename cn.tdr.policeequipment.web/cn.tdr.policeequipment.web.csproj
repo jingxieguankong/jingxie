@@ -1004,7 +1004,9 @@
     <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\OrgController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SigninController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1015,6 +1017,7 @@
     <Compile Include="Models\TableModels.cs" />
     <Compile Include="Models\TableMenuModels.cs" />
     <Compile Include="Models\GridModels.cs" />
+    <Compile Include="Models\TableRoleModels.cs" />
     <Compile Include="Models\TreeModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1065,6 +1068,11 @@
     <Content Include="Views\Org\_PartialOrgTableRow.cshtml" />
     <Content Include="Views\Org\_PartialOrgForm.cshtml" />
     <Content Include="Views\Org\Index.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Role\_PartialRoleRow.cshtml" />
+    <Content Include="Views\Role\_PartialRoleForm.cshtml" />
+    <Content Include="Views\Role\_PartialRoleFeatureForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

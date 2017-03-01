@@ -1,0 +1,199 @@
+﻿@using cn.tdr.policeequipment.web.Models
+@model TableRoleHeaderModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.FeatureFormDlgId = "x-dlg-form-feature";
+    ViewBag.FeatureFormId = "x-dlg-form-feature-form";
+}
+
+@Html.Partial("_PartialTreeGrid",
+    new TreeGridPageModel<TableTreeHeaderModel>
+    {
+        dataAction = Url.Action("GetData"),
+        fieldTree = Model.roleName,
+        formModel = new GridEditFormModel
+        {
+            formPartialPage = "_PartialRoleForm",
+            formAction = Url.Action("RoleFormSubmit"),
+            formModel = Model
+        },
+        headerPartialPage = "_PartialRoleRow",
+        headerPartialPageModel = new GridRowModel<TableTreeHeaderModel>
+        {
+            actionFormart = "fmtOpter",
+            headerModel = Model
+        },
+        isAddTop = true,
+        tableHeight = ViewBag.ViewHeight,
+        topAddAction = "onAdd()"
+    })
+
+@Html.Partial("_PartialForm",
+    new GridEditFormModel
+    {
+        cancelAction = "xfdlg.close()",
+        submitAction = "featureFormSubmit()",
+        formId = ViewBag.FeatureFormId,
+        formAction = Url.Action("AddFeatureItem"),
+        formPartialPage = "_PartialRoleFeatureForm",
+        dlgId = ViewBag.FeatureFormDlgId,
+        formTitle = "添加功能",
+        formModel = null
+    })
+
+
+@section scripts{
+<script type="text/javascript">
+
+    var xfdlg = (function (id) {
+        return {
+            open: function () { $(id).dialog('open'); },
+            close: function () { $(id).dialog('close'); }
+        };
+    })("#@ViewBag.FeatureFormDlgId");
+
+    function featureForm() {
+        return $("#@ViewBag.FeatureFormId");
+    }
+
+    function featureFormSubmit() {
+        featureForm().form('submit', {
+            success: function (data) {
+                xfdlg.close();
+                var defaults = { code: 0, msg: null, data: false };
+                var data = eval('(' + data + ')');
+                $.extend(defaults, data);
+                if (defaults.code == 0 && !!defaults.data) {
+                    grid().treegrid('reload');
+                }
+
+                if (!!defaults.code) {
+                    $.messager.alert('提示', defaults.msg + '\n代码：' + defaults.code);
+                }
+            }
+        });
+    }
+
+    function onAdd() {
+        var defaults = {
+            orgId: null, name: null, remark: null
+        };
+        form().form('load', defaults);
+        xdlg.open();
+    }
+
+    function addAuth(e, roleId) {
+        var defaults = {
+            roleId: roleId, menuId: null, featureId: null
+        };
+        featureForm().form('load', defaults);
+        xfdlg.open();
+    }
+
+    // 移除角色
+    function removeRole(e, roleId, name) {
+        $.messager.confirm('删除：', '是否删除角色: ' + name + ' ?', function (r) {
+            if (!!r) {
+                $.post('@Url.Action("RemoveRole")', { id: roleId }, function (data) {
+                    if (!data.code && data.code == 0) {
+                        grid().treegrid('reload');
+                    }
+                });
+            }
+        });
+    }
+
+    // 移除功能
+    function removeFeature(e, roleId, menuId) {
+        $.messager.confirm('删除：', '是否删除当前功能 ?', function (r) {
+            if (!!r) {
+                $.post('@Url.Action("RemoveFeature")', { roleId: roleId, menuId: menuId }, function (data) {
+                    if (!data.code && data.code == 0) {
+                        grid().treegrid('reload');
+                    }
+                });
+            }
+        });
+    }
+
+    // 添加功能项
+    function addFeatureItem(e, roleId, menuId, featureId) {
+        $.messager.confirm('删除：', '是否允许当前功能项 ?', function (r) {
+            if (!!r) {
+                $.post('@Url.Action("AddFeatureItem")', {
+                    roleId: roleId,
+                    menuId: menuId,
+                    featureId: featureId
+                }, function (data) {
+                    if (!data.code && data.code == 0) {
+                        grid().treegrid('reload');
+                    }
+                });
+            }
+        });
+    }
+
+    // 移除功能项
+    function removeFeatureItem(e, featureId) {
+        $.messager.confirm('删除：', '是否禁用当前功能项 ?', function (r) {
+            if (!!r) {
+                $.post('@Url.Action("RemoveFeatureItem")', {
+                    id: featureId
+                }, function (data) {
+                    if (!data.code && data.code == 0) {
+                        grid().treegrid('reload');
+                    }
+                });
+            }
+        });
+    }
+
+    function fmtFeature(val, row) {
+        debugger;
+        if (!row.menuId) {
+            return '';
+        }
+
+        var html = '';
+        if (!!val.flag) {
+            html = '<a href="javascript:void(0)" style="color:darkgreen;" onclick="removeFeatureItem(this, \'' + val.id + '\');return false;" class="easyui-linkbutton" data-options="plain:true">允许</a>';
+        }
+        else {
+            html = '<a href="javascript:void(0)" style="color:red;" onclick="addFeatureItem(this, \'' + row.roleId + '\', \'' + row.menuId + '\', \'' + val.code + '\');return false;" class="easyui-linkbutton" data-options="plain:true">禁止</a>';
+        }
+        return html;
+    }
+
+    function fmtOpter(val, row) {
+        if (!!row.menuId) {
+            return '<a href="javascript:void(0)" style="color:red;" onclick="removeFeature(this, \'' + row.roleId + '\', \'' + row.menuId + '\');return false;" class="easyui-linkbutton" data-options="plain:true">删除功能</a>';
+        }
+
+        return '<a href="javascript:void(0)" style="color:red;" onclick="addAuth(this, \'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">添加功能</a>\
+                <a href="javascript:void(0)" style="color:red;" onclick="removeRole(this, \'' + val + '\', \'' + row.roleName + '\');return false;" class="easyui-linkbutton" data-options="plain:true">删除角色</a>';
+    }
+
+    function fmtStatus(val, row) {
+        return "status";
+        //if (!row.menuId) {
+        //    return "";
+        //}
+
+        //var text = "正常";
+        //if (!!row.status) {
+
+        //}
+
+        //var html = '<a href="javascript:void(0)" class="easyui-menubutton" data-options="menu:\'#' + row.id + '\'">' + text + '</a>\
+        //        <div id="'+row.id+'" style="width:100px;">\
+        //            <div data-options="iconCls:\'icon-more\'" onclick="">详细信息</div>\
+        //            <div data-options="iconCls:\'icon-edit\'" onclick="">修改密码</div>\
+        //            <div data-options="iconCls:\'icon-back\'" onclick="">安全退出</div>\
+        //        </div>';
+
+        //return html;
+    }
+
+
+</script>
+}

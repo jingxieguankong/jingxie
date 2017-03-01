@@ -28,7 +28,7 @@
 
     public static class FeatureTypeHelper
     {
-        private static readonly List<FeatureTypeModel> Items = new List<FeatureTypeModel>();
+        public static readonly List<FeatureTypeModel> Items = new List<FeatureTypeModel>();
 
         static FeatureTypeHelper()
         {
