@@ -20,9 +20,9 @@ function rectangleSelector(opts) {
         }; // 后台业务处理参数，矩形对角线的两个顶点坐标
         if (defaults.callback instanceof Function) {
             defaults.callback(data);
-            pgisMap.myEzMap.changeDragMode("");
+            pgisMap.myEzMap.changeDragMode("pan");
         }
-    }, true);
+    });
 }
 
 // 圆形区间选择器
@@ -42,7 +42,7 @@ function circleSelector(opts) {
         }; // 后台业务处理参数，矩形对角线的两个顶点坐标
         if (defaults.callback instanceof Function) {
             defaults.callback(data);
-            pgisMap.myEzMap.changeDragMode("");
+            pgisMap.myEzMap.changeDragMode("pan");
         }
     });
 }
@@ -70,9 +70,23 @@ function irregularSelector(opts) {
         }
         if (defaults.callback instanceof Function) {
             defaults.callback(data);
-            pgisMap.myEzMap.changeDragMode("");
+            pgisMap.myEzMap.changeDragMode("pan");
         }
     });
+}
+
+//轨迹线路
+function traceLine(opts) {
+    var defaults = {
+        items: [{ x: 0, y: 0 }] // 移动轨迹个节点位置
+    };
+    $.extend(defaults, opts);
+    for (var i = 0; i < defaults.items.length; i++) {
+        if (i >= defaults.items.length-1) {
+            break;
+        }
+        pgisMap.AddLine(defaults.items[i].x, defaults.items[i].y, defaults.items[i + 1].x, defaults.items[i + 1].y);
+    }
 }
 
 // 轨迹移动
@@ -85,12 +99,20 @@ function traceMove(opts) {
         onOutputPoint: function (x, y) { } // 离开节点回调函数
     };
     $.extend(defaults, opts);
-
-    // 此处业务处理
+    var points = defaults.items;
+    var flag = 0;
+    var timer = setInterval(function () {
+        if (flag >= points.length - 1) {
+            clearInterval(timer);
+            return;
+        }
+        pgisMap.AddLine(points[flag].x, points[flag].y, points[flag + 1].x, points[flag + 1].y);
+        flag++;
+    }, 500);
 }
 
 // 定位
-function location(opts) {
+function locationMarker(opts) {
     var defaults = {
         x: 0, // 节点 x 坐标
         y: 0, // 节点 y 坐标
