@@ -4,7 +4,9 @@
     using System.Web.Mvc;
     using Newtonsoft.Json.Linq;
     using Models;
+    using data.entity;
     using enumerates;
+    using module;
     using module.models;
 
     public class UserController : AuthController
@@ -20,8 +22,10 @@
         // Get: /User/GetData?{orgId=&roleId=&page=1&rows=20}
         public JObject GetData(string queryOrgId, string queryRoleId, int page, int rows)
         {
-            var items = new AccountModel[0];
-            var json = TableUserDataModel.Model.GetJson(items, 0, TableUserHeaderModel.Header);
+            var module = new UserModule(CurrentUser);
+            var count = 0;
+            var items = module.Page(queryOrgId, queryRoleId, page, rows, out count);
+            var json = TableUserDataModel.Model.GetJson(items, count, TableUserHeaderModel.Header);
             return json;
         }
 
@@ -39,9 +43,35 @@
         }
 
         [HttpPost]
-        public JsonResult FormSubmit()
+        public JsonResult FormSubmit(string id, string roleId, string name, short category)
         {
-            return Json(new { code = 0, msg = "Ok", data = false });
+            var data = false;
+            var module = new UserModule(CurrentUser);
+            var user = new User
+            {
+                Account = name,
+                Category = category,
+                RoleId = roleId
+            };
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                data = module.Add(user);
+            }
+            else
+            {
+                user.Id = id;
+                data = module.Modify(user, t => t.Id == id);
+            }
+
+            return Json(new { code = 0, msg = "Ok", data = data });
+        }
+
+        [HttpPost]
+        public JsonResult Remove(string id)
+        {
+            var module = new UserModule(CurrentUser);
+            var data = module.Remove(id);
+            return Json(new { code = 0, msg = "Ok", data = data });
         }
     }
 }

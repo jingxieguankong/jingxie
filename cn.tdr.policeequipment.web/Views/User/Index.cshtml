@@ -28,38 +28,128 @@
 @section scripts{
 <script type="text/javascript" src="@Url.Content("~/Scripts/easyui/datagrid-scrollview.js")"></script>
 <script type="text/javascript">
+
     function fmtStatus(val, row) {
-        return val;
+        if (val == 0) {
+            return "正常 ";
+        }
+
+        if (val == -1) {
+            return "异常";
+        }
+
+        if (val == -2) {
+            return "锁定";
+        }
+
+        return "未知";
+    }
+
+    function fmtCategoru(val, row)
+    {
+        if (val == 1) {
+            return "超级管理员";
+        }
+
+        if (val == 2) {
+            return "分支管理员";
+        }
+
+        if (val == 3) {
+            return "普通用户";
+        }
+
+        return "未知";
+    }
+
+    function fmtDate(val, row) {
+        var date = new Date(val/10000);
+        return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+    }
+
+    function onDel(e, id, name) {
+        $.messager.confirm('删除：', '是否删除账户: ' + name + ' ?', function (r) {
+                if (!!r) {
+                    $.post('@Url.Action("Remove")', { id: id }, function (data) {
+                        if (!data.code && data.code == 0) {
+                            gridReload();
+                        }
+                    });
+                }
+            });
+    }
+
+    function onEdit(e, val) {
+        debugger;
+        var data = grid().datagrid('getData');
+        for (var i = 0; i < data.rows.length; i++) {
+            var row = data.rows[i];
+            if (!!row.id && row.id == val) {
+                showFormDlg(row);
+                break;
+            }
+        }
     }
 
     function fmtOper(val, row) {
-        return val;
+        var html = '<a href="javascript:void(0)" style="color:red;" onclick="onDel(this, \'' + val + '\', \'' + row.account + '\');return false;" class="easyui-linkbutton" data-options="plain:true">删除用户</a>\
+                    <a href="javascript:void(0)" style="color:red;" onclick="onEdit(this, \'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">编辑用户</a>';
+        return html;
     }
 
     function queryClick() {
         grid().datagrid('load');
     }
 
-    function addClick() {
-        var defaults = {
+    function toggleOrgAndRole(isShow) {
+        var orgPanel = $("#x-orgId-panel");
+        var rlePanel = $("#x-roleId-panel");
+        if (!!isShow) {
+            orgPanel.show();
+            rlePanel.show();
+        } else {
+            orgPanel.hide();
+            rlePanel.hide();
+        }
+    }
 
+    function showFormDlg(data) {
+        var defaults = {
+            orgId: null, roleId: null, category: 3, name: null, id: null
         };
+        $.extend(defaults, data);
+        defaults.name = defaults.account;
+        if (defaults.category == 1) {
+            defaults.orgId = null;
+            defaults.roleId = null;
+            toggleOrgAndRole(false);
+        }
         form().form('load', defaults);
         xdlg.open();
     }
 
+    function addClick() {
+        showFormDlg();
+    }
+
+    function comboCateChanged(newVal, oldVal) {
+        toggleOrgAndRole(newVal != 1);
+    }
+
     function comboOrgChanged(id) {
+
         function cb(newVal, oldVal) {
             $.get('@Url.Action("Tree", "Role")', { orgId: newVal }, function (data) {
                 $(id).combotree('loadData', data);
+                $(id).combotree('setValue', '');
             });
         }
         return cb;
     }
 
     setQueryParams({
-        orgId: function () { return $('#queryOrgId').val(); },
-        roleId: function () { return $('#queryRoleId').val(); }
+        queryOrgId: function () { return $('#queryOrgId').val(); },
+        queryRoleId: function () { return $('#queryRoleId').val(); }
     });
 </script>
 }

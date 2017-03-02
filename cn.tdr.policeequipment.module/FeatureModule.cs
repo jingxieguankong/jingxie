@@ -106,7 +106,7 @@
             }
 
             var noDel = (short)DeleteStatus.No;
-            var orgId = User.Organization?.Pid;
+            var orgId = User.Organization.Id;
             using (var roleHandler = new RoleHandle(Repository))
             using (var featureHandler = new FeatureHandle(Repository))
             {

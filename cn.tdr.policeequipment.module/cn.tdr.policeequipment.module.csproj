@@ -57,6 +57,7 @@
     <Compile Include="PasswdModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleModule.cs" />
+    <Compile Include="UserModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cn.tdr.common\cn.tdr.common.csproj">

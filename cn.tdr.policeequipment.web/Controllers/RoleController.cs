@@ -25,7 +25,8 @@
         {
             var module = new RoleModule(CurrentUser);
             var list = new List<RoleMenuFeatureModel>();
-            module.FeatchAll().ToList().ForEach(
+            var items = module.FeatchAll().ToList();
+            items.ForEach(
                 t =>
                 {
                     list.Add(new RoleMenuFeatureModel
@@ -119,7 +120,7 @@
         }
 
         [HttpGet]
-        public JsonResult FeatureTree()
+        public JsonResult FeatureTree(string menuId)
         {
             var module = new FeatureModule(CurrentUser);
             var items = module.MyOrgFeatures().ToArray();

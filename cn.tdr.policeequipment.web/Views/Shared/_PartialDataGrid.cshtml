@@ -44,6 +44,10 @@
         return $("#@Model.formModel.formId")
     }
 
+    function gridReload() {
+        grid().datagrid('reload');
+    }
+
     // form submit action
     function formSubmit() {
         form().form('submit',{
@@ -53,7 +57,7 @@
                 var data = eval('(' + data + ')');
                 $.extend(defaults, data);
                 if (defaults.code == 0 && !!defaults.data) {
-                    grid().datagrid('reload');
+                    gridReload();
                 }
 
                 if (!!defaults.code) {

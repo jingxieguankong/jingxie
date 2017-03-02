@@ -18,7 +18,11 @@
 
         public TableCellModel role => new TableCellModel { field="role", title="角色" };
 
+        public TableCellModel roleId => new TableCellModel { field="roleId", title="roleId" };
+
         public TableCellModel org => new TableCellModel { field = "org", title = "组织机构" };
+
+        public TableCellModel orgId => new TableCellModel { field="orgId", title="orgId" };
 
         public TableCellModel status => new TableCellModel { field = "status", title = "状态" };
 
@@ -48,6 +52,8 @@
             json[header.category.field] = data.user.Category;
             json[header.signup.field] = data.user.SignupDate;
             json[header.status.field] = data.user.Status;
+            json[header.orgId.field] = data.org.Id;
+            json[header.roleId.field] = data.role.Id;
             return json;
         }
     }

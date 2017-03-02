@@ -20,11 +20,21 @@
 
         public bool Add(Organization org)
         {
+            if (string.IsNullOrWhiteSpace(org.Pid) && !User.IsSupperAdministrator)
+            {
+                org.Pid = User.Organization.Id;
+            }
+
             return null != Handler.Add(org, true);
         }
 
         public bool Modify(Organization org, Expression<Func<Organization, bool>> predicate)
         {
+            if (string.IsNullOrWhiteSpace(org.Pid) && !User.IsSupperAdministrator)
+            {
+                org.Pid = User.Organization.Pid;
+            }
+
             var count = Handler.ModifyAny(
                 m =>
                 {

@@ -26,26 +26,35 @@
         public IEnumerable<Menu> MyMenus()
         {
             var menus = User.Menus;
+            var menuHandler = new MenuHandle(Repository);
+            var featureHandler = new FeatureHandle(Repository);
             if (0 == menus.Count())
             {
-                using (var menuHandler = new MenuHandle(Repository))
-                using (var featureHandler = new FeatureHandle(Repository))
+                var isDel = (short)DeleteStatus.No;
+                var query = menuHandler.All(t => t.IsDel == isDel);
+                // 非管理员用户，需要根据角色来进行边界数据处理
+                if (!User.IsSupperAdministrator)
                 {
-                    var isDel = (short)DeleteStatus.No;
-                    var query = menuHandler.All(t => t.IsDel == isDel);
-                    // 非管理员用户，需要根据角色来进行边界数据处理
-                    if (!User.IsSupperAdministrator)
-                    {
-                        var roleId = User.Role.Id;
-                        query = query.Join(
-                            featureHandler.All(t => t.IsDel == isDel && t.RoleId == roleId),
-                            m => m.Id,
-                            f => f.MenuId,
-                            (m, f) => m);
-                    }
-                    menus = query.OrderByDescending(t => t.Order).ToArray();
+                    var roleId = User.Role.Id;
+                    query = query.Join(
+                        featureHandler.All(t => t.IsDel == isDel && t.RoleId == roleId),
+                        m => m.Id,
+                        f => f.MenuId,
+                        (m, f) => m);
                 }
+                menus = query.OrderByDescending(t => t.Order).ToArray();
             }
+            var arr = new List<Menu>();
+            if (!User.IsSupperAdministrator)
+            {
+                var ids = menus.Select(t => t.Pid).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().ToArray();
+                var parents = menuHandler.All(t => ids.Any(x => t.Id == x)).ToArray();
+                arr.AddRange(menus);
+                arr.AddRange(parents);
+                menus = arr.ToArray();
+                arr.Clear();
+            }
+            arr = null;
             return menus.Distinct();
         }
 

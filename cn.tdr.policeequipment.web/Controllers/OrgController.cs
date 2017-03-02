@@ -21,7 +21,20 @@
         public JObject GetData()
         {
             var m = new OrgModule(CurrentUser);
-            var items = m.FetchAll();
+            var items = m.FetchAll().ToArray();
+            if (!CurrentUser.IsSupperAdministrator)
+            {
+                var root = items.First(t => t.Id == CurrentUser.Organization.Id);
+                root.Pid = null;
+                var childs = items.Where(t => t.Pid == CurrentUser.Organization.Id);
+                var list = new List<data.entity.Organization>();
+                list.AddRange(items);
+                list.RemoveAll(t => t.Id == CurrentUser.Organization.Id);
+                list.Add(root);
+                items = list.ToArray();
+                list.Clear();
+                list = null;
+            }
             var json = TableOrgDataModel.Model.GetJson(items, TableOrgHeaderModel.Header);
             return json;
         }
@@ -33,7 +46,7 @@
             var items = m.FetchAll().ToArray();
             var data = 
                 items
-                .Where(t => string.IsNullOrWhiteSpace(t.Pid) || t.Pid == "0")
+                .Where(t => string.IsNullOrWhiteSpace(t.Pid) || t.Pid == "0" || t.Id == CurrentUser.Organization.Id)
                 .Select(t => GetTree(t, items))
                 .ToArray();
             return Json(data, JsonRequestBehavior.AllowGet);
@@ -62,6 +75,7 @@
                 Name = name,
                 Pid = parentId
             };
+
             if (string.IsNullOrWhiteSpace(id))
             {
                 flag = mod.Add(m);

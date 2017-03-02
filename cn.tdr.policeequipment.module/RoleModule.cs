@@ -65,6 +65,7 @@
             using (var featureHandler = new FeatureHandle(Repository))
             using (var roleHandler = new RoleHandle(Repository))
             using (var menuHandler = new MenuHandle(Repository))
+            using (var orgHandler = new OrganizationHandle(Repository))
             {
                 var query =
                     from role in roleHandler.All(t => t.IsDel == noDel)
@@ -76,7 +77,9 @@
 
                 if (!User.IsSupperAdministrator)
                 {
-                    query = query.Where(t => t.role.OrgId == User.Organization.Id);
+                    var orgcode = User.Organization.Code;
+                    var orgs = orgHandler.All(t => t.IsDel == noDel && t.Code.StartsWith(orgcode)).Select(t => t.Id).ToArray();
+                    query = query.Where(t => orgs.Any(x => t.role.OrgId == x));
                 }
 
                 var data =
@@ -100,20 +103,17 @@
             using (var orgHandler = new OrganizationHandle(Repository))
             using (var roleHandler = new RoleHandle(Repository))
             {
+                var parentOrg = orgHandler.First(t => t.Id == orgId);
+                var parentCode = parentOrg.Code;
                 var noDel = (short)DeleteStatus.No;
                 var query =
                     from role in roleHandler.All(t => t.IsDel == noDel)
                     join org in orgHandler.All(t => t.IsDel == noDel) on role.OrgId equals org.Id
-                    join child in orgHandler.All(t => t.IsDel == noDel) on org.Id equals child.Pid
-                    select new { role = role, org = org, child = child };
+                    where org.Code.StartsWith(parentCode)
+                    select new { role = role, org = org };
 
                 var items = query.ToArray();
-                var first = items.FirstOrDefault(t => t.org.Id == orgId);
-                var data = new List<Role>();
-                if (null != first)
-                {
-
-                }
+                var data = items.Select(t => t.role).ToArray();
                 return data;
             }
         }
