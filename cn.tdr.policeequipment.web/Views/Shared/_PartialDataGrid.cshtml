@@ -1,37 +1,20 @@
 ﻿@using cn.tdr.policeequipment.web.Models
-@model TreeGridPageModel<TableTreeHeaderModel>
-@{ 
-    var tableHeight = Model.tableHeight - 10 - 23 - 10 - 30;
+@model DataGridPageModel<TableHeaderModel>
+@{
+    var tableHeight = Model.tableHeight - 10 - 23 - 10 - 20;
 }
+
 <div data-options="region:'center'" style="padding:10px;">
-    @if (Model.isAddTop)
-    {
-        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="@Model.topAddAction;return false;"
-           style="text-align:center;height:23px;line-height:23px; width:45px;">新增</a>
-    }
-    <div style="margin-top:10px;">
-        <table id="@Model.gridId" class="easyui-treegrid" height="@tableHeight"
-               style="min-height:150px;"
-               data-options="
-                   url:'@Model.dataAction',
-                   method:'get',
-                   rownumbers: true,
-                   showFooter: true,
-                   fitColumns: true,
-                   collapsible: false,
-                   animate:true,
-                   idField:'@Model.fieldId.field' ,
-                   treeField:'@Model.fieldTree.field'
-               ">
-            <thead>
-           @Html.Partial(Model.headerPartialPage, new GridRowModel<TableTreeHeaderModel>
-           {
-               actionFormart = Model.headerPartialPageModel.actionFormart ?? "optFmt",
-               headerModel = Model.headerPartialPageModel.headerModel
-           })
-            </thead>            
-        </table>
-    </div>
+    <table id="@Model.gridId" class="easyui-datagrid" height="@tableHeight"
+           style="min-height:150px;"
+           data-options="url:'@Model.dataAction',method:'get',rownumbers: true,fitColumns: true,singleSelect:true,idField:'@Model.fieldId.field',toolbar:'#x-grid-tbr'@Model.options">
+        <thead>
+            @Html.Partial(Model.headerPartialPage, Model.headerPartialPageModel)
+        </thead>
+    </table>
+</div>
+<div id="x-grid-tbr" style="padding:2px 5px;">
+    @Html.Partial(Model.toolbarPartialPage)
 </div>
 
 @Html.Partial("_PartialForm", new GridEditFormModel
@@ -70,7 +53,7 @@
                 var data = eval('(' + data + ')');
                 $.extend(defaults, data);
                 if (defaults.code == 0 && !!defaults.data) {
-                    grid().treegrid('reload');
+                    grid().datagrid('reload');
                 }
 
                 if (!!defaults.code) {
@@ -79,10 +62,13 @@
             }
         });
     }
-    
 
-    function optFmt(v, row) {
-        return v;
+    function setQueryParams(data) {
+        var queryParams = {};
+        $.extend(queryParams, data);
+        grid().datagrid({
+            queryParams: queryParams
+        });
     }
 
 </script>

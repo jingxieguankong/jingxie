@@ -1,5 +1,65 @@
-﻿
+﻿@using cn.tdr.policeequipment.web.Models
+@model TableUserHeaderModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@Html.Partial("_PartialDataGrid",
+    new DataGridPageModel<TableHeaderModel>
+    {
+        dataAction = Url.Action("GetData"),
+        formModel = new GridEditFormModel
+        {
+            formPartialPage = "_PartialUserForm",
+            formAction = Url.Action("FormSubmit"),
+            formModel = Model
+        },
+        headerPartialPage = "_PartialUserTableRow",
+        headerPartialPageModel = new GridRowModel<TableHeaderModel>
+        {
+            actionFormart = "fmtOper",
+            headerModel = Model
+        },
+        options = ",autoRowHeight:false,pageSize:20,view:scrollview",
+        toolbarPartialPage = "_PartialUserTablebar",
+        tableHeight = ViewBag.ViewHeight
+    })
+
+@section scripts{
+<script type="text/javascript" src="@Url.Content("~/Scripts/easyui/datagrid-scrollview.js")"></script>
+<script type="text/javascript">
+    function fmtStatus(val, row) {
+        return val;
+    }
+
+    function fmtOper(val, row) {
+        return val;
+    }
+
+    function queryClick() {
+        grid().datagrid('load');
+    }
+
+    function addClick() {
+        var defaults = {
+
+        };
+        form().form('load', defaults);
+        xdlg.open();
+    }
+
+    function comboOrgChanged(id) {
+        function cb(newVal, oldVal) {
+            $.get('@Url.Action("Tree", "Role")', { orgId: newVal }, function (data) {
+                $(id).combotree('loadData', data);
+            });
+        }
+        return cb;
+    }
+
+    setQueryParams({
+        orgId: function () { return $('#queryOrgId').val(); },
+        roleId: function () { return $('#queryRoleId').val(); }
+    });
+</script>
+}

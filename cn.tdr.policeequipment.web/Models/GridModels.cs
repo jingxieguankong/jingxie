@@ -1,17 +1,10 @@
 ﻿namespace cn.tdr.policeequipment.web.Models
 {
-    public abstract class BasicGridPageModel
+    public abstract class BasicGridPageModel<THeader>
+        where THeader : TableHeaderModel
     {
         public string gridId { get; set; } = "x-grid";
 
-        public bool isAddTop { get; set; } = true;
-
-        public string topAddAction { get; set; }
-    }
-
-    public class TreeGridPageModel<THeader>: BasicGridPageModel
-        where THeader:TableHeaderModel
-    {
         /// <summary>
         /// 头部部分页模型
         /// </summary>
@@ -41,20 +34,37 @@
         }
 
         /// <summary>
-        /// tree 字段
-        /// </summary>
-        public TableCellModel fieldTree { get; set; }
-
-        /// <summary>
         /// 编辑 form 模型
         /// </summary>
         public GridEditFormModel formModel { get; set; }
     }
 
+    public class DataGridPageModel<THeader>:BasicGridPageModel<THeader>
+        where THeader : TableHeaderModel
+    {
+        public string options { get; set; }
+
+        public string toolbarPartialPage { get; set; }
+    }
+
+    public class TreeGridPageModel<THeader>: BasicGridPageModel<THeader>
+        where THeader:TableHeaderModel
+    {
+
+        public bool isAddTop { get; set; } = true;
+
+        public string topAddAction { get; set; }
+
+        /// <summary>
+        /// tree 字段
+        /// </summary>
+        public TableCellModel fieldTree { get; set; }
+    }
+
     public class GridRowModel<THeader>
         where THeader:TableHeaderModel
     {
-        public string actionFormart { get; set; }
+        public string actionFormart { get; set; } = "fmtOper";
 
         public THeader headerModel { get; set; }
     }

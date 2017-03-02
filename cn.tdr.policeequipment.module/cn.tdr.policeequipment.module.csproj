@@ -48,6 +48,7 @@
     <Compile Include="FeatureModule.cs" />
     <Compile Include="MenuModule.cs" />
     <Compile Include="MessageModule.cs" />
+    <Compile Include="models\AccountModels.cs" />
     <Compile Include="models\RoleModels.cs" />
     <Compile Include="models\UserInfo.cs" />
     <Compile Include="Module.cs" />

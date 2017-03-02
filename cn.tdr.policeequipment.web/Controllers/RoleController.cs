@@ -131,5 +131,14 @@
             }).Distinct().ToArray();
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public JsonResult Tree(string orgId)
+        {
+            var module = new RoleModule(CurrentUser);
+            var items = module.FeatchAll(orgId);
+            var data = items.Select(t => new ComboTreeModel { children = new ComboTreeModel[0], id = t.Id, text = t.Name }).ToArray();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
     }
 }

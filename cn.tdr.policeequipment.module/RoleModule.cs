@@ -95,6 +95,37 @@
             }
         }
 
+        public IEnumerable<Role> FeatchAll(string orgId)
+        {
+            using (var orgHandler = new OrganizationHandle(Repository))
+            using (var roleHandler = new RoleHandle(Repository))
+            {
+                var noDel = (short)DeleteStatus.No;
+                var query =
+                    from role in roleHandler.All(t => t.IsDel == noDel)
+                    join org in orgHandler.All(t => t.IsDel == noDel) on role.OrgId equals org.Id
+                    join child in orgHandler.All(t => t.IsDel == noDel) on org.Id equals child.Pid
+                    select new { role = role, org = org, child = child };
+
+                var items = query.ToArray();
+                var first = items.FirstOrDefault(t => t.org.Id == orgId);
+                var data = new List<Role>();
+                if (null != first)
+                {
+
+                }
+                return data;
+            }
+        }
+
+        public IEnumerable<Role> FeatchAll(Expression<Func<Role, bool>> predicate)
+        {
+            using (var handler = new RoleHandle(Repository))
+            {
+                return handler.All(predicate).ToArray();
+            }
+        }
+
         private IEnumerable<FeatureModel> Union(IEnumerable<Feature> items)
         {
             var query =

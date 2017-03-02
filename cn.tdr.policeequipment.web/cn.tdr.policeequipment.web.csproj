@@ -159,6 +159,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\easyui\changelog.txt" />
+    <Content Include="Scripts\easyui\datagrid-scrollview.js" />
     <Content Include="Scripts\easyui\demo-mobile\accordion\basic.html" />
     <Content Include="Scripts\easyui\demo-mobile\accordion\header.html" />
     <Content Include="Scripts\easyui\demo-mobile\accordion\_content.html" />
@@ -1018,6 +1019,7 @@
     <Compile Include="Models\TableMenuModels.cs" />
     <Compile Include="Models\GridModels.cs" />
     <Compile Include="Models\TableRoleModels.cs" />
+    <Compile Include="Models\TableUserModels.cs" />
     <Compile Include="Models\TreeModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1073,6 +1075,10 @@
     <Content Include="Views\Role\_PartialRoleRow.cshtml" />
     <Content Include="Views\Role\_PartialRoleForm.cshtml" />
     <Content Include="Views\Role\_PartialRoleFeatureForm.cshtml" />
+    <Content Include="Views\User\_PartialUserTableRow.cshtml" />
+    <Content Include="Views\Shared\_PartialDataGrid.cshtml" />
+    <Content Include="Views\User\_PartialUserForm.cshtml" />
+    <Content Include="Views\User\_PartialUserTablebar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

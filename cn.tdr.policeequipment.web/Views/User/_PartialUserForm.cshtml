@@ -1,0 +1,24 @@
+﻿
+<div class="x-form-row">
+    <input id="category" name="category" 
+           style="width:100%;height:26px" class="easyui-combotree"
+           data-options="url:'@Url.Action("CategoryTree")',method:'get',prompt:'账户类型 ...',required:true" />
+</div>
+
+<div id="x-orgId-panel" class="x-form-row" style="margin-top:5px;">
+    <input id="orgId" name="orgId" 
+           style="width:100%;height:26px" class="easyui-combotree"
+           data-options="@Url.Action("Tree", "Org")',method:'get',prompt:'组织机构 ...',onChange:comboOrgChanged('#roleId')" />
+</div>
+
+<div id="x-roleId-panel" class="x-form-row" style="margin-top:5px;">
+    <input id="roleId" name="roleId" 
+           style="width:100%;height:26px" class="easyui-combotree"
+           data-options="prompt:'角色 ...'" />
+</div>
+
+<div class="x-form-row" style="padding:3px;">
+    <input id="name" name="name" class="easyui-textbox"
+           data-options="prompt:'账户名称 ...',required:true"
+           style="width:100%;height:26px" />
+</div>
