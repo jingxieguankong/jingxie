@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EqtTypeHandle.cs" />
     <Compile Include="FeatureHandle.cs" />
     <Compile Include="Handle.cs" />
     <Compile Include="MenuHandle.cs" />

@@ -1001,6 +1001,7 @@
     <Compile Include="Controllers\AnonymousController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BasicController.cs" />
+    <Compile Include="Controllers\EqtTypeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
@@ -1012,6 +1013,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DispatchModels.cs" />
+    <Compile Include="Models\TableEqtTypeModels.cs" />
     <Compile Include="Models\MenuModels.cs" />
     <Compile Include="Models\TableOrgModels.cs" />
     <Compile Include="Models\Pointer.cs" />
@@ -1079,6 +1081,9 @@
     <Content Include="Views\Shared\_PartialDataGrid.cshtml" />
     <Content Include="Views\User\_PartialUserForm.cshtml" />
     <Content Include="Views\User\_PartialUserTablebar.cshtml" />
+    <Content Include="Views\EqtType\Index.cshtml" />
+    <Content Include="Views\EqtType\_PartialEqttypeTableRow.cshtml" />
+    <Content Include="Views\EqtType\_PartialEqtTypeForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
