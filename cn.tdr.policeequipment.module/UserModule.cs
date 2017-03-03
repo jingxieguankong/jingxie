@@ -47,7 +47,6 @@
                     m.OrgId = role.OrgId;
                     m.Account = user.Account;
                     m.Category = user.Category;
-                    m.OrgId = user.OrgId;
                     m.RoleId = user.RoleId;
                     return m;
                 }, predicate, true).Count();
@@ -75,14 +74,18 @@
                     from org in orgs.DefaultIfEmpty(new Organization { }) 
                     select new { usr = usr, role = role, org = org };
 
-                if (!string.IsNullOrWhiteSpace(roleId))
+                var roleEmp = string.IsNullOrWhiteSpace(roleId);
+                if (!roleEmp)
                 {
                     query = query.Where(t => t.role.Id == roleId);
                 }
-                else if (!string.IsNullOrWhiteSpace(orgId))
+
+                if (roleEmp && !User.IsSupperAdministrator)
                 {
-                    query = query.Where(t => t.org.Id == orgId);
+                    orgId = string.IsNullOrWhiteSpace(orgId) ? User.Organization.Id : orgId;
+                    query = query.Where(t => t.org.Pid == orgId);
                 }
+
 
                 count = query.Count();
                 var skipCount = (page - 1) * size;

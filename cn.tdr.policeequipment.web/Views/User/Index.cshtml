@@ -80,7 +80,7 @@
     }
 
     function onEdit(e, val) {
-        debugger;
+        
         var data = grid().datagrid('getData');
         for (var i = 0; i < data.rows.length; i++) {
             var row = data.rows[i];
@@ -99,6 +99,11 @@
 
     function queryClick() {
         grid().datagrid('load');
+    }
+
+    function queryClear() {
+        $("#queryOrgId").combotree('setValue', '');
+        $("#queryRoleId").combotree('loadData', []);
     }
 
     function toggleOrgAndRole(isShow) {
@@ -124,8 +129,18 @@
             defaults.roleId = null;
             toggleOrgAndRole(false);
         }
-        form().form('load', defaults);
-        xdlg.open();
+        
+        function cb(id, orgId, data) {
+            form().form('load', defaults);
+            xdlg.open();
+        }
+
+        var rolePanelId = '#roleId';
+        if (!!defaults.orgId) {
+            loadRoleTreeData(rolePanelId, defaults.orgId, cb);
+        } else {
+            cb();
+        }
     }
 
     function addClick() {
@@ -136,15 +151,34 @@
         toggleOrgAndRole(newVal != 1);
     }
 
-    function comboOrgChanged(id) {
-
-        function cb(newVal, oldVal) {
-            $.get('@Url.Action("Tree", "Role")', { orgId: newVal }, function (data) {
-                $(id).combotree('loadData', data);
+    function comboSelect(id) {
+        
+        function cb(node) {
+            loadRoleTreeData(id, node.id, function (id) {
                 $(id).combotree('setValue', '');
             });
         }
         return cb;
+    }
+
+    function comboOrgChanged(id) {
+
+        function cb(newVal, oldVal) {
+            loadRoleTreeData(id, newVal, function (id) {
+                $(id).combotree('setValue', '');
+            });
+        }
+        return cb;
+    }
+
+    function loadRoleTreeData(id, orgId, cb) {
+        $.get('@Url.Action("Tree", "Role")', { orgId: orgId }, function (data) {
+            $(id).combotree('loadData', data);            
+
+            if (cb instanceof Function) {
+                cb(id, orgId, data);
+            }
+        });
     }
 
     setQueryParams({
