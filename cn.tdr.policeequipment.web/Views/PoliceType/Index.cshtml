@@ -1,0 +1,123 @@
+﻿@using cn.tdr.policeequipment.web.Models
+@model TablePoliceTypeHeaderModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_PartialDataGrid",
+    new DataGridPageModel<TableHeaderModel>
+    {
+        dataAction = Url.Action("GetData"),
+        formModel = new GridEditFormModel
+        {
+            formPartialPage = "_PartialPtpForm",
+            formAction = Url.Action("FormSubmit"),
+            formModel = Model
+        },
+        headerPartialPage = "_PartialTablePtpRow",
+        headerPartialPageModel = new GridRowModel<TableHeaderModel>
+        {
+            actionFormart = "fmtOper",
+            headerModel = Model
+        },
+        options = $",view:groupview,groupField:'{Model.groupId.field}',groupFormatter:fmtGroup",
+        toolbarPartialPage = "_PartialTablePtpBar",
+        tableHeight = ViewBag.ViewHeight
+    })
+
+@section scripts{
+<script type="text/javascript" src="@Url.Content("~/Scripts/easyui/datagrid-groupview.js")"></script>
+<script type="text/javascript">
+
+    function fmtOper(val, row) {
+        debugger;
+        var html = '';
+        if (!row.categoryName) {
+            return html;
+        }
+
+        html = '';
+        return html;
+    }
+
+    function fmtGroup(val, rows) {
+        debugger;
+        return val;
+    }
+
+    function fmtCate(val, row) {
+        if (!row.categoryName) {
+            return '';
+        }
+
+        return val;
+    }
+
+    function fmtNum(val, row) {
+        if (!row.categoryName) {
+            return '';
+        }
+
+        return val;
+    }
+
+    function fmtPk(val, row) {
+        if (!row.categoryName) {
+            return '';
+        }
+
+        var text = '否';
+        if (!!val) {
+            text = '是';
+        }
+        return text;
+    }
+
+    function fmtRq(val, row) {
+        if (!row.categoryName) {
+            return '';
+        }
+
+        var text = '否';
+        if (!!val) {
+            text = '是';
+        }
+        return text;
+    }
+
+    // 查询
+    function queryClick() {
+        grid().datagrid('load');
+    }
+
+    // 清除查询
+    function queryClear() {
+        $('#queryOrgId').combotree('setValue', '');
+    }
+
+    // 
+    function ptpFormDefaults(data) {
+        var defaults = {
+            id: null, orgId: null, name: null
+        };
+        $.extend(defaults, data);
+        return defaults;
+    }
+
+    function showPtpFormDlg(data) {
+        var data = ptpFormDefaults(data);
+        form().form('load', data);
+        xdlg.open();
+    }
+
+    // 添加警种
+    function addPtpClick() {
+        showPtpFormDlg();
+    }
+
+    setQueryParams({
+        orgId: function () { return $('#queryOrgId').val(); }
+    });
+
+</script>
+}
