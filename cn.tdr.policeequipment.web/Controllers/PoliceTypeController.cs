@@ -55,5 +55,30 @@
 
             return Json(new { code = 0, msg = "Ok", data = data });
         }
+
+        [HttpPost]
+        public JsonResult AddCateItem(string ptpId, string cateId, short num, short isPk, short isRq)
+        {
+            var module = new PoliceTypeModule(CurrentUser);
+            var item = new StandardEquipment
+            {
+                CateId = cateId,
+                IsDel = (short)DeleteStatus.No,
+                IsPrimary = isPk,
+                IsRequire = isRq,
+                Num = num,
+                PtId = ptpId
+            };
+            var data = module.Add(item);
+            return Json(new { code = 0, msg = "Ok", data = data });
+        }
+
+        [HttpPost]
+        public JsonResult RemoveCateItem(string cateId, string ptpId, short isPk, short isRq)
+        {
+            var module = new PoliceTypeModule(CurrentUser);
+            var data = module.Remove(cateId, ptpId, isPk, isRq);
+            return Json(new { code = 0, msg = "Ok", data = true });
+        }
     }
 }

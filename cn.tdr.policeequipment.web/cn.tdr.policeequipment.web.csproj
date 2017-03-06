@@ -1091,6 +1091,7 @@
     <Content Include="Views\PoliceType\_PartialTablePtpRow.cshtml" />
     <Content Include="Views\PoliceType\_PartialPtpForm.cshtml" />
     <Content Include="Views\PoliceType\_PartialTablePtpBar.cshtml" />
+    <Content Include="Views\PoliceType\_PartialPtpStdForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

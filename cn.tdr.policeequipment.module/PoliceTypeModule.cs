@@ -79,14 +79,40 @@
                 }
 
                 var items =
-                    query.ToArray().Select(t => new PoliceTypeStandardEquipment
-                    {
-                        category = t.cate,
-                        equipment = t.std,
-                        org = t.org,
-                        type = t.ptp
-                    });
-                return items;
+                    query.ToArray().GroupBy(t => new { ptpId=t.std.PtId, cateId = t.std.CateId, pk=t.std.IsPrimary, rq=t.std.IsRequire }).Select(
+                        t =>
+                        {
+                            var item = t.First();
+                            item.std.Num = (short)(t.Sum(x => x.std.Num));
+                            return item;
+                        }).Select(
+                        t => new PoliceTypeStandardEquipment
+                        {
+                            category = t.cate,
+                            equipment = t.std,
+                            org = t.org,
+                            type = t.ptp
+                        });
+                return items.OrderBy(t => t.category.Id).OrderBy(t => t.equipment.Num);
+            }
+        }
+
+        public bool Add(StandardEquipment stdep)
+        {
+            using (var handler = new StandardEquipmentHandle(Repository))
+            {
+                return
+                    null != handler.Add(stdep, true);
+            }
+        }
+
+        public bool Remove(string cateId, string ptpId, short isPk, short isRq)
+        {
+            using (var handler = new StandardEquipmentHandle(Repository))
+            {
+                var count =
+                    handler.RemoveAny(t => t.CateId == cateId && t.PtId == ptpId && t.IsPrimary == isPk && t.IsRequire == isRq, true).Count();
+                return 0 < count;
             }
         }
     }
