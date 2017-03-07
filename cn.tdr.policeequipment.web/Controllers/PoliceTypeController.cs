@@ -29,6 +29,20 @@
             return json;
         }
 
+        [HttpGet]
+        public JsonResult Tree(string orgId)
+        {
+            var module = new PoliceTypeModule(CurrentUser);
+            var items = module.FeatchMany(orgId);
+            var data = items.Select(t => new ComboTreeModel
+            {
+                children = new ComboTreeModel[0],
+                id = t.Id,
+                text = t.Name
+            });
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public JsonResult FormSubmit(string id, string orgId, string name)
         {

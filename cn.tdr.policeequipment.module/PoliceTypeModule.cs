@@ -67,13 +67,13 @@
                     from cate in cates.DefaultIfEmpty(new EqtCategory { })
                     select new { ptp = ptp, org = org, std = std, cate = cate };
 
-                if (!User.IsSupperAdministrator)
+                if (!User.IsSupperAdministrator && string.IsNullOrWhiteSpace(orgId))
                 {
                     orgId = string.IsNullOrWhiteSpace(orgId) ? User.Organization.Id : orgId;
                     query = query.Where(t => t.ptp.OrgId == orgId);
                 }
 
-                if (User.IsSupperAdministrator && !string.IsNullOrWhiteSpace(orgId))
+                if (!string.IsNullOrWhiteSpace(orgId))
                 {
                     query = query.Where(t => t.ptp.OrgId == orgId);
                 }
@@ -95,6 +95,23 @@
                         });
                 return items.OrderBy(t => t.category.Id).OrderBy(t => t.equipment.Num);
             }
+        }
+
+        public IEnumerable<PoliceType> FeatchMany(string orgId)
+        {
+            var query = Handler.All(null);
+            if (!User.IsSupperAdministrator && string.IsNullOrWhiteSpace(orgId))
+            {
+                query = query.Where(t => t.OrgId == User.Organization.Id);
+            }
+
+            if (!string.IsNullOrWhiteSpace(orgId))
+            {
+                query = query.Where(t => t.OrgId == orgId);
+            }
+
+            var items = query.ToArray();
+            return items;
         }
 
         public bool Add(StandardEquipment stdep)

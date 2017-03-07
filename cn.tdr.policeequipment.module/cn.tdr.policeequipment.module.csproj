@@ -50,11 +50,13 @@
     <Compile Include="MenuModule.cs" />
     <Compile Include="MessageModule.cs" />
     <Compile Include="models\AccountModels.cs" />
+    <Compile Include="models\OfficerModels.cs" />
     <Compile Include="models\PoliceTypeModes.cs" />
     <Compile Include="models\RoleModels.cs" />
     <Compile Include="models\UserInfo.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="MyModule.cs" />
+    <Compile Include="OfficerModule.cs" />
     <Compile Include="OrgModule.cs" />
     <Compile Include="PasswdModule.cs" />
     <Compile Include="PoliceTypeModule.cs" />

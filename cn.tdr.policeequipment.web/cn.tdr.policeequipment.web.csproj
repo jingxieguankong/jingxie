@@ -159,6 +159,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\easyui\changelog.txt" />
+    <Content Include="Scripts\easyui\datagrid-detailview.js" />
     <Content Include="Scripts\easyui\datagrid-groupview.js" />
     <Content Include="Scripts\easyui\datagrid-scrollview.js" />
     <Content Include="Scripts\easyui\demo-mobile\accordion\basic.html" />
@@ -1006,6 +1007,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\OfficerController.cs" />
     <Compile Include="Controllers\OrgController.cs" />
     <Compile Include="Controllers\PoliceTypeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -1015,6 +1017,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DispatchModels.cs" />
+    <Compile Include="Models\OfficerModels.cs" />
     <Compile Include="Models\TableEqtTypeModels.cs" />
     <Compile Include="Models\MenuModels.cs" />
     <Compile Include="Models\TableOrgModels.cs" />
@@ -1092,6 +1095,10 @@
     <Content Include="Views\PoliceType\_PartialPtpForm.cshtml" />
     <Content Include="Views\PoliceType\_PartialTablePtpBar.cshtml" />
     <Content Include="Views\PoliceType\_PartialPtpStdForm.cshtml" />
+    <Content Include="Views\Officer\Index.cshtml" />
+    <Content Include="Views\Officer\_PartialTableOfficerRow.cshtml" />
+    <Content Include="Views\Officer\_PartialOfficerForm.cshtml" />
+    <Content Include="Views\Officer\_PartialOfficerTableBar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

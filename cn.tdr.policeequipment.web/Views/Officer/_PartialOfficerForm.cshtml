@@ -1,0 +1,22 @@
+﻿
+
+<div class="x-form-row" style="padding:5px;">
+    <input id="name" name="name" class="easyui-textbox"
+           data-options="prompt:'姓名 ...',required:true" style="width:100%;height:26px" />
+</div>
+<div class="x-form-row" style="padding:5px;">
+    <input id="code" name="code" class="easyui-textbox"
+           data-options="prompt:'警号 ...',required:true" style="width:100%;height:26px" />
+</div>
+<div class="x-form-row" style="padding:5px;">
+    <input id="sex" name="sex" style="width:100%;height:26px" class="easyui-combotree"
+           data-options="prompt:'选择警种 ...',required:true,data:sexTreeData" />
+</div>
+<div class="x-form-row" style="padding:5px;">
+    <input id="orgId" name="orgId" style="width:100%;height:26px" class="easyui-combotree"
+           data-options="url:'@Url.Action("Tree", "Org")',method:'get',prompt:'选择组织机构 ...',required:true,onSelect:comboSelect('#ptpId')" />
+</div>
+<div class="x-form-row" style="padding:5px;">
+    <input id="ptpId" name="ptpId" style="width:100%;height:26px" class="easyui-combotree"
+           data-options="prompt:'选择警种 ...',required:true" />
+</div>
