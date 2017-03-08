@@ -1106,6 +1106,7 @@
     <Content Include="Views\Storage\_PartialStorageTableRow.cshtml" />
     <Content Include="Views\Storage\_PartialStorageForm.cshtml" />
     <Content Include="Views\Storage\_PartialStorageTableBar.cshtml" />
+    <Content Include="Views\Map\DrawPoint.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

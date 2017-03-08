@@ -20,17 +20,19 @@
             actionFormart = "fmtOper",
             headerModel = Model
         },
-        options = ",autoRowHeight:false,pagination:true,pageSize:20",
+        options = ",pagination:true,pageSize:20",
         toolbarPartialPage = "_PartialStorageTableBar",
         tableHeight = ViewBag.ViewHeight
     })
 
 <div id="x-map-selector" class="easyui-window" title="GPS 地图选择器"
      style="width:70%;height:70%;padding:10px;" 
-     data-options="collapsible:false,minimizable:false,maximizable:false,draggable:false,resizable:false,modal:true">
+     data-options="collapsible:false,minimizable:false,maximizable:false,draggable:false,resizable:false,modal:true,closed:true,onOpen:onMapSelectorShowed">
 </div>
 
 @section scripts{
+<script type="text/javascript" src="@Url.Content("~/Scripts/pgis/js/EzMapAPI.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/pgis/js/EzServerClient.Extend.js")"></script>
 <script type="text/javascript">
 
     function fmtOper(val, row) {
@@ -81,6 +83,14 @@
         $("#queryOrgId").combotree('setValue', '');
         $('#queryName').val('');
     }
+
+    function onMapSelectorShowed() {
+        if (!pgisMap) {
+            pgisMap = new EzMap(document.getElementById("x-map-selector"));
+        }        
+    }
+        
+    var pgisMap = null;
 
     setQueryParams({
         orgId: function () { return $('#queryOrgId').val(); },
