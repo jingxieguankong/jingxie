@@ -1,0 +1,91 @@
+﻿@using cn.tdr.policeequipment.web.Models
+@model TableStorageHeaderModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_PartialDataGrid",
+    new DataGridPageModel<TableHeaderModel>
+    {
+        dataAction = Url.Action("GetData"),
+        formModel = new GridEditFormModel
+        {
+            formPartialPage = "_PartialStorageForm",
+            formAction = Url.Action("FormSubmit"),
+            formModel = Model
+        },
+        headerPartialPage = "_PartialStorageTableRow",
+        headerPartialPageModel = new GridRowModel<TableHeaderModel>
+        {
+            actionFormart = "fmtOper",
+            headerModel = Model
+        },
+        options = ",autoRowHeight:false,pagination:true,pageSize:20",
+        toolbarPartialPage = "_PartialStorageTableBar",
+        tableHeight = ViewBag.ViewHeight
+    })
+
+<div id="x-map-selector" class="easyui-window" title="GPS 地图选择器"
+     style="width:70%;height:70%;padding:10px;" 
+     data-options="collapsible:false,minimizable:false,maximizable:false,draggable:false,resizable:false,modal:true">
+</div>
+
+@section scripts{
+<script type="text/javascript">
+
+    function fmtOper(val, row) {
+        return val;
+    }
+
+    function fmtSite(val, row) {
+       
+    }
+
+    function fmtOrg(val, row) {
+
+    }
+
+    function fmtOfficer(val, row) {
+
+    }
+
+    function mapPointerGps(opts) {
+        var defaults = {
+            cb: function (data) { }
+        };
+        $.extend(defaults, opts);
+
+        // 显示 GPS 点选取器
+        $('#x-map-selector').window('open');
+
+        // 获取点
+
+        // 成功之后返回处理
+
+    }
+    
+    function loadFormData(data) {
+        var defaults = {
+            id: null, name: null, orgId: null, lon: 0, lat: 0
+        };
+        $.extend(defaults, data);
+        form().form('load', defaults);
+    }
+
+    function showFormDlg(data) {
+        loadFormData(data);
+        xdlg.open();
+    }
+
+    function queryClear() {
+        $("#queryOrgId").combotree('setValue', '');
+        $('#queryName').val('');
+    }
+
+    setQueryParams({
+        orgId: function () { return $('#queryOrgId').val(); },
+        name: function () { return $('#queryName').val(); }
+    });
+
+</script>
+}
