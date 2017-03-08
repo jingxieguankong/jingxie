@@ -14,6 +14,11 @@
             return View();
         }
 
+        public ActionResult DrawPoint()
+        {
+            return View();
+        }
+
         [HttpPost]
         public JsonResult Rectangle(double x1, double y1, double x2, double y2)
         {
