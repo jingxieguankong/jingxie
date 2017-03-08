@@ -51,22 +51,78 @@
         return '<div class="ddv" style="padding:5px 0"></div>';
     }
 
-    function onEdit(e, id) {
+    function getRowData(id, cb) {
+        var data = grid().datagrid('getData');
+        for (var i = 0; i < data.rows.length; i++) {
+            var row = data.rows[i];
+            if (row.id == id) {
+                cb(row);
+                break;
+            }
+        }
+    }
 
+    function onEdit(e, id) {
+        getRowData(id, function (row) {
+            var defaults = {
+                orgId: null,
+                ptpId: null
+            };
+            $.extend(defaults, row);
+            defaults.orgId = row.org.id;
+            defaults.ptpId = row.ptp.id;
+
+            loadComboTreePtp({
+                orgId: defaults.orgId, cb: function (data) {
+                    $("#ptpId").combotree('loadData', data);
+                    showFormDlg(defaults);
+                }
+            });
+        });
     }
 
     function onDel(e, id, name) {
+
+        var defaults = {
+            name: name,
+            url: '@Url.Action("Remove")',
+            queryParams: { id: id }
+        };
+        onDelHd(defaults);
+    }
+
+    function onBindEq(e, id) {
 
     }
 
      // 操作
     function fmtOper(val, row) {
-        return val;
+        var html = '<span class="x-a-cls" onclick="onEdit(this, \'' + val + '\' )">编辑</span>\
+                    <span class="x-a-cls" onclick="onDel(this, \'' + val + '\', \'' + row.name + '\' )">删除</span>\
+                    <span class="x-a-cls" onclick="onBindEq(this, \'' + val + '\' )">绑定警械</span>';
+        return html;
     }
 
     // 头像
     function fmtAtr(val, row) {
         return val;
+    }
+
+    function fmtSex(val, row) {
+        var text = "未知";
+        if (!val && val == 0) {
+            text = "女";
+        }
+
+        if (!!val && val == 1) {
+            text = "男";
+        }
+
+        if (!!val && val == 2) {
+            text = "其他";
+        }
+
+        return text;
     }
 
     // 电话
@@ -77,7 +133,7 @@
         }
         return text;
     }
-    
+
     // 数字证书
     function fmtDigital(val, row) {
         var text = "未绑定";
@@ -87,10 +143,24 @@
         return text;
     }
 
+    function loadComboTreePtp(opts) {
+        var defaults = {
+            orgId: null,
+            cb: function (data) { }
+        };
+        $.extend(defaults, opts);
+        $.get('@Url.Action("Tree", "PoliceType")', { orgId: defaults.orgId }, function (data) {
+            defaults.cb(data);
+        });
+    }
+
     function comboSelect(id) {
         function cb(newVal, oldVal) {
-            $.get('@Url.Action("Tree", "PoliceType")', { orgId: newVal.id }, function (data) {
-                $(id).combotree('loadData', data);
+            loadComboTreePtp({
+                orgId: newVal.id,
+                cb: function (data) {
+                    $(id).combotree('loadData', data);
+                }
             });
         }
         return cb;
@@ -104,7 +174,7 @@
         $('#queryName').val('');
         $('#queryCode').val('');
     }
-    
+
     function loadFormData(data) {
         var defaults = {
             id: null, name: null, code: null, sex: 1, orgId: null, ptpId: null

@@ -1,0 +1,9 @@
+﻿
+.x-a-cls{
+    text-decoration:underline;
+    cursor:pointer;
+}
+
+.x-a-cls:hover{
+    color:red;
+}

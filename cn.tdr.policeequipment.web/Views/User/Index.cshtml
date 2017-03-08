@@ -68,19 +68,16 @@
     }
 
     function onDel(e, id, name) {
-        $.messager.confirm('删除：', '是否删除账户: ' + name + ' ?', function (r) {
-                if (!!r) {
-                    $.post('@Url.Action("Remove")', { id: id }, function (data) {
-                        if (!data.code && data.code == 0) {
-                            gridReload();
-                        }
-                    });
-                }
-            });
+        var defaults = {
+            name: name,
+            url: '@Url.Action("Remove")',
+            queryParams: { id: id }
+        };
+        onDelHd(defaults);
     }
 
     function onEdit(e, val) {
-        
+
         var data = grid().datagrid('getData');
         for (var i = 0; i < data.rows.length; i++) {
             var row = data.rows[i];
@@ -129,7 +126,7 @@
             defaults.roleId = null;
             toggleOrgAndRole(false);
         }
-        
+
         function cb(id, orgId, data) {
             form().form('load', defaults);
             xdlg.open();
@@ -152,7 +149,7 @@
     }
 
     function comboSelect(id) {
-        
+
         function cb(node) {
             loadRoleTreeData(id, node.id, function (id) {
                 $(id).combotree('setValue', '');
@@ -173,7 +170,7 @@
 
     function loadRoleTreeData(id, orgId, cb) {
         $.get('@Url.Action("Tree", "Role")', { orgId: orgId }, function (data) {
-            $(id).combotree('loadData', data);            
+            $(id).combotree('loadData', data);
 
             if (cb instanceof Function) {
                 cb(id, orgId, data);

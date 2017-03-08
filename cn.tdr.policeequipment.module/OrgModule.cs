@@ -51,7 +51,10 @@
 
         public bool Remove(Expression<Func<Organization, bool>> predicate)
         {
-            return 0 < Handler.RemoveAny(predicate, true).Count();
+            var items = Handler.All(predicate);
+            var codes = items.Select(t => t.Code).ToArray();
+            items = Handler.RemoveAny(t => codes.Any(x => t.Code.StartsWith(x)), true);
+            return 0 < items.Count();
         }
 
         public IEnumerable<Organization> FetchAll()

@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\common.css" />
+    <Content Include="Content\grid.css" />
     <Content Include="Content\img\account.png" />
     <Content Include="Content\img\jinghui_1.png" />
     <Content Include="Content\img\male.gif" />
