@@ -1079,6 +1079,7 @@
     <Content Include="Views\Shared\_PartialDataGrid.cshtml" />
     <Content Include="Views\User\_PartialUserForm.cshtml" />
     <Content Include="Views\User\_PartialUserTablebar.cshtml" />
+    <Content Include="Views\Map\DrawPoint.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

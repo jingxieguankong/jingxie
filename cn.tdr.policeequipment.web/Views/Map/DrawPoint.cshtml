@@ -1,0 +1,172 @@
+﻿
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DrawPoint</title>
+    <style type="text/css">
+        .leftDiv {
+            float: left;
+        }
+
+            .leftDiv button {
+                margin-right: 5px;
+            }
+
+            .leftDiv ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+                .leftDiv ul li {
+                    margin: 10px;
+                    padding: 0;
+                }
+    </style>
+</head>
+<body style="margin:0;padding:0;">
+    <div class="leftDiv">
+        <ul>
+            <li id="coordiate"></li>
+            <li><button id="btnGoCenter">对中地图</button></li>
+            <li><button id="btnAddMarker">添加标注</button><input type="text" id="txtMarkerPoint" value="120.68125,28.01806" /></li>
+            <li><button id="btnAddPolyline">添加线段</button></li>
+            <li><button id="btnAddRectangle">添加矩形</button></li>
+            <li><button id="btnAddPolygon">添加多边形</button></li>
+            <li>
+                <button id="btnDrawPoint">绘制点</button><button id="btnDrawPolyline">绘制线</button><button id="btnDrawCircle">绘制圆形</button><br />
+                <button id="btnDrawRect">绘制矩形</button>
+                <button id="btnDragPolygon">绘制多边形</button><br />
+                <textarea id="txtDrawData" style="width:250px;height:50px; margin-top:5px;background-color:#eee;" readonly="readonly"></textarea>
+            </li>
+            <li><button id="btnClear">清空地图</button></li>
+        </ul>
+    </div>
+    <div id="map" style="float:right;">
+    </div>
+    <script src="~/Scripts/easyui/jquery.min.js"></script>
+    <script src="~/Scripts/pgis/js/EzMapAPI.js"></script>
+    <script src="~/Scripts/pgis/js/EzServerClient.Extend.js"></script>
+    <script type="text/javascript">
+        var myMap;
+        $(function () {
+            $("#map").width($(document).innerWidth() - 300);
+            $("#map").height($(document).innerHeight());
+            myMap = new EzMap(document.getElementById("map"));
+
+            //显示鼠标所在位置的经纬度
+            myMap.addMapEventListener(EzEvent.MAP_MOUSEMOVE, function (e) {
+                document.getElementById("coordiate").innerHTML = "X:" + e.mapPoint.x + "  Y:" + e.mapPoint.y;
+            });
+
+            //双击放大地图
+            myMap.addMapEventListener(EzEvent.MAP_DBLCLICK, mapDblClickCallback);
+
+            //对中地图
+            $("#btnGoCenter").click(function () {
+                myMap.gotoCenter();
+            });
+
+            //添加标注
+            $("#btnAddMarker").click(function () {
+                var pPoint = new Point($("#txtMarkerPoint").val());
+                var pIcon = new Icon();
+                pIcon.height = 28;
+                pIcon.width = 19;
+                pIcon.topOffset = -14;
+                pIcon.leftOffset = 0;
+                pIcon.image = "/Content/img/mapPosition/person.png";
+                var pTitle = new Title("浙江天地人科技有限公司", 14, 1, null, "black", "#eeeeee", "gray");
+                var marker = new Marker(pPoint, pIcon, pTitle);
+                marker.addListener("click", function () {
+                    marker.openInfoWindowHtml("");
+                });
+                myMap.addOverlay(marker);
+                myMap.centerAtLatLng(pPoint);
+
+            });
+
+            //添加线段
+            $("#btnAddPolyline").click(function () {
+                var pLine = new Polyline("120.74585,27.96654,120.74336,27.96526,120.74104,27.96427,120.73761,27.96184,120.7322,27.96351,120.72414,27.96807,120.72054,27.96929,120.71239,27.97195,120.70905,27.97301,120.71119,27.97711,120.71274,27.98097,120.71548,27.98051,120.71616,27.98172,120.71334,27.98271,120.71419,27.98438,120.70348,27.985,120.69859,27.98493,120.69825,27.99054,120.68994,27.99078,120.69045,27.98479,120.69045,27.9785,120.67898,27.97503", "#ff0000", 3, 1);// 构造一个多义线对象
+                var strMsg = "msg";
+                pLine.addListener("click", function () { pLine.openInfoWindowHtml(strMsg); });
+                myMap.addOverlay(pLine);// 将多义线对象添加到地图中
+                myMap.centerAtMBR(pLine.getMBR())
+            });
+
+            //添加矩形
+            $("#btnAddRectangle").click(function () {
+                var uRect = new Rectangle("120.59423, 27.93786, 120.8059, 28.06774", "ff00FF", 2, 0.5, "green");// 构造一个矩形对象
+                uRect.addListener("click", function () { uRect.openInfoWindowHtml("一个Rectangle"); });// 添加点击事件的响应
+                myMap.addOverlay(uRect);
+                var aa = uRect.getMBR();
+                var bb = myMap.getLevelOfMBR(aa.minX, aa.minY, aa.maxX, aa.maxY);
+                myMap.centerAtMBR(aa);
+            })
+
+            //绘制点位
+            $("#btnDrawPoint").click(function () {
+                myMap.changeDragMode("drawPoint", $("#txtDrawData")[0], null, function (strPointCoord) {
+                    var pPoint = new Point(strPointCoord.toString());
+                    var pIcon = new Icon();
+                    pIcon.height = 28;
+                    pIcon.width = 19;
+                    pIcon.topOffset = -14;
+                    pIcon.leftOffset = 0;
+                    pIcon.image = "/Content/img/mapPosition/person_on.png";
+                    var marker = new Marker(pPoint, pIcon, null);
+                    marker.addListener("click", function () {
+                        marker.openInfoWindowHtml("");
+                    });
+                    myMap.addOverlay(marker);
+                });
+            });
+
+            //绘制线段
+            $("#btnDrawPolyline").click(function () {
+                myMap.changeDragMode('drawPolyline', $("#txtDrawData")[0], null, function () {
+                    alert(arguments[0]);
+                });
+            });
+
+            //绘制矩形
+            $("#btnDrawRect").click(function () {
+                myMap.changeDragMode('drawRect', $("#txtDrawData")[0], null, function () {
+                    alert(arguments[0]);
+                });
+            });
+
+            //绘制圆形
+            $("#btnDrawCircle").click(function () {
+                myMap.changeDragMode('drawCircle', $("#txtDrawData")[0], null, function () {
+                    alert(arguments[0]);
+                });
+            });
+
+            //绘制多边形
+            $("#btnDragPolygon").click(function () {
+                myMap.changeDragMode('drawPolygon', $("#txtDrawData")[0], null, function () {
+                    alert(arguments[0]);
+                });
+            });
+
+            //清空地图
+            $("#btnClear").click(function () {
+                myMap.clear();
+            });
+        });
+
+        function mapDblClickCallback(evt) {
+            myMap.zoomAtPoint(evt.mapPoint, myMap.getZoomLevel() + 1)
+        }
+    </script>
+</body>
+</html>
