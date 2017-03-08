@@ -1,0 +1,134 @@
+﻿@using cn.tdr.policeequipment.web.Models
+@model TableOfficerHeaderModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_PartialDataGrid",
+    new DataGridPageModel<TableHeaderModel>
+    {
+        dataAction = Url.Action("GetData"),
+        formModel = new GridEditFormModel
+        {
+            formPartialPage = "_PartialOfficerForm",
+            formAction = Url.Action("FormSubmit"),
+            formModel = Model
+        },
+        headerPartialPage = "_PartialTableOfficerRow",
+        headerPartialPageModel = new GridRowModel<TableHeaderModel>
+        {
+            actionFormart = "fmtOper",
+            headerModel = Model
+        },
+        options = ",autoRowHeight:false,pagination:true,pageSize:20,view:detailview,detailFormatter:fmtDetail,onExpandRow:onRowExpand",
+        toolbarPartialPage = "_PartialOfficerTableBar",
+        tableHeight = ViewBag.ViewHeight
+    })
+
+@section scripts{
+<script type="text/javascript" src="@Url.Content("~/Scripts/easyui/datagrid-detailview.js")"></script>
+<script type="text/javascript">
+
+    function fixRowHeight(index) {
+        grid().datagrid('fixDetailRowHeight', index);
+    }
+
+    function onRowExpand(index, row) {
+        var ddv = $(this).datagrid('getRowDetail', index).find('div.ddv');
+        ddv.panel({
+            height: 80,
+            border: false,
+            cache: false,
+            href: '',
+            onLoad: function () {
+                fixRowHeight(index);
+            }
+        });
+        fixRowHeight(index);
+    }
+
+    function fmtDetail(index, row) {
+        return '<div class="ddv" style="padding:5px 0"></div>';
+    }
+
+    function onEdit(e, id) {
+
+    }
+
+    function onDel(e, id, name) {
+
+    }
+
+     // 操作
+    function fmtOper(val, row) {
+        return val;
+    }
+
+    // 头像
+    function fmtAtr(val, row) {
+        return val;
+    }
+
+    // 电话
+    function fmtTel(val, row) {
+        var text = "未绑定";
+        if (!!val) {
+            text = val;
+        }
+        return text;
+    }
+    
+    // 数字证书
+    function fmtDigital(val, row) {
+        var text = "未绑定";
+        if (!!val) {
+            text = "已绑定";
+        }
+        return text;
+    }
+
+    function comboSelect(id) {
+        function cb(newVal, oldVal) {
+            $.get('@Url.Action("Tree", "PoliceType")', { orgId: newVal.id }, function (data) {
+                $(id).combotree('loadData', data);
+            });
+        }
+        return cb;
+    }
+
+    function queryClear() {
+
+        $("#queryOrgId").combotree('setValue', '');
+        $("#queryPtpId").combotree('loadData', []);
+        $("#queryPtpId").combotree('setValue', '');
+        $('#queryName').val('');
+        $('#queryCode').val('');
+    }
+    
+    function loadFormData(data) {
+        var defaults = {
+            id: null, name: null, code: null, sex: 1, orgId: null, ptpId: null
+        };
+        $.extend(defaults, data);
+        form().form('load', defaults);
+    }
+
+    function showFormDlg(data) {
+        loadFormData(data);
+        xdlg.open();
+    }
+
+    setQueryParams({
+        orgId: function () { return $('#queryOrgId').val(); },
+        ptId: function () { return $('#queryPtpId').val(); },
+        name: function () { return $('#queryName').val(); },
+        code: function () { return $('#queryCode').val(); }
+    });
+
+    var sexTreeData = [
+        { id: 0, text: '女', children: [] },
+        { id: 1, text: '男', children: [] },
+        { id: 2, text: '其他', children: [] }
+    ];
+</script>
+}

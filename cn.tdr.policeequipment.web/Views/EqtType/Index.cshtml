@@ -1,0 +1,119 @@
+﻿@using cn.tdr.policeequipment.web.Models
+@model TableEqtTypeHeaderModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@Html.Partial("_PartialTreeGrid",
+    new TreeGridPageModel<TableTreeHeaderModel>
+    {
+        dataAction = Url.Action("GetData"),
+        fieldTree = Model.name,
+        formModel = new GridEditFormModel
+        {
+            formPartialPage = "_PartialEqtTypeForm",
+            formAction = Url.Action("FormSubmit"),
+            formModel = Model
+        },
+        headerPartialPage = "_PartialEqttypeTableRow",
+        headerPartialPageModel = new GridRowModel<TableTreeHeaderModel>
+        {
+            actionFormart = "fmtOper",
+            headerModel = Model
+        },
+        isAddTop = true,
+        tableHeight = ViewBag.ViewHeight,
+        topAddAction = "onAdd()"
+    })
+
+@section scripts{
+<script type="text/javascript">
+    function formDefaultData(data) {
+        var defaults = {
+            id: null,
+            name: null,
+            code: null,
+            hits:0,
+            parentId: null
+        };
+        $.extend(defaults, data);
+        return defaults;
+    }
+
+    function showFormDlg(data) {
+        if (!!data) {
+            form().form('load', data);
+            xdlg.open();
+        }
+    }
+
+    function onAdd(id) {
+        var data = formDefaultData();
+        if (!!id) {
+            data.parentId = id;
+        }
+        showFormDlg(data);
+    }
+
+    function onDel(e, id, name) {
+        $.messager.confirm('删除：', '是否删除类型: ' + name + ' ?', function (r) {
+            if (!!r) {
+                $.post('@Url.Action("Remove")', { id: id }, function (data) {
+                    if (!data.code && data.code == 0) {
+                        grid().treegrid('reload');
+                    }
+                });
+            }
+        });
+    }
+
+    function getFormData(id, row) {
+        var data = null;
+        if (id == row.id) {
+            row.parentId = row._parentId;
+            data = formDefaultData(row);
+        }
+        return data;
+    }
+
+    function getEditData(id, items) {
+        if (!items || !items.length) {
+            return null;
+        }
+
+        var data = null;
+        for (var i = 0; i < items.length; i++) {
+            var row = items[i];
+            var data = getFormData(id, row);
+            if (!data) {
+                data = getEditData(id, row.children);
+            }
+
+            if (!!data) {
+                break;
+            }
+        }
+        return data;
+    }
+
+    function onEdit(e, id) {
+        var data = grid().treegrid('getData');
+        var formData = getEditData(id, data);
+
+        showFormDlg(formData);
+    }
+
+    function onAddSub(e, id) {
+        onAdd(id);
+    }
+
+    function fmtOper(val, row) {
+        var html = '<a href="javascript:void(0)" style="color:red;" onclick="onDel(this, \'' + val + '\', \'' + row.name + '\');return false;" class="easyui-linkbutton" data-options="plain:true">删除</a>\
+                     <a href="javascript:void(0)" style="color:red;" onclick="onEdit(this, \'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">编辑</a>\
+                     <a href="javascript:void(0)" style="color:red;" onclick="onAddSub(this, \'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">添加</a>';
+
+        return html;
+    }
+</script>
+}

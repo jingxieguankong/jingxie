@@ -1,0 +1,25 @@
+﻿
+<input type="hidden" id="ptpId" name="ptpId" />
+<div class="x-form-row" style="padding:5px;">
+    <input id="cateId" name="cateId"
+           style="width:100%;height:26px" class="easyui-combotree"
+           data-options="url:'@Url.Action("Tree", "EqtType")',method:'get',prompt:'装备类型 ...',required:true" />
+</div>
+
+<div class="x-form-row" style="padding:5px;">
+    <input id="num" name="num"
+           style="width:100%;height:26px" class="easyui-numberbox" 
+           data-options="min:0,max:10,prompt:'装备数量 ...',required:true" />
+</div>
+
+<div class="x-form-row" style="padding:5px;">
+    <input id="isPk" name="isPk"
+           style="width:100%;height:26px" class="easyui-combotree"
+           data-options="data:isPkTreeData,prompt:'主装备 ...',required:true,onSelect:pkTreeSelected" />
+</div>
+
+<div id="x-form-cate-isrq" class="x-form-row" style="padding:5px;">
+    <input id="isRq" name="isRq"
+           style="width:100%;height:26px" class="easyui-combotree"
+           data-options="data:isRqTreeData,prompt:'必备装备 ...',required:true" />
+</div>

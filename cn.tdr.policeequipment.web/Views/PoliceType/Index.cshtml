@@ -1,0 +1,242 @@
+﻿@using cn.tdr.policeequipment.web.Models
+@model TablePoliceTypeHeaderModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.CateItemFormDlgId = "x-dlg-form-cate";
+    ViewBag.CateItemFormId = "x-dlg-form-cate-form";
+}
+
+@Html.Partial("_PartialDataGrid",
+    new DataGridPageModel<TableHeaderModel>
+    {
+        dataAction = Url.Action("GetData"),
+        formModel = new GridEditFormModel
+        {
+            formPartialPage = "_PartialPtpForm",
+            formAction = Url.Action("FormSubmit"),
+            formModel = Model
+        },
+        headerPartialPage = "_PartialTablePtpRow",
+        headerPartialPageModel = new GridRowModel<TableHeaderModel>
+        {
+            actionFormart = "fmtOper",
+            headerModel = Model
+        },
+        options = $",view:groupview,groupField:'{Model.groupId.field}',groupFormatter:fmtGroup",
+        toolbarPartialPage = "_PartialTablePtpBar",
+        tableHeight = ViewBag.ViewHeight
+    })
+
+@Html.Partial("_PartialForm",
+    new GridEditFormModel
+    {
+        cancelAction = "xfdlg.close()",
+        submitAction = "cateItemSubmit()",
+        formId = ViewBag.CateItemFormId,
+        formAction = Url.Action("AddCateItem"),
+        formPartialPage = "_PartialPtpStdForm",
+        dlgId = ViewBag.CateItemFormDlgId,
+        formTitle = "添加装备标准",
+        formModel = null
+    })
+
+@section scripts{
+<script type="text/javascript" src="@Url.Content("~/Scripts/easyui/datagrid-groupview.js")"></script>
+<script type="text/javascript">
+
+    var xfdlg = (function (id) {
+        return {
+            open: function () { $(id).dialog('open'); },
+            close: function () { $(id).dialog('close'); }
+        };
+    })("#@ViewBag.CateItemFormDlgId");
+
+    function cateItemForm() {
+        return $("#@ViewBag.CateItemFormId");
+    }
+
+    function fmtOper(val, row) {
+        debugger;
+        var html = '';
+        if (!row.categoryName) {
+            return html;
+        }
+
+        html = '<a href="javascript:void(0)" style="color:red;" onclick="onStdDel(this, \'' + row.categoryId + '\', \'' + row.ptp.id + '\', \'' + row.ispk + '\', \'' + row.isrq + '\', \'' + row.categoryName + '\');return false;" class="easyui-linkbutton" data-options="plain:true">删除装备</a>';
+        return html;
+    }
+
+    function onStdDel(e, cateId, ptpId, isPk, isRq, name) {
+        $.messager.confirm('删除：', '是否删除警种装备: ' + name + ' ?', function (r) {
+            if (!!r) {
+                $.post('@Url.Action("RemoveCateItem")', { cateId: cateId, ptpId: ptpId, isPk:isPk, isRq:isRq }, function (data) {
+                    var defaults = { code: 0, msg: null, data: false };
+                    $.extend(defaults, data);
+                    if (defaults.code == 0 && !!defaults.data) {
+                        gridReload();
+                    }
+
+                    if (!!defaults.code) {
+                        $.messager.alert('提示', defaults.msg + '\n代码：' + defaults.code);
+                    }
+                });
+            }
+        });
+    }
+
+    function onPtpEdit(e, id, name, orgId) {
+        showPtpFormDlg({
+            id: id, orgId: orgId, name: name
+        });
+    }
+
+    function onPtpDel(e, id, name) {
+        $.messager.confirm('删除：', '是否删除警种: ' + name + ' ?', function (r) {
+            if (!!r) {
+                $.post('@Url.Action("Remove")', { id: id }, function (data) {
+                    if (!data.code && data.code == 0) {
+                        gridReload();
+                    }
+                });
+            }
+        });
+    }
+
+    function onCateAdd(e, id) {
+        var defaults = { ptpId: id, cateId: null, num: 1, isPk: 0, isRq: 1 };
+        cateItemForm().form('load', defaults);
+        xfdlg.open();
+    }
+
+    function fmtGroup(val, rows) {
+        var data = rows[0];
+        var defaults = {
+            ptp: {
+                id: null, name: null,
+                org: { id: null, name: null }
+            }
+        };
+        $.extend(defaults, data);
+
+        var html = '<span style="color:darkgreen;">' + defaults.ptp.org.name + '</span> - <span style="color:darkblue;">' + defaults.ptp.name + '</span>\
+                    <a href="javascript:void(0)" style="color:red; padding-left:10px;" onclick="onPtpEdit(this, \'' + defaults.ptp.id + '\', \'' + defaults.ptp.name + '\', \'' + defaults.ptp.org.id + '\');return false;" class="easyui-linkbutton" data-options="plain:true">编辑警种</a>\
+                    | <a href="javascript:void(0)" style="color:red;" onclick="onPtpDel(this, \'' + defaults.ptp.id + '\', \'' + defaults.ptp.name + '\');return false;" class="easyui-linkbutton" data-options="plain:true">删除警种</a>\
+                    | <a href="javascript:void(0)" style="color:red;" onclick="onCateAdd(this, \'' + defaults.ptp.id + '\');return false;" class="easyui-linkbutton" data-options="plain:true">添加警种装备标准装备</a>';
+        return html;
+    }
+
+    function fmtCate(val, row) {
+        if (!row.categoryName) {
+            return '';
+        }
+
+        return val;
+    }
+
+    function fmtNum(val, row) {
+        if (!row.categoryName) {
+            return '';
+        }
+
+        return val;
+    }
+
+    function fmtPk(val, row) {
+        if (!row.categoryName) {
+            return '';
+        }
+
+        var text = '否';
+        if (!!val) {
+            text = '是';
+        }
+        return text;
+    }
+
+    function fmtRq(val, row) {
+        if (!row.categoryName) {
+            return '';
+        }
+
+        var text = '否';
+        if (!!val) {
+            text = '是';
+        }
+        return text;
+    }
+
+    function cateItemSubmit() {
+        cateItemForm().form('submit', {
+            success: function (data) {
+                xfdlg.close();
+                var defaults = { code: 0, msg: null, data: false };
+                var data = eval('(' + data + ')');
+                $.extend(defaults, data);
+                if (defaults.code == 0 && !!defaults.data) {
+                    gridReload();
+                }
+
+                if (!!defaults.code) {
+                    $.messager.alert('提示', defaults.msg + '\n代码：' + defaults.code);
+                }
+            }
+        });
+    }
+
+    // 查询
+    function queryClick() {
+        grid().datagrid('load');
+    }
+
+    // 清除查询
+    function queryClear() {
+        $('#queryOrgId').combotree('setValue', '');
+    }
+
+    //
+    function ptpFormDefaults(data) {
+        var defaults = {
+            id: null, orgId: null, name: null
+        };
+        $.extend(defaults, data);
+        return defaults;
+    }
+
+    function showPtpFormDlg(data) {
+        var data = ptpFormDefaults(data);
+        form().form('load', data);
+        xdlg.open();
+    }
+
+    // 添加警种
+    function addPtpClick() {
+        showPtpFormDlg();
+    }
+
+    function pkTreeSelected(newVal, oldVal) {
+        var rqPanel = $('#x-form-cate-isrq');
+        var rqId = $('#isRq');
+        if (!!newVal.id) {
+            rqId.combotree('setValue', 1);
+            rqPanel.hide();
+        } else {
+            rqPanel.show();
+        }
+    }
+
+    setQueryParams({
+        orgId: function () { return $('#queryOrgId').val(); }
+    });
+
+    var isPkTreeData = [
+        { id: 0, text: '不是主装备', children: [] },
+        { id: 1, text: '是主装备', children: [] }
+    ];
+
+    var isRqTreeData = [
+        { id: 0, text: '可选装备', children: [] },
+        { id: 1, text: '重要装备', children: [] }
+    ];
+
+</script>
+}

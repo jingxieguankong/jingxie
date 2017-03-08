@@ -16,6 +16,13 @@
         public TableCellModel id => new TableCellModel { field = "id", title = "Id" };
     }
 
+    public abstract class TableGroupHeaderModel:TableHeaderModel
+    {
+        public TableCellModel groupId => new TableCellModel { field = "groupId", title = groupIdTitle };
+
+        protected virtual string groupIdTitle => "groupId";
+    }
+
     public abstract class TableTreeHeaderModel:TableHeaderModel
     {
         public TableCellModel parentId => new TableCellModel { field = "_parentId", title = ParentIdTitle };

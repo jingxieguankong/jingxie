@@ -1,0 +1,14 @@
+﻿
+
+@using cn.tdr.policeequipment.web.Models
+@model GridRowModel<TableHeaderModel>
+@{
+    var header = Model.headerModel as TablePoliceTypeHeaderModel;
+}
+<tr>
+    <th data-options="field:'@header.category.field',align:'left',width:1,formatter:fmtCate">@header.category.title</th>
+    <th data-options="field:'@header.num.field',align:'left',width:1,formatter:fmtNum">@header.num.title</th>
+    <th data-options="field:'@header.ispk.field',align:'left',width:1,formatter:fmtPk">@header.ispk.title</th>
+    <th data-options="field:'@header.isrq.field',align:'left',width:1,formatter:fmtRq">@header.isrq.title</th>
+    <th data-options="field:'@header.id.field',align:'left',width:1,formatter:@Model.actionFormart"></th>
+</tr>
