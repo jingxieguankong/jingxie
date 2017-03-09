@@ -1,0 +1,15 @@
+﻿
+
+@using cn.tdr.policeequipment.web.Models
+@model GridRowModel<TableHeaderModel>
+@{
+    var header = Model.headerModel as TableCabinetHeaderModel;
+}
+<tr>
+    <th data-options="field:'@header.name.field',align:'left',width:3">@header.name.title</th>
+    <th data-options="field:'@header.org.field',align:'left',width:3,formatter:fmtOrg">@header.org.title</th>
+    <th data-options="field:'@header.site.field',align:'left',width:1,formatter:fmtSite">@header.site.title</th>
+    <th data-options="field:'@header.officer.field',align:'left',width:1,formatter:fmtOfficer">@header.officer.title</th>
+    <th data-options="field:'@header.gps.field',align:'left',width:2,formatter:fmtGps">@header.gps.title</th>
+    <th data-options="field:'@header.id.field',align:'left',formatter:@Model.actionFormart"></th>
+</tr>

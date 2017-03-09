@@ -1,0 +1,20 @@
+﻿
+
+
+<div class="x-form-row" style="padding:5px;">
+    <input id="name" name="name" class="easyui-textbox"
+           data-options="prompt:'警械柜名称 ...',required:true" style="width:100%;height:26px" />
+</div>
+<div class="x-form-row" style="padding:5px;">
+    <input id="orgId" name="orgId" style="width:100%;height:26px" class="easyui-combotree"
+           data-options="url:'@Url.Action("Tree", "Org")',method:'get',prompt:'选择组织机构 ...',required:true" />
+</div>
+<div class="x-form-row" style="padding:5px;">
+    <input id="lon" name="lon" class="easyui-numberbox"
+           data-options="prompt:'GPS 经度 ...',required:true,precision:8" style="width:30%;height:26px" />
+    <span style="height:26px;line-height:26px;font-weight:700;">，</span>
+    <input id="lat" name="lat" class="easyui-numberbox"
+           data-options="prompt:'GPS 纬度 ...',required:true,precision:8" style="width:30%;height:26px" />
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="mapPointerGps();return false;"
+       style="text-align:center;height:26px;line-height:26px;">从地图选择 ... </a>
+</div>
