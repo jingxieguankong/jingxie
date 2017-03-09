@@ -389,3 +389,21 @@ Polyline.prototype.openInfoWindowHtml = function (html, bIsInScreen) {
         throw EzErrorFactory.createError("Polyline::openInfoWindowHtml方法中不正确", e)
     }
 };
+
+/**
+*解决在 chrome 浏览器下点击地图时报错的bug,非IE浏览器不支持 document.focus()方法,改用遍历页面所有的文本框,触发它们的失去焦点事件
+**/
+MainFrame.prototype.onClick = function (b) {
+    //点击地图图层时,页面其他的文本框元素失去焦点
+    var txtInputList = document.getElementsByTagName("input");
+    var txtTextareaList = document.getElementsByTagName("textarea");
+    for (var i = 0; i < txtInputList.length; i++) {
+        txtInputList[i].blur();
+    }
+    for (var i = 0; i < txtTextareaList.length; i++) {
+        txtTextareaList[i].blur();
+    }
+    EzEvent.ezEventListener.source = this;
+    EzEvent.ezEventListener.eventType = EzEvent.MAP_CLICK;
+    EzEvent.trigger(EzEvent.ezEventListener, EzEvent)
+};
