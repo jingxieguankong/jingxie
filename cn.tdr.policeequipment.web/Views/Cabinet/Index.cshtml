@@ -103,9 +103,13 @@
         $.extend(defaults, opts);
 
         // 显示 GPS 点选取器
-        xmwd.open(function (gps) {
-            $('#lon').numberbox('setValue', gps.lon);
-            $('#lat').numberbox('setValue', gps.lat);
+        xmwd.open({
+            lon: $('#lon').numberbox('getValue'),
+            lat: $('#lat').numberbox('getValue'),
+            cb: function (gps) {
+                $('#lon').numberbox('setValue', gps.lon);
+                $('#lat').numberbox('setValue', gps.lat);
+            }
         });
     }
 

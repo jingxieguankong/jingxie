@@ -152,6 +152,7 @@
     <Content Include="Content\img\mapPosition\person_on.png" />
     <Content Include="Content\img\mapPosition\policeCabinet .png" />
     <Content Include="Content\img\mapPosition\policeCabinet _on.png" />
+    <Content Include="Content\img\mapPosition\thumbtack.png" />
     <Content Include="Content\img\tools.png" />
     <Content Include="Content\img\password.png" />
     <Content Include="Content\img\police_1.png" />

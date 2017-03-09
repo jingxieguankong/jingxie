@@ -20,10 +20,19 @@
     var xmwd = (function (id) {
         var cbHd = null;
         var wnd = {
-            id:id,
-            map:null,
-            open: function (cb) {
-                cbHd = cb;
+            id: id,
+            point: {lat:0, lon:0},
+            map: null,
+            open: function (opts) {
+                var defaults = {
+                    lon: 0,
+                    lat: 0,
+                    cb: function (coord) { }
+                };
+                $.extend(defaults, opts);
+                $.extend(wnd.point, defaults);
+
+                cbHd = defaults.cb;
                 $('#' + id).window('open');
             },
             close: function () {
@@ -55,16 +64,49 @@
         // 清除图层内容
         xmwd.map.clear();
         setGpsValue();
+        
+        moveToPoint(xmwd.point);
+    }
+
+    function moveToPoint(point) {
+        var defaults = { lat: 0, lon: 0 };
+        $.extend(defaults, point);
+
+        if (!!defaults.lat && !!defaults.lon) {
+            setGpsValue(defaults.lon + ',' + defaults.lat);
+            var vPoint = new Point(defaults.lon, defaults.lat);
+            drawMarket(vPoint);
+            xmwd.map.centerAtLatLng(vPoint);
+        }
     }
 
     function setGpsValue(coord) {
         $('#x-gps-val').textbox('setValue', coord);
     }
 
+    function drawMarket(point) {
+        var pIcon = new Icon();
+        pIcon.height = 28;
+        pIcon.width = 19;
+        pIcon.topOffset = -14;
+        pIcon.leftOffset = 0;
+        pIcon.image = "@Url.Content("~/Content/img/mapPosition/thumbtack.png")";
+        var marker = new Marker(point, pIcon, null);
+        xmwd.map.addOverlay(marker);
+    }
+
     function onBtnSelectClick() {
         xmwd.map.changeDragMode('drawPoint', null, null, function (coord) {
+            // 清除之前的图层
+            xmwd.map.clear();
+
+            // 标注
+            var pPoint = new Point(coord.toString());
+            drawMarket(pPoint);
+
+            // 设置传回的 GPS 值
             setGpsValue(coord);
         });
     }
-    
+
 </script>
