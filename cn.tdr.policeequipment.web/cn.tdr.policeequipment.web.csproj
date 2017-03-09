@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\common.css" />
+    <Content Include="Content\grid.css" />
     <Content Include="Content\img\account.png" />
     <Content Include="Content\img\jinghui_1.png" />
     <Content Include="Content\img\male.gif" />
@@ -1012,6 +1013,7 @@
     <Compile Include="Controllers\PoliceTypeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SigninController.cs" />
+    <Compile Include="Controllers\StorageController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1027,6 +1029,7 @@
     <Compile Include="Models\GridModels.cs" />
     <Compile Include="Models\TablePoliceTypeModels.cs" />
     <Compile Include="Models\TableRoleModels.cs" />
+    <Compile Include="Models\TableStorageModels.cs" />
     <Compile Include="Models\TableUserModels.cs" />
     <Compile Include="Models\TreeModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1099,6 +1102,11 @@
     <Content Include="Views\Officer\_PartialTableOfficerRow.cshtml" />
     <Content Include="Views\Officer\_PartialOfficerForm.cshtml" />
     <Content Include="Views\Officer\_PartialOfficerTableBar.cshtml" />
+    <Content Include="Views\Storage\Index.cshtml" />
+    <Content Include="Views\Storage\_PartialStorageTableRow.cshtml" />
+    <Content Include="Views\Storage\_PartialStorageForm.cshtml" />
+    <Content Include="Views\Storage\_PartialStorageTableBar.cshtml" />
+    <Content Include="Views\Map\DrawPoint.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

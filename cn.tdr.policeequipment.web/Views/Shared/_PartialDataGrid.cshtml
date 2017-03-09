@@ -41,11 +41,32 @@
     }
 
     function form() {
-        return $("#@Model.formModel.formId")
+        return $("#@Model.formModel.formId");
     }
 
     function gridReload() {
         grid().datagrid('reload');
+    }
+
+    function onDelHd(opts) {
+        var defaults = {
+            url:null,
+            name: null,
+            queryParams:null,
+            cb: function (data, opts) {
+                if (!data.code && data.code == 0) {
+                    gridReload();
+                }
+            }
+        };
+        $.extend(defaults, opts);
+        $.messager.confirm('删除：', '是否删除: ' + defaults.name + ' ?', function (r) {
+            if (!!r) {
+                $.post(defaults.url, defaults.queryParams, function (data) {
+                    defaults.cb(data, defaults);
+                });
+            }
+        });
     }
 
     // form submit action

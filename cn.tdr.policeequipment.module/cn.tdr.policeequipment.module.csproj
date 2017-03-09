@@ -53,6 +53,7 @@
     <Compile Include="models\OfficerModels.cs" />
     <Compile Include="models\PoliceTypeModes.cs" />
     <Compile Include="models\RoleModels.cs" />
+    <Compile Include="models\StorageModels.cs" />
     <Compile Include="models\UserInfo.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="MyModule.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="PoliceTypeModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleModule.cs" />
+    <Compile Include="StorageModule.cs" />
     <Compile Include="UserModule.cs" />
   </ItemGroup>
   <ItemGroup>
