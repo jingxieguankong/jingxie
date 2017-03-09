@@ -25,30 +25,75 @@
         tableHeight = ViewBag.ViewHeight
     })
 
-<div id="x-map-selector" class="easyui-window" title="GPS 地图选择器"
-     style="width:70%;height:70%;padding:10px;" 
-     data-options="collapsible:false,minimizable:false,maximizable:false,draggable:false,resizable:false,modal:true,closed:true,onOpen:onMapSelectorShowed">
-</div>
+@Html.Partial("_PartialMapSelector")
 
 @section scripts{
 <script type="text/javascript" src="@Url.Content("~/Scripts/pgis/js/EzMapAPI.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/Scripts/pgis/js/EzServerClient.Extend.js")"></script>
 <script type="text/javascript">
 
+    function getRowData(id, cb) {
+        var data = grid().datagrid('getData');
+        for (var i = 0; i < data.rows.length; i++) {
+            var row = data.rows[i];
+            if (row.id == id) {
+                cb(row);
+                break;
+            }
+        }
+    }
+
+    function onEdit(e, id) {
+        getRowData(id, function (row) {
+            var defaults = {
+                orgId: row.org.id
+            };
+            $.extend(defaults, row);
+            showFormDlg(defaults);
+        });
+    }
+
+    function onDel(e, id, name) {
+        var defaults = {
+            name: name,
+            url: '@Url.Action("Remove")',
+            queryParams: { id: id }
+        };
+        onDelHd(defaults);
+    }
+
     function fmtOper(val, row) {
-        return val;
+        var html = '<span class="x-a-cls" onclick="onEdit(this, \'' + val + '\' )">编辑</span>\
+                    <span class="x-a-cls" onclick="onDel(this, \'' + val + '\', \'' + row.name + '\' )">删除</span>';
+        return html;
     }
 
     function fmtSite(val, row) {
-       
+        var text = "未绑定";
+        if (!!val) {
+            text = "已绑定";
+        }
+        return text;
     }
 
     function fmtOrg(val, row) {
-
+        return row.org.name;
     }
 
     function fmtOfficer(val, row) {
+        var text = "( 暂无 )";
+        if (!!val && !!val.name) {
+            text = val.name;
+        }
+        return text;
+    }
 
+    function fmtGps(val, row) {
+        var text = "( 未设置 )";
+        if (!!row.lon && !!row.lat) {
+            text = '( ' + row.lon + ',' + row.lat + ' )';
+        }
+        return text;
     }
 
     function mapPointerGps(opts) {
@@ -58,14 +103,12 @@
         $.extend(defaults, opts);
 
         // 显示 GPS 点选取器
-        $('#x-map-selector').window('open');
-
-        // 获取点
-
-        // 成功之后返回处理
-
+        xmwd.open(function (gps) {
+            $('#lon').numberbox('setValue', gps.lon);
+            $('#lat').numberbox('setValue', gps.lat);
+        });
     }
-    
+
     function loadFormData(data) {
         var defaults = {
             id: null, name: null, orgId: null, lon: 0, lat: 0
@@ -83,14 +126,6 @@
         $("#queryOrgId").combotree('setValue', '');
         $('#queryName').val('');
     }
-
-    function onMapSelectorShowed() {
-        if (!pgisMap) {
-            pgisMap = new EzMap(document.getElementById("x-map-selector"));
-        }        
-    }
-        
-    var pgisMap = null;
 
     setQueryParams({
         orgId: function () { return $('#queryOrgId').val(); },

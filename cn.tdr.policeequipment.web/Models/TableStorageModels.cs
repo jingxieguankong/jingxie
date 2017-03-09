@@ -14,7 +14,7 @@
 
         public TableCellModel site => new TableCellModel { field="siteId", title="基站" };
 
-        public TableCellModel gps => new TableCellModel { field = "gps", title = "位置" };
+        public TableCellModel gps => new TableCellModel { field = "gps", title = "位置 ( GPS )" };
 
         public TableCellModel lon => new TableCellModel { field = "lon" };
 
@@ -31,6 +31,8 @@
         {
             var json = new JObject();
             json[header.gps.field] = $"{data.storage.Lon},{data.storage.Lat}";
+            json[header.lat.field] = data.storage.Lat;
+            json[header.lon.field] = data.storage.Lon;
             json[header.id.field] = data.storage.Id;
             json[header.name.field] = data.storage.Name;
             json[header.officer.field] = GetOfficer(data.officer);

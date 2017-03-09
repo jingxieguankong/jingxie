@@ -32,7 +32,25 @@
         [HttpPost]
         public JsonResult FormSubmit(string id, string orgId, string name, double lon, double lat)
         {
+            var stg = new Storage
+            {
+                IsDel = (short)DeleteStatus.No,
+                Lat = lat,
+                Lon = lon,
+                Name = name,
+                OrgId = orgId
+            };
             var data = false;
+            var module = new StorageModule(CurrentUser);
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                data = module.Add(stg);
+            }
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                stg.Id = id;
+                data = module.Modify(stg, t => t.Id == id);
+            }
             return Json(new { code = 0, msg = "Ok", data = data }, "text/json");
         }
 
@@ -40,6 +58,8 @@
         public JsonResult Remove(string id)
         {
             var data = false;
+            var module = new StorageModule(CurrentUser);
+            data = module.Remove(t => t.Id == id);
             return Json(new { code = 0, msg = "Ok", data = data });
         }
     }

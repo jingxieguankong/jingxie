@@ -13,21 +13,38 @@
     {
         public StorageModule(UserInfo user) : base(user)
         {
+            Handler = new StorageHandle(Repository);
         }
+
+        public StorageHandle Handler { get; private set; }
 
         public bool Add(Storage storage)
         {
-            return false;
+            return
+                null != Handler.Add(storage, true);
         }
 
         public bool Modify(Storage storage, Expression<Func<Storage, bool>> predicate)
         {
-            return false;
+            var items = Handler.ModifyAny(
+                m => {
+                    m.IsDel = storage.IsDel;
+                    m.Lat = storage.Lat;
+                    m.Lon = storage.Lon;
+                    m.Name = storage.Name;
+                    m.OrgId = storage.OrgId;
+                    return m;
+                }, predicate, true);
+
+            return
+                0 < items.Count();
         }
 
         public bool Remove(Expression<Func<Storage, bool>> predicate)
         {
-            return false;
+            var items = Handler.RemoveAny(predicate, true);
+            return
+                0 < items.Count();
         }
         
         public IEnumerable<StorageModel> Page(string orgId, string name, int page, int size, out int count)
@@ -74,6 +91,13 @@
                     });
                 return items;
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            Handler.Dispose();
+            Handler = null;
         }
     }
 }

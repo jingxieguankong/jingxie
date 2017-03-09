@@ -1,0 +1,70 @@
+﻿
+<div id="x-map-selector" class="easyui-window" title="GPS 地图选择器"
+     style="width:70%;height:80%;padding:10px;"
+     data-options="collapsible:false,minimizable:false,maximizable:false,draggable:false,resizable:false,modal:true,closed:true,footer:'#x-map-selector-footer',onOpen:onMapWndOpen">
+    <div style="position:absolute; top:35px;left:50px; width:200px;">
+        
+    </div>
+</div>
+<div id="x-map-selector-footer" style="padding:5px;">
+    <input id="x-gps-val" class="easyui-textbox"
+           data-options="readonly:true,prompt:'请在地图上选择位置 ... '"
+           style="width:70%;height:23px;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="onBtnSelectClick();return false;"
+       style="text-align:center;vertical-align:middle; height:23px;line-height:23px;">选择 ... </a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="xmwd.close(); return false;"
+       data-options="iconCls:'icon-ok'"
+       style="text-align:center;vertical-align:middle; height:23px;line-height:23px;">确定</a>
+</div>
+<script type="text/javascript">
+    var xmwd = (function (id) {
+        var cbHd = null;
+        var wnd = {
+            id:id,
+            map:null,
+            open: function (cb) {
+                cbHd = cb;
+                $('#' + id).window('open');
+            },
+            close: function () {
+                if (cbHd instanceof Function) {
+                    cbHd(wnd.getSelectGps());
+                }
+                $('#' + id).window('close');
+            },
+            // 获取选中点的 GPS 坐标
+            getSelectGps: function () {
+                var defaults = {
+                    lon: 0, lat: 0
+                };
+                var coords = $('#x-gps-val').textbox('getValue').split(',');
+                if (coords.length == 2) {
+                    defaults.lon = coords[0];
+                    defaults.lat = coords[1];
+                }
+                return defaults;
+            }
+        };
+        return wnd;
+    })('x-map-selector');
+
+    function onMapWndOpen() {
+        if (!xmwd.map) {
+            xmwd.map = new EzMap(document.getElementById(xmwd.id));
+        }
+        // 清除图层内容
+        xmwd.map.clear();
+        setGpsValue();
+    }
+
+    function setGpsValue(coord) {
+        $('#x-gps-val').textbox('setValue', coord);
+    }
+
+    function onBtnSelectClick() {
+        xmwd.map.changeDragMode('drawPoint', null, null, function (coord) {
+            setGpsValue(coord);
+        });
+    }
+    
+</script>
