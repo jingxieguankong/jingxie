@@ -29,6 +29,13 @@
             return json;
         }
 
+        [HttpGet]
+        public JsonResult Tree(string orgId)
+        {
+            var items = new ComboTreeModel[0];
+            return Json(items);
+        }
+
         [HttpPost]
         public JsonResult FormSubmit(string id, string orgId, string name, double lon, double lat)
         {

@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="CabinetHandle.cs" />
     <Compile Include="EqtTypeHandle.cs" />
+    <Compile Include="EquipmentHandle.cs" />
     <Compile Include="FeatureHandle.cs" />
     <Compile Include="Handle.cs" />
     <Compile Include="MenuHandle.cs" />

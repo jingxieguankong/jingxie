@@ -47,11 +47,13 @@
     <Compile Include="AuthModule.cs" />
     <Compile Include="CabinetModule.cs" />
     <Compile Include="EqtTypeModule.cs" />
+    <Compile Include="EquipmentModule.cs" />
     <Compile Include="FeatureModule.cs" />
     <Compile Include="MenuModule.cs" />
     <Compile Include="MessageModule.cs" />
     <Compile Include="models\AccountModels.cs" />
     <Compile Include="models\CabinetModels.cs" />
+    <Compile Include="models\EquipmentModels.cs" />
     <Compile Include="models\OfficerModels.cs" />
     <Compile Include="models\PoliceTypeModes.cs" />
     <Compile Include="models\RoleModels.cs" />

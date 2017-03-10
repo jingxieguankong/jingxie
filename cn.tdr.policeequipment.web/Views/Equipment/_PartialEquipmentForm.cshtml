@@ -1,0 +1,33 @@
+﻿
+<div class="x-form-row" style="padding:5px;">
+    <input id="eqtId" name="eqtId" style="width:100%;height:26px" class="easyui-combotree"
+           data-options="url:'@Url.Action("Tree", "EqtType")',method:'get',prompt:'选择警械类型 ...',required:true" />
+</div>
+<div class="x-form-row" style="padding:5px;">
+    <input id="mod" name="mod" class="easyui-textbox"
+           data-options="prompt:'型号 ...'" style="width:100%;height:26px" />
+</div>
+<div class="x-form-row" style="padding:5px;">
+    <input id="fac" name="fac" class="easyui-textbox"
+           data-options="prompt:'厂家 ...'" style="width:100%;height:26px" />
+</div>
+<div class="x-form-row" style="padding:5px;">
+    <input id="facCode" name="facCode" class="easyui-textbox"
+           data-options="prompt:'出厂编码 ...'" style="width:100%;height:26px" />
+</div>
+<div class="x-form-row" style="padding:5px;">
+    <input id="tagId" name="tagId" class="easyui-textbox"
+           data-options="prompt:'标签码 ...'" style="width:100%;height:26px" />
+</div>
+<div class="x-form-row" style="padding:5px;">
+    <input id="orgId" name="orgId" style="width:100%;height:26px" class="easyui-combotree"
+           data-options="url:'@Url.Action("Tree", "Org")',method:'get',prompt:'选择组织机构 ...',required:true" />
+</div>
+<div class="x-form-row" style="padding:5px;">
+    <input id="stgId" name="stgId" style="width:100%;height:26px" class="easyui-combotree"
+           data-options="prompt:'选择警械库 ...',required:true" />
+</div>
+<div class="x-form-row" style="padding:5px;">
+    <input id="facDate" name="facDate" style="width:100%;height:26px" class="easyui-datetimebox"
+           data-options="prompt:'生产日期 ...',required:true,showSeconds:false" />
+</div>

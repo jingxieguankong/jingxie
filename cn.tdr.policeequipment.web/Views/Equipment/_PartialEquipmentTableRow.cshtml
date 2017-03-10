@@ -1,0 +1,18 @@
+﻿
+
+
+@using cn.tdr.policeequipment.web.Models
+@model GridRowModel<TableHeaderModel>
+@{
+    var header = Model.headerModel as TableEquipmentHeaderModel;
+}
+<tr>
+    <th data-options="field:'@header.category.field',align:'left',width:2,formatter:fmtCategory">@header.category.title</th>
+    <th data-options="field:'@header.factory.field',align:'left',width:2">@header.factory.title</th>
+    <th data-options="field:'@header.tagId.field',align:'left',width:1,formatter:fmtTagId">@header.tagId.title</th>
+    <th data-options="field:'@header.status.field',align:'left',width:1,formatter:fmtStatus">@header.status.title</th>
+    <th data-options="field:'@header.power.field',align:'left',width:1,formatter:fmtPower">@header.power.title</th>
+    <th data-options="field:'@header.dispatched.field',align:'left',width:1,formatter:fmtDispatch">@header.dispatched.title</th>
+    <th data-options="field:'@header.inputDate.field',align:'left',formatter:fmtDate">@header.inputDate.title</th>
+    <th data-options="field:'@header.id.field',align:'left',formatter:@Model.actionFormart"></th>
+</tr>

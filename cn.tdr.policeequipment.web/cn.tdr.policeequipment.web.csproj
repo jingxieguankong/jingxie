@@ -1007,6 +1007,7 @@
     <Compile Include="Controllers\BasicController.cs" />
     <Compile Include="Controllers\CabinetController.cs" />
     <Compile Include="Controllers\EqtTypeController.cs" />
+    <Compile Include="Controllers\EquipmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
@@ -1025,6 +1026,7 @@
     <Compile Include="Models\TableCabinetModels.cs" />
     <Compile Include="Models\TableEqtTypeModels.cs" />
     <Compile Include="Models\MenuModels.cs" />
+    <Compile Include="Models\TableEquipmentModels.cs" />
     <Compile Include="Models\TableOrgModels.cs" />
     <Compile Include="Models\Pointer.cs" />
     <Compile Include="Models\TableModels.cs" />
@@ -1115,6 +1117,11 @@
     <Content Include="Views\Cabinet\_PartialCabinetForm.cshtml" />
     <Content Include="Views\Cabinet\_PartialCabinetTableRow.cshtml" />
     <Content Include="Views\Cabinet\_PartialCabinetTableBar.cshtml" />
+    <None Include="Properties\PublishProfiles\jingxie.pubxml" />
+    <Content Include="Views\Equipment\Index.cshtml" />
+    <Content Include="Views\Equipment\_PartialEquipmentTableRow.cshtml" />
+    <Content Include="Views\Equipment\_PartialEquipmentTableBar.cshtml" />
+    <Content Include="Views\Equipment\_PartialEquipmentForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,162 @@
+﻿@using cn.tdr.policeequipment.web.Models
+@model TableEquipmentHeaderModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_PartialDataGrid",
+    new DataGridPageModel<TableHeaderModel>
+    {
+        dataAction = Url.Action("GetData"),
+        formModel = new GridEditFormModel
+        {
+            formPartialPage = "_PartialEquipmentForm",
+            formAction = Url.Action("FormSubmit"),
+            formModel = Model
+        },
+        headerPartialPage = "_PartialEquipmentTableRow",
+        headerPartialPageModel = new GridRowModel<TableHeaderModel>
+        {
+            actionFormart = "fmtOper",
+            headerModel = Model
+        },
+        options = ",autoRowHeight:false,pagination:true,pageSize:20,view:detailview,detailFormatter:fmtDetail,onExpandRow:onRowExpand",
+        toolbarPartialPage = "_PartialEquipmentTableBar",
+        tableHeight = ViewBag.ViewHeight
+    })
+
+@section scripts{
+<script type="text/javascript" src="@Url.Content("~/Scripts/easyui/datagrid-detailview.js")"></script>
+<script type="text/javascript">
+
+    function fixRowHeight(index) {
+        grid().datagrid('fixDetailRowHeight', index);
+    }
+
+    function onRowExpand(index, row) {
+        var ddv = $(this).datagrid('getRowDetail', index).find('div.ddv');
+        ddv.panel({
+            height: 80,
+            border: false,
+            cache: false,
+            href: '',
+            onLoad: function () {
+                fixRowHeight(index);
+            }
+        });
+        fixRowHeight(index);
+    }
+
+    function fmtDetail(index, row) {
+        return '<div class="ddv" style="padding:5px 0"></div>';
+    }
+
+    function getRowData(id, cb) {
+        var data = grid().datagrid('getData');
+        for (var i = 0; i < data.rows.length; i++) {
+            var row = data.rows[i];
+            if (row.id == id) {
+                cb(row);
+                break;
+            }
+        }
+    }
+
+    function onEdit(e, id) {
+
+    }
+
+    function onDel(e, id) {
+        var defaults = {
+            name: '指定警械',
+            url: '@Url.Action("Remove")',
+            queryParams: { id: id }
+        };
+        onDelHd(defaults);
+    }
+
+
+    function fmtOper(val, row) {
+        var html = '<span class="x-a-cls" onclick="onEdit(this, \'' + val + '\' )">编辑</span>\
+                    <span class="x-a-cls" onclick="onDel(this, \'' + val + '\' )">删除</span>';
+        return html;
+    }
+
+    function fmtCategory(val, row) {
+
+    }
+
+    function fmtTagId(val, row) {
+
+    }
+
+    function fmtStatus(val, row) {
+
+    }
+
+    function fmtPower(val, row) {
+
+    }
+
+    function fmtDispatch(val, row) {
+
+    }
+
+    function fmtDate(val, row) {
+        var date = new Date(val / 10000);
+        return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+    }
+
+    function queryClear() {
+
+    }
+
+    function showFormDlg(data) {
+        var defaults = {
+            id: null, eqtId: null, mod: null, fac: null, facCode: null,
+            tagId: null, orgId: null, stgId: null, facDate: null
+        };
+        $.extend(defaults, data);
+        form().form('load', defaults);
+        xdlg.open();
+    }
+
+    function fmtDatePicker(date) {
+        return date.getFullYear() + ' 年' + (date.getMonth() + 1) + ' 月' + date.getDate() + ' 日';
+    }
+
+    
+
+    setQueryParams({
+        orgId: function () { return $('#queryOrgId').val(); },
+        storageId: function () { return $('#queryStgId').val(); },
+        cabinetId: function () { return $('#queryCabId').val(); },
+        tagCode: function () { return $('#queryTagId').val(); },
+        factorCode: function () { return $('#queryFacCode').val(); },
+        dataType: function () {
+            var dtp = $('#queryDtpId').val();
+            if (!dtp) {
+                dtp = 0;
+            }
+            return dtp;
+        }
+    });
+
+    var dataTypeTreeData = [
+        { id: 1, text: '正在布控', children: [] },
+        { id: 2, text: '已撤控', children: [] },
+        { id: 3, text: '已过期', children: [] },
+        { id: 4, text: '即将过期', children: [] },
+        { id: 5, text: '未过期', children: [] },
+        { id: 6, text: '已分配', children: [] },
+        { id: 7, text: '已损坏', children: [] },
+        { id: 8, text: '低电量', children: [] }
+    ];
+
+    $(document).ready(function () {
+        var date = new Date();
+        $("#facDate").datetimebox('setValue', date.getFullYear() + ' 年' + (date.getMonth() + 1) + ' 月' + date.getDate() + ' 日');
+    });
+
+</script>
+}
