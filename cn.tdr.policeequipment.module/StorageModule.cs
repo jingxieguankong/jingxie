@@ -93,6 +93,13 @@
             }
         }
 
+        public IEnumerable<Storage> FeatchAll(string orgId)
+        {
+            var noDel = (short)DeleteStatus.No; 
+            return
+                Handler.All(t => t.IsDel == noDel && t.OrgId == orgId).ToArray();
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

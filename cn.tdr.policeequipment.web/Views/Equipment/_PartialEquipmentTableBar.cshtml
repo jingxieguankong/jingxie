@@ -4,7 +4,7 @@
 <input id="queryFacCode" name="queryFacCode" class="easyui-textbox"
        data-options="prompt:'出厂编码 ...'" style="width:10%;height:26px" />
 <input id="queryOrgId" name="queryOrgId" style="width:20%;height:26px" class="easyui-combotree"
-       data-options="url:'@Url.Action("Tree", "Org")',method:'get',prompt:'选择组织机构 ...'" />
+       data-options="url:'@Url.Action("Tree", "Org")',method:'get',prompt:'选择组织机构 ...',onSelect:onQueryComboTreeData" />
 <input id="queryStgId" name="queryStgId" style="width:15%;height:26px" class="easyui-combotree"
        data-options="prompt:'选择警械库 ...'" />
 <input id="queryCabId" name="queryCabId" style="width:15%;height:26px" class="easyui-combotree"

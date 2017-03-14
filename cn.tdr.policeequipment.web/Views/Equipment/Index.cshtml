@@ -63,7 +63,20 @@
     }
 
     function onEdit(e, id) {
-
+        getRowData(id, function (row) {
+            var data = {};
+            $.extend(data, row, {
+                eqtId: row.category.id,
+                fac: row.factory,
+                facCode: row.factoryCode,
+                facDate: fmtDate(row.factoryDate, row),
+                purchaseDate: fmtDate(row.purchaseDate, row),
+                orgId: row.org.id,
+                stgId: row.storage.id,
+                validInterval: Math.abs((Math.abs(row.expiredDate / 10000) - Math.abs(row.factoryDate / 10000)) / (24 * 60 * 60 * 1000))
+            });
+            showFormDlg(data);
+        });
     }
 
     function onDel(e, id) {
@@ -83,49 +96,148 @@
     }
 
     function fmtCategory(val, row) {
-
+        return val.name;
     }
 
     function fmtTagId(val, row) {
-
+        var text = "未绑定";
+        if (!!val) {
+            text = '已绑定';
+        }
+        return text;
     }
 
     function fmtStatus(val, row) {
+        var text = "( 未知 )";
+        if (val == 0) {
+            text = "正常";
+        }
 
+        if (val == -1) {
+            text = "异常";
+        }
+
+        if (val == -2) {
+            text = "损坏";
+        }
+
+        return text;
     }
 
     function fmtPower(val, row) {
+        var text = "正常";
 
+        if (val == 0) {
+            text = "无电量";
+        }
+
+        if (!!val && val <= 10) {
+            text = "低电量";
+        }
+        return text + ' (' + val + ')';
     }
 
     function fmtDispatch(val, row) {
+        var text = "( 未知 )";
+        if (val == 0) {
+            text = "未布控";
+        }
 
+        if (val == 1) {
+            text = "布控中";
+        }
+
+        if (val == 2) {
+            text = "已撤控";
+        }
+
+        return text;
     }
 
     function fmtDate(val, row) {
         var date = new Date(val / 10000);
-        return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        return date.getFullYear() + '年 ' + (date.getMonth() + 1) + '月 ' + date.getDate() + '日';
     }
 
     function queryClear() {
+        $("#queryTagId").textbox('setValue', '');
+        $("#queryFacCode").textbox('setValue', '');
+        $("#queryDtpId").combotree('setValue', '');
+        $("#queryOrgId").combotree('setValue', '');
 
+        $("#queryStgId").combotree('loadData', []);
+        $("#queryCabId").combotree('loadData', []);
+        $("#queryStgId").combotree('setValue', '');
+        $("#queryCabId").combotree('setValue', '');
+    }
+
+    function loadComboTreeData(opts) {
+        var defaults = {
+            id: null, url: null, qParams: null, cb: function (data) {}
+        };
+        $.extend(defaults, opts);
+        if (!!defaults.id && !!defaults.url) {
+            $.get(defaults.url, defaults.qParams, function (data) {
+                $(defaults.id).combotree('loadData', data);
+                $(defaults.id).combotree('setValue', '');
+
+                if (defaults.cb instanceof Function) {
+                    defaults.cb(data, opts);
+                }
+            });
+        }
+    }
+
+    function onQueryComboTreeData(newVal, oldVal) {
+        debugger;
+        loadComboTreeData({
+            id: '#queryStgId',
+            url: '@Url.Action("Tree", "Storage")',
+            qParams: { orgId: newVal.id }
+        });
+
+        loadComboTreeData({
+            id: '#queryCabId',
+            url: '@Url.Action("Tree", "Cabinet")',
+            qParams: { orgId: newVal.id }
+        });
+    }
+
+    function loadFormStorageTreeData(orgId, cb) {
+        loadComboTreeData({
+            id: '#stgId',
+            url: '@Url.Action("Tree", "Storage")',
+            qParams: { orgId: orgId },
+            cb:cb
+        });
+    }
+
+    function onFormOrgSelected(newVal, oldVal) {
+        loadFormStorageTreeData(newVal.id);
     }
 
     function showFormDlg(data) {
         var defaults = {
             id: null, eqtId: null, mod: null, fac: null, facCode: null,
-            tagId: null, orgId: null, stgId: null, facDate: null
+            tagId: null, orgId: null, stgId: null, facDate: null,
+            validInterval: 1, purchaseDate: null
         };
         $.extend(defaults, data);
-        form().form('load', defaults);
+
+        if (!!defaults.orgId) {
+            // 加载警械库数据
+            loadFormStorageTreeData(defaults.orgId, function () {
+                form().form('load', defaults);
+            });
+        } else {
+            form().form('load', defaults);
+        }
         xdlg.open();
     }
 
     function fmtDatePicker(date) {
         return date.getFullYear() + ' 年' + (date.getMonth() + 1) + ' 月' + date.getDate() + ' 日';
     }
-
-    
 
     setQueryParams({
         orgId: function () { return $('#queryOrgId').val(); },

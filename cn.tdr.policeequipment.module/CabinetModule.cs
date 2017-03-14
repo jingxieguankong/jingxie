@@ -91,6 +91,13 @@
             }
         }
 
+        public IEnumerable<Cabinet> FeatchAll(string orgId)
+        {
+            var noDel = (short)DeleteStatus.No;
+            return
+                Handler.All(t => t.IsDel == noDel && t.OrgId == orgId).ToArray();
+        }
+
         public CabinetHandle Handler { get; private set; }
 
         protected override void Dispose(bool disposing)

@@ -1,10 +1,9 @@
 ﻿namespace cn.tdr.policeequipment.web.Controllers
 {
-    using System;
+    using System.Linq;
     using System.Web.Mvc;
     using Newtonsoft.Json.Linq;
     using Models;
-    using common;
     using data.entity;
     using enumerates;
     using module;
@@ -32,8 +31,14 @@
         [HttpGet]
         public JsonResult Tree(string orgId)
         {
-            var items = new ComboTreeModel[0];
-            return Json(items);
+            var module = new CabinetModule(CurrentUser);
+            var items = module.FeatchAll(orgId).Select(t => new ComboTreeModel
+            {
+                children = new ComboTreeModel[0],
+                id = t.Id,
+                text = t.Name
+            });
+            return Json(items, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

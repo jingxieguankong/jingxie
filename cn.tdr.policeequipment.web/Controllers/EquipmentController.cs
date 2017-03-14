@@ -11,6 +11,8 @@
 
     public class EquipmentController : AuthController
     {
+        private static readonly long ExpiredTimeInterval = 15L * 24 * 60 * 60 * 1000 * 10000; // 过期提前通知间隔 15 天
+
         // GET: Equipment
         public ActionResult Index(int w, int h)
         {
@@ -32,16 +34,53 @@
         }
 
         [HttpPost]
-        public JsonResult FormSubmit()
+        public JsonResult FormSubmit(string id, string eqtId, string orgId, string stgId, string tagId,
+            string mod, string fac, string facCode, DateTime facDate, int validInterval, DateTime purchaseDate)
         {
             var data = false;
+            var expiredDate = facDate.AddDays(validInterval);
+            var eqt = new Equipment
+            {
+                CateId = eqtId,
+                ChangeTime = 0,
+                Dispatched = (short)DispatchedStatus.None,
+                ExpiredTime = expiredDate.ToUnixTime(),
+                FactorCode = facCode,
+                FactorTime = facDate.ToUnixTime(),
+                Factory = fac,
+                InputTime = DateTime.Now.ToUnixTime(),
+                IsChanged = 0,
+                IsDel = (short)DeleteStatus.No,
+                IsLost = 0,
+                LibId = stgId,
+                Model = mod,
+                OrgId = orgId,
+                PurchaseTime = purchaseDate.ToUnixTime(),
+                Status = (short)EquipmentStatus.Normal,
+                TagId = tagId
+            };
+            var module = new EquipmentModule(CurrentUser);
+            var isAdd = string.IsNullOrWhiteSpace(id);
+            if (isAdd)
+            {
+                eqt.Power = 100;
+                data = module.Add(eqt);
+            }
+
+            if (!isAdd)
+            {
+                eqt.Id = id;
+                data = module.Modify(eqt, t => t.Id == id);
+            }
+
             return Json(new { code = 0, msg = "Ok", data = data }, "text/json");
         }
 
         [HttpPost]
         public JsonResult Remove(string id)
         {
-            var data = false;
+            var module = new EquipmentModule(CurrentUser);
+            var data = module.Remove(id);
             return Json(new { code = 0, msg = "Ok", data = data });
         }
     }
