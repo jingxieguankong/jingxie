@@ -60,6 +60,35 @@
         }
 
         [HttpPost]
+        public JsonResult BindEquipmentFormSubmit(string bdEqtId, string bdOfficerId, string bdCabId, string bdPtpId, string bdCateId)
+        {
+            var module = new OfficerModule(CurrentUser);
+            var status = module.BindEqt(bdOfficerId, bdEqtId, bdCabId, bdPtpId, bdCateId);
+            var data = false;
+            var code = (short)status;
+            var msg = "Ok";
+            if (status == BindEqtResultStatus.Error)
+            {
+                msg = "发生错误 。";
+            }
+            if (status == BindEqtResultStatus.Failed)
+            {
+                msg = "绑定失败，请重试 。";
+            }
+            if (status == BindEqtResultStatus.Repeate)
+            {
+                msg = "重复绑定 。";
+            }
+            if (status == BindEqtResultStatus.Success)
+            {
+                msg = "成功 。";
+                data = true;
+            }
+
+            return Json(new { code = code, msg = msg, data = data }, "text/json");
+        }
+
+        [HttpPost]
         public JsonResult Remove(string id)
         {
             var module = new OfficerModule(CurrentUser);

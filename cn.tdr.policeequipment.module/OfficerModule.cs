@@ -108,11 +108,60 @@
                 0 < count;
         }
 
+        public BindEqtResultStatus BindEqt(string officerId, string eqtId, string cabId, string ptpId, string cateId)
+        {
+            // 获取当前警员已绑定的相关装备
+            // 获取当前警员警种绑定当前装备类型的最大
+            using (var stdHandler = new StandardEquipmentHandle(Repository))
+            using (var eqtHandler = new EquipmentHandle(Repository))
+            {
+                var noDel = (short)DeleteStatus.No;
+                var std = stdHandler.All(t => t.IsDel == noDel && t.PtId == ptpId && t.CateId == cateId).FirstOrDefault();
+                if (std == null)
+                {
+                    return BindEqtResultStatus.Error;
+                }
+
+                var maxCount = std.Num;
+                var currentCount = eqtHandler.All(t => t.IsDel == noDel && t.OfficerId == officerId && t.CateId == cateId).Count();
+                if (currentCount >= maxCount)
+                {
+                    return BindEqtResultStatus.Repeate;
+                }
+
+                // 绑定
+                var items = eqtHandler.ModifyAny(m =>
+                {
+                    m.OfficerId = officerId;
+                    if (!string.IsNullOrWhiteSpace(cabId))
+                    {
+                        m.CabId = cabId;
+                    }
+                    return m;
+                }, t => t.Id == eqtId, true);
+
+                if (0 < items.Count())
+                {
+                    return BindEqtResultStatus.Success;
+                }
+
+                return BindEqtResultStatus.Failed;
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
             Handler.Dispose();
             Handler = null;
         }
+    }
+
+    public enum BindEqtResultStatus:short
+    {
+        Error = -3,
+        Repeate = -2,
+        Failed = -1,
+        Success = 0,
     }
 }

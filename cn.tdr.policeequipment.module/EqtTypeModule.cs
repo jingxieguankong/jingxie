@@ -54,6 +54,22 @@
             return items;
         }
 
+        public IEnumerable<EqtCategory> FeatchAll(string ptpId)
+        {
+            using (var stdHandler = new StandardEquipmentHandle(Repository))
+            using (var cateHandler = new EqtTypeHandle(Repository))
+            {
+                var noDel = (short)DeleteStatus.No;
+                var query =
+                    from std in stdHandler.All(t => t.IsDel == noDel && t.PtId == ptpId)
+                    join cate in cateHandler.All(t => t.IsDel == noDel) on std.CateId equals cate.Id
+                    select cate;
+
+                return
+                    query.ToArray();
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

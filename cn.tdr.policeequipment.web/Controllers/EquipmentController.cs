@@ -1,6 +1,7 @@
 ﻿namespace cn.tdr.policeequipment.web.Controllers
 {
     using System;
+    using System.Linq;
     using System.Web.Mvc;
     using Newtonsoft.Json.Linq;
     using Models;
@@ -11,14 +12,25 @@
 
     public class EquipmentController : AuthController
     {
-        private static readonly long ExpiredTimeInterval = 15L * 24 * 60 * 60 * 1000 * 10000; // 过期提前通知间隔 15 天
-
         // GET: Equipment
         public ActionResult Index(int w, int h)
         {
             ViewBag.ViewWidth = w;
             ViewBag.ViewHeight = h;
             return View(TableEquipmentHeaderModel.Header);
+        }
+
+        [HttpGet]
+        public JsonResult Tree(string orgId, string cateId, string stgId)
+        {
+            var module = new EquipmentModule(CurrentUser);
+            var items = module.FeatchAll(orgId, cateId, stgId).Select(t => new ComboTreeModel
+            {
+                children = new ComboTreeModel[0],
+                id = t.Id,
+                text = t.Model
+            });
+            return Json(items, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

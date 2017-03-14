@@ -30,6 +30,18 @@
             Handler = null;
         }
 
+        public IEnumerable<Equipment> FeatchAll(string orgId, string cateId, string stgId)
+        {
+            var items = new Equipment[0];
+            if (!string.IsNullOrWhiteSpace(orgId) && !string.IsNullOrWhiteSpace(cateId) && !string.IsNullOrWhiteSpace(stgId))
+            {
+                var noDel = (short)DeleteStatus.No;
+                items = Handler.All(t => t.IsDel == noDel && t.OrgId == orgId && t.CateId == cateId && t.LibId == stgId)
+                    .Where(t => t.OfficerId == null).Take(20).ToArray();
+            }
+            return items;
+        }
+
         public IEnumerable<EquipmentModel> Page(string orgId, string storageId, string cabinetId,
             string tagCode, string factorCode, short dataType, int page, int size, out int count)
         {

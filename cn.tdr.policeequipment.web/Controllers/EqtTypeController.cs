@@ -48,6 +48,15 @@
             return tree;
         }
 
+        [HttpGet]
+        public JsonResult TreeOnPtp(string ptpId)
+        {
+            var module = new EqtTypeModule(CurrentUser);
+            var items = module.FeatchAll(ptpId).ToArray();
+            var data = items.Distinct().Select(t => GetTree(t, items)).ToArray();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult FormSubmit(string id, string name, string code, short hits, string parentId)
         {
             var module = new EqtTypeModule(CurrentUser);

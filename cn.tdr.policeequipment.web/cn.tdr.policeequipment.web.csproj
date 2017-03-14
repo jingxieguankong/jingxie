@@ -1122,6 +1122,7 @@
     <Content Include="Views\Equipment\_PartialEquipmentTableRow.cshtml" />
     <Content Include="Views\Equipment\_PartialEquipmentTableBar.cshtml" />
     <Content Include="Views\Equipment\_PartialEquipmentForm.cshtml" />
+    <Content Include="Views\Officer\_PartialBindEquipmentForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

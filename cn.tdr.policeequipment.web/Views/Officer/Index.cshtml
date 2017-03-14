@@ -2,6 +2,8 @@
 @model TableOfficerHeaderModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.xFormDlgId = "x-dlg-form-bindeqt";
+    ViewBag.xFormId = "x-dlg-form-bindeqt-form";
 }
 
 @Html.Partial("_PartialDataGrid",
@@ -25,9 +27,52 @@
         tableHeight = ViewBag.ViewHeight
     })
 
+@Html.Partial("_PartialForm",
+    new GridEditFormModel
+    {
+        cancelAction = "xfdlg.close()",
+        submitAction = "bindEquipmentSubmit()",
+        formId = ViewBag.xFormId,
+        formAction = Url.Action("BindEquipmentFormSubmit"),
+        formPartialPage = "_PartialBindEquipmentForm",
+        dlgId = ViewBag.xFormDlgId,
+        formTitle = "绑定警械装备",
+        formModel = null
+    })
+
 @section scripts{
 <script type="text/javascript" src="@Url.Content("~/Scripts/easyui/datagrid-detailview.js")"></script>
 <script type="text/javascript">
+
+    var xfdlg = (function (id) {
+        return {
+            open: function () { $(id).dialog('open'); },
+            close: function () { $(id).dialog('close'); }
+        };
+    })("#@ViewBag.xFormDlgId");
+
+    function xForm() {
+        return $("#@ViewBag.xFormId");
+    }
+
+    function bindEquipmentSubmit() {
+        // 绑定提交
+        xForm().form('submit', {
+            success: function (data) {
+                xfdlg.close();
+                var defaults = { code: 0, msg: null, data: false };
+                var data = eval('(' + data + ')');
+                $.extend(defaults, data);
+                if (defaults.code == 0 && !!defaults.data) {
+                    gridReload();
+                }
+
+                if (!!defaults.code) {
+                    $.messager.alert('提示', defaults.msg + '\n代码：' + defaults.code);
+                }
+            }
+        });
+    }
 
     function fixRowHeight(index) {
         grid().datagrid('fixDetailRowHeight', index);
@@ -91,15 +136,81 @@
         onDelHd(defaults);
     }
 
-    function onBindEq(e, id) {
+    function loadComboTreeData(opts) {
+        var defaults = {
+            id: null,
+            url:null,
+            qParams: null,
+            cb: function (data, opts) { }
+        };
+        $.extend(defaults, opts);
 
+        if (!!defaults.id && !!defaults.url) {
+            $.get(defaults.url, defaults.qParams, function (data) {
+                
+                $(defaults.id).combotree('loadData', data);
+                $(defaults.id).combotree('setValue', '');
+
+                if (defaults.cb instanceof Function) {
+                    defaults.cb(data, defaults);
+                }
+            });
+        }
+    }
+
+    function setBingEqQueryParams() {
+        $('#bdEqtId').combotree({
+            url: '@Url.Action("Tree", "Equipment")',
+            method:'get',
+            queryParams: {
+                orgId: function () { return $('#bdOrgId').val(); },
+                cateId: function () { return $('#bdCateId').val(); },
+                stgId: function () { return $('#bdStgId').val(); }
+            }
+        });
+    }
+
+    function reloadBindEq() {
+        $('#bdEqtId').combotree('reload');
+        $('#bdEqtId').combotree('setValue', '');
+    }
+
+    function onBindEq(e, id, orgId, ptpId) {
+        
+        var defaults = {
+            bdOfficerId: id, bdOrgId: orgId, bdPtpId: ptpId
+        };
+        xForm().form('load', defaults);
+
+        // 加载指定警种所需的警械类型
+        loadComboTreeData({
+            id: '#bdCateId',
+            url: '@Url.Action("TreeOnPtp", "EqtType")',
+            qParams: { ptpId: ptpId }
+        });
+
+        // 加载当前警员所在组织机构的警械库
+        loadComboTreeData({
+            id: '#bdStgId',
+            url: '@Url.Action("Tree", "Storage")',
+            qParams: { orgId: orgId }
+        });
+
+        // 加载当前警员所在组织机构的警械柜
+        loadComboTreeData({
+            id: '#bdCabId',
+            url: '@Url.Action("Tree", "Cabinet")',
+            qParams: { orgId: orgId }
+        });
+
+        xfdlg.open();
     }
 
      // 操作
     function fmtOper(val, row) {
         var html = '<span class="x-a-cls" onclick="onEdit(this, \'' + val + '\' )">编辑</span>\
                     <span class="x-a-cls" onclick="onDel(this, \'' + val + '\', \'' + row.name + '\' )">删除</span>\
-                    <span class="x-a-cls" onclick="onBindEq(this, \'' + val + '\' )">绑定警械</span>';
+                    <span class="x-a-cls" onclick="onBindEq(this, \'' + val + '\', \'' + row.org.id + '\', \'' + row.ptp.id + '\' )">绑定警械</span>';
         return html;
     }
 
@@ -171,8 +282,8 @@
         $("#queryOrgId").combotree('setValue', '');
         $("#queryPtpId").combotree('loadData', []);
         $("#queryPtpId").combotree('setValue', '');
-        $('#queryName').val('');
-        $('#queryCode').val('');
+        $('#queryName').textbox('setValue', '');
+        $('#queryCode').textbox('setValue', '');
     }
 
     function loadFormData(data) {
@@ -187,6 +298,8 @@
         loadFormData(data);
         xdlg.open();
     }
+
+    setBingEqQueryParams();
 
     setQueryParams({
         orgId: function () { return $('#queryOrgId').val(); },
