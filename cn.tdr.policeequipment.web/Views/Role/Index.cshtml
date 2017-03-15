@@ -154,13 +154,13 @@
             return '';
         }
 
-        var html = '';
-        if (!!val.flag) {
-            html = '<a href="javascript:void(0)" style="color:darkgreen;" onclick="removeFeatureItem(this, \'' + val.id + '\');return false;" class="easyui-linkbutton" data-options="plain:true">允许</a>';
-        }
-        else {
-            html = '<a href="javascript:void(0)" style="color:red;" onclick="addFeatureItem(this, \'' + row.roleId + '\', \'' + row.menuId + '\', \'' + val.code + '\');return false;" class="easyui-linkbutton" data-options="plain:true">禁止</a>';
-        }
+        var html = '( YES )';
+        //if (!!val.flag) {
+        //    html = '<a href="javascript:void(0)" style="color:darkgreen;" onclick="removeFeatureItem(this, \'' + val.id + '\');return false;" class="easyui-linkbutton" data-options="plain:true">允许</a>';
+        //}
+        //else {
+        //    html = '<a href="javascript:void(0)" style="color:red;" onclick="addFeatureItem(this, \'' + row.roleId + '\', \'' + row.menuId + '\', \'' + val.code + '\');return false;" class="easyui-linkbutton" data-options="plain:true">禁止</a>';
+        //}
         return html;
     }
 

@@ -1,5 +1,4 @@
-﻿
-drop table "tb_AllopatryEquipmentPosition" cascade constraints;
+﻿drop table "tb_AllopatryEquipmentPosition" cascade constraints;
 
 drop table "tb_Cabinet" cascade constraints;
 
@@ -13,9 +12,19 @@ drop table "tb_EquipmentAllopatryExcept" cascade constraints;
 
 drop table "tb_EquipmentDispatch" cascade constraints;
 
+drop table "tb_EquipmentLocation" cascade constraints;
+
+drop table "tb_EquipmentMoveTrail" cascade constraints;
+
 drop table "tb_Hit" cascade constraints;
 
 drop table "tb_Officer" cascade constraints;
+
+drop table "tb_OfficerAttendance" cascade constraints;
+
+drop table "tb_OfficerLocation" cascade constraints;
+
+drop table "tb_OfficerMoveTrail" cascade constraints;
 
 drop table "tb_Organization" cascade constraints;
 
@@ -28,6 +37,8 @@ drop table "tb_Station" cascade constraints;
 drop table "tb_StockAlert" cascade constraints;
 
 drop table "tb_Storage" cascade constraints;
+
+drop table "tb_TagLocation" cascade constraints;
 
 drop table "tb_TagMoveTrail" cascade constraints;
 
@@ -81,7 +92,7 @@ create table "tb_Cabinet"
    "IsDel"              number(4,0)          not null,
    "OrgId"              varchar(32)          not null,
    "Name"               varchar(128)         not null,
-   "StationId"          varchar(32)          not null,
+   "StationId"          varchar(32),
    "Lon"                number(15,8)         not null,
    "Lat"                number(15,8)         not null,
    "OfficerId"          varchar(32)          default '0',
@@ -356,6 +367,69 @@ comment on column "tb_EquipmentDispatch"."CancelMsg" is
 '撤控原因';
 
 /*==============================================================*/
+/* Table: "tb_EquipmentLocation"                                */
+/*==============================================================*/
+create table "tb_EquipmentLocation" 
+(
+   "Id"                 varchar(32)          not null,
+   "EquipId"            varchar(32)          not null,
+   "TagId"              varchar(32)          not null,
+   "SiteId"             varchar(32)          not null,
+   "Status"             number(4,0)          not null,
+   "UpTime"             number(18,0)         not null,
+   constraint PK_TB_EQUIPMENTLOCATION primary key ("Id")
+);
+
+comment on table "tb_EquipmentLocation" is
+'警械实时位置信息，标签进入基站时，修改当前标签绑定警械的当前基站；离开时，标识标签绑定警械已经离开状态。';
+
+comment on column "tb_EquipmentLocation"."Id" is
+'主键';
+
+comment on column "tb_EquipmentLocation"."EquipId" is
+'关联警械ID，标识布控的警械';
+
+comment on column "tb_EquipmentLocation"."TagId" is
+'描述当前记录隶属于哪一个标签';
+
+comment on column "tb_EquipmentLocation"."SiteId" is
+'描述当前标签在哪一个位置的基站范围内';
+
+comment on column "tb_EquipmentLocation"."Status" is
+'描述当前是进入或者离开当前基站。1：进入；2：离开。';
+
+comment on column "tb_EquipmentLocation"."UpTime" is
+'描述基站上传标签的时间，标签的运动位置的排序应该以当前字段为准';
+
+/*==============================================================*/
+/* Table: "tb_EquipmentMoveTrail"                               */
+/*==============================================================*/
+create table "tb_EquipmentMoveTrail" 
+(
+   "Id"                 varchar(32)          not null,
+   "SiteId"             varchar(32)          not null,
+   "EquipId"            varchar(32)          not null,
+   "PreSiteId"          varchar(32),
+   "UpTime"             number(18,0)         not null,
+   constraint PK_TB_EQUIPMENTMOVETRAIL primary key ("Id")
+);
+
+comment on table "tb_EquipmentMoveTrail" is
+'警械运动轨迹，标签绑定的警械发生位置变化时，应该在当前列表中添加相应的记录';
+
+comment on column "tb_EquipmentMoveTrail"."Id" is
+'主键';
+
+comment on column "tb_EquipmentMoveTrail"."SiteId" is
+'描述当前标签在哪一个位置的基站范围内';
+
+comment on column "tb_EquipmentMoveTrail"."EquipId" is
+'关联警械ID，标识布控的警械';
+
+comment on column "tb_EquipmentMoveTrail"."UpTime" is
+'描述基站上传标签的时间，标签的运动位置的排序应该以当前字段为准';
+
+/*==============================================================*/
 /* Table: "tb_Hit"                                              */
 /*==============================================================*/
 create table "tb_Hit" 
@@ -403,7 +477,7 @@ create table "tb_Officer"
    "AtrUrl"             varchar(256),
    "DigitalID"          varchar(128),
    "SignupDate"         number(18,0)         not null,
-   "UserId"             varchar(32)          not null,
+   "UserId"             varchar(32),
    constraint PK_TB_OFFICER primary key ("Id")
 );
 
@@ -448,6 +522,96 @@ comment on column "tb_Officer"."SignupDate" is
 
 comment on column "tb_Officer"."UserId" is
 '当前警员绑定的登录账户信息';
+
+/*==============================================================*/
+/* Table: "tb_OfficerAttendance"                                */
+/*==============================================================*/
+create table "tb_OfficerAttendance" 
+(
+   "Id"                 varchar(32)          not null,
+   "OfficerId"          varchar(32)          default '0' not null,
+   "STime"              number(18,0)         not null,
+   "ETime"              number(18,0)         not null,
+   "TimeLength"         number(18,0)         not null,
+   constraint PK_TB_OFFICERATTENDANCE primary key ("Id")
+);
+
+comment on table "tb_OfficerAttendance" is
+'警员出勤信息';
+
+comment on column "tb_OfficerAttendance"."Id" is
+'主键';
+
+comment on column "tb_OfficerAttendance"."OfficerId" is
+'关联警员主键，标识被布控的警员，同时标识警员布控';
+
+comment on column "tb_OfficerAttendance"."STime" is
+'本次出勤开始时间';
+
+comment on column "tb_OfficerAttendance"."ETime" is
+'本次出勤返回时间';
+
+comment on column "tb_OfficerAttendance"."TimeLength" is
+'本次出勤总时长';
+
+/*==============================================================*/
+/* Table: "tb_OfficerLocation"                                  */
+/*==============================================================*/
+create table "tb_OfficerLocation" 
+(
+   "Id"                 varchar(32)          not null,
+   "OfficerId"          varchar(32)          default '0' not null,
+   "SiteId"             varchar(32)          not null,
+   "Status"             number(4,0)          not null,
+   "UpTime"             number(18,0)         not null,
+   constraint PK_TB_OFFICERLOCATION primary key ("Id")
+);
+
+comment on table "tb_OfficerLocation" is
+'警员实时位置信息，标签进入基站时，修改当前标签绑定警员的当前基站；离开时，标识标签绑定警员已经离开状态。';
+
+comment on column "tb_OfficerLocation"."Id" is
+'主键';
+
+comment on column "tb_OfficerLocation"."OfficerId" is
+'关联警员主键，标识被布控的警员，同时标识警员布控';
+
+comment on column "tb_OfficerLocation"."SiteId" is
+'描述当前标签在哪一个位置的基站范围内';
+
+comment on column "tb_OfficerLocation"."Status" is
+'描述当前是进入或者离开当前基站。1：进入；2：离开。';
+
+comment on column "tb_OfficerLocation"."UpTime" is
+'描述基站上传标签的时间，标签的运动位置的排序应该以当前字段为准';
+
+/*==============================================================*/
+/* Table: "tb_OfficerMoveTrail"                                 */
+/*==============================================================*/
+create table "tb_OfficerMoveTrail" 
+(
+   "Id"                 varchar(32)          not null,
+   "OfficerId"          varchar(32)          default '0' not null,
+   "SiteId"             varchar(32)          not null,
+   "PreSiteId"          varchar(32),
+   "UpTime"             number(18,0)         not null,
+   constraint PK_TB_OFFICERMOVETRAIL primary key ("Id")
+);
+
+comment on table "tb_OfficerMoveTrail" is
+'警员运动轨迹，标签绑定的警员发生位置变化时，应该在当前列表中添加相应的记录';
+
+comment on column "tb_OfficerMoveTrail"."Id" is
+'主键';
+
+comment on column "tb_OfficerMoveTrail"."OfficerId" is
+'关联警员主键，标识被布控的警员，同时标识警员布控';
+
+comment on column "tb_OfficerMoveTrail"."SiteId" is
+'描述当前标签在哪一个位置的基站范围内';
+
+comment on column "tb_OfficerMoveTrail"."UpTime" is
+'描述基站上传标签的时间，标签的运动位置的排序应该以当前字段为准';
 
 /*==============================================================*/
 /* Table: "tb_Organization"                                     */
@@ -630,7 +794,7 @@ create table "tb_Storage"
    "IsDel"              number(4,0)          not null,
    "OrgId"              varchar(32)          not null,
    "Name"               varchar(128)         not null,
-   "StationId"          varchar(32)          not null,
+   "StationId"          varchar(32),
    "Lon"                number(15,8)         not null,
    "Lat"                number(15,8)         not null,
    "OfficerId"          varchar(32)          default '0',
@@ -665,6 +829,37 @@ comment on column "tb_Storage"."OfficerId" is
 '警械库负责人，关联警员表主键，NULL 或者 “0” 标识未指定负责警员';
 
 /*==============================================================*/
+/* Table: "tb_TagLocation"                                      */
+/*==============================================================*/
+create table "tb_TagLocation" 
+(
+   "Id"                 varchar(32)          not null,
+   "TagId"              varchar(32)          not null,
+   "SiteId"             varchar(32)          not null,
+   "Status"             number(4,0)          not null,
+   "UpTime"             number(18,0)         not null,
+   constraint PK_TB_TAGLOCATION primary key ("Id")
+);
+
+comment on table "tb_TagLocation" is
+'标签实时位置信息，标签进入基站时，修改当前标签的当前基站；离开时，标识标签已经离开状态。';
+
+comment on column "tb_TagLocation"."Id" is
+'主键';
+
+comment on column "tb_TagLocation"."TagId" is
+'描述当前记录隶属于哪一个标签';
+
+comment on column "tb_TagLocation"."SiteId" is
+'描述当前标签在哪一个位置的基站范围内';
+
+comment on column "tb_TagLocation"."Status" is
+'描述当前是进入或者离开当前基站。1：进入；2：离开。';
+
+comment on column "tb_TagLocation"."UpTime" is
+'描述基站上传标签的时间，标签的运动位置的排序应该以当前字段为准';
+
+/*==============================================================*/
 /* Table: "tb_TagMoveTrail"                                     */
 /*==============================================================*/
 create table "tb_TagMoveTrail" 
@@ -672,8 +867,9 @@ create table "tb_TagMoveTrail"
    "Id"                 varchar(32)          not null,
    "TagId"              varchar(32)          not null,
    "SiteId"             varchar(32)          not null,
-   "Status"             number(4,0)          not null,
-   "UpTime"             number(18,0)         not null,
+   "PreSiteId"          varchar(32),
+   "TTime"              number(18,0)         not null,
+   "PTime"              number(18,0)         not null,
    "CTime"              number(18,0)         not null,
    constraint PK_TB_TAGMOVETRAIL primary key ("Id")
 );
@@ -690,10 +886,7 @@ comment on column "tb_TagMoveTrail"."TagId" is
 comment on column "tb_TagMoveTrail"."SiteId" is
 '描述当前标签在哪一个位置的基站范围内';
 
-comment on column "tb_TagMoveTrail"."Status" is
-'描述当前是进入或者离开当前基站。1：进入；2：离开。';
-
-comment on column "tb_TagMoveTrail"."UpTime" is
+comment on column "tb_TagMoveTrail"."TTime" is
 '描述基站上传标签的时间，标签的运动位置的排序应该以当前字段为准';
 
 comment on column "tb_TagMoveTrail"."CTime" is
@@ -874,13 +1067,13 @@ create table "tb_sys_User"
 (
    "Id"                 varchar(32)          not null,
    "IsDel"              number(4,0)          not null,
-   "OrgId"              varchar(32)          ,
+   "OrgId"              varchar(32),
    "Account"            varchar(32)          not null,
    "Passwd"             varchar(128)         not null,
    "Status"             number(4,0)          not null,
    "SigninStatus"       number(4,0)          not null,
    "SignupDate"         number(18,0)         not null,
-   "RoleId"             varchar(32)          ,
+   "RoleId"             varchar(32),
    "Category"           number(4,0)          not null,
    constraint PK_TB_SYS_USER primary key ("Id")
 );

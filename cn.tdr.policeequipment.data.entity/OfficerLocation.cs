@@ -3,13 +3,13 @@
     /// <summary>
     /// 
     /// </summary>
-    public class TagMoveTrail: Entity
+    public class OfficerLocation: Entity
     {
          
         /// <summary>
-        /// 描述当前记录隶属于哪一个标签
+        /// 关联警员主键，标识被布控的警员，同时标识警员布控
         /// </summary>
-        public string TagId{ get; set; }
+        public string OfficerId{ get; set; }
          
         /// <summary>
         /// 描述当前标签在哪一个位置的基站范围内
@@ -17,23 +17,13 @@
         public string SiteId{ get; set; }
          
         /// <summary>
-        /// 
+        /// 描述当前是进入或者离开当前基站。1：进入；2：离开。
         /// </summary>
-        public string PreSiteId{ get; set; }
+        public short Status{ get; set; }
          
         /// <summary>
         /// 描述基站上传标签的时间，标签的运动位置的排序应该以当前字段为准
         /// </summary>
-        public long TTime{ get; set; }
-         
-        /// <summary>
-        /// 
-        /// </summary>
-        public long PTime{ get; set; }
-         
-        /// <summary>
-        /// 描述系统记录当前标签位置信息的时间
-        /// </summary>
-        public long CTime{ get; set; }
+        public long UpTime{ get; set; }
     }
 }

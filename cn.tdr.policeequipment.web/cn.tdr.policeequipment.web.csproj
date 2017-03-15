@@ -1003,6 +1003,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AnonymousController.cs" />
+    <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BasicController.cs" />
     <Compile Include="Controllers\CabinetController.cs" />
@@ -1017,6 +1018,7 @@
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SigninController.cs" />
     <Compile Include="Controllers\StorageController.cs" />
+    <Compile Include="Controllers\TrackController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1133,6 +1135,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Filters\" />
+    <Folder Include="Views\Attendance\" />
+    <Folder Include="Views\Track\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cn.tdr.common\cn.tdr.common.csproj">

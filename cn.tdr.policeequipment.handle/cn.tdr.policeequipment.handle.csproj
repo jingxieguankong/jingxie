@@ -43,10 +43,15 @@
     <Compile Include="CabinetHandle.cs" />
     <Compile Include="EqtTypeHandle.cs" />
     <Compile Include="EquipmentHandle.cs" />
+    <Compile Include="EquipmentLocationHandle.cs" />
+    <Compile Include="EquipmentTrackHandle.cs" />
     <Compile Include="FeatureHandle.cs" />
     <Compile Include="Handle.cs" />
     <Compile Include="MenuHandle.cs" />
+    <Compile Include="OfficerAttendanceHandle.cs" />
     <Compile Include="OfficerHandle.cs" />
+    <Compile Include="OfficerLocationHandle.cs" />
+    <Compile Include="OfficerTrackHandle.cs" />
     <Compile Include="OrganizationHandle.cs" />
     <Compile Include="PoliceTypeHandle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,6 +59,8 @@
     <Compile Include="SiteHandle.cs" />
     <Compile Include="StandardEquipmentHandle.cs" />
     <Compile Include="StorageHandle.cs" />
+    <Compile Include="TagLocationHandle.cs" />
+    <Compile Include="TagTrackHandle.cs" />
     <Compile Include="UserHandle.cs" />
   </ItemGroup>
   <ItemGroup>

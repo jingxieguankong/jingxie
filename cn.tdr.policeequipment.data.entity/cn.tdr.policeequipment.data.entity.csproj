@@ -50,10 +50,15 @@
     <Compile Include="Equipment.cs" />
     <Compile Include="EquipmentAllopatryExcept.cs" />
     <Compile Include="EquipmentDispatch.cs" />
+    <Compile Include="EquipmentLocation.cs" />
+    <Compile Include="EquipmentMoveTrail.cs" />
     <Compile Include="Feature.cs" />
     <Compile Include="Hit.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Officer.cs" />
+    <Compile Include="OfficerAttendance.cs" />
+    <Compile Include="OfficerLocation.cs" />
+    <Compile Include="OfficerMoveTrail.cs" />
     <Compile Include="Organization.cs" />
     <Compile Include="PoliceType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,6 +67,7 @@
     <Compile Include="Station.cs" />
     <Compile Include="StockAlert.cs" />
     <Compile Include="Storage.cs" />
+    <Compile Include="TagLocation.cs" />
     <Compile Include="TagMoveTrail.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
