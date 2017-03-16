@@ -4,9 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
+    using module;
+    using cn.tdr.policeequipment.web.Models;
 
     // 地图控制器
-    public class MapController : AnonymousController
+    public class MapController : AuthController
     {
         // GET: Map
         public ActionResult Index()
@@ -22,7 +24,22 @@
         [HttpPost]
         public JsonResult Rectangle(double x1, double y1, double x2, double y2)
         {
-            return Json(TestData());
+            var module = new MapModule(CurrentUser);
+            var items = module.RectangleSelect(x1, y1, x2, y2);
+            var data = new Models.DispatchModel
+            {
+                groups = items.GroupBy(t => t.ptp).Select(t => new DispatchGroupModel
+                {
+                    items = t.Select(x => new GroupItemModel
+                    {
+                        name = x.officer.Name,
+                        orgName = x.org.Name,
+                        site = new Pointer { x = x.station.Lon, y = x.station.Lat }
+                    }).ToArray(),
+                    name = t.Key.Name
+                }).ToArray()
+            };
+            return Json(new { code = 0, msg = "Ok", data = data });
         }
 
         [HttpPost]

@@ -25,9 +25,9 @@
                 <li class="x-ul-clear-style x-menu-tls-item" onclick="toolRectangleClick()">
                     <span class="x-menu-icon-bg x-menu-icon-blank"></span>
                     <b class="x-b-v"></b>
-                    <i>矩形选择器</i>
+                    <i>警力分布区域选择器</i>
                 </li>
-                <li class="x-ul-clear-style x-menu-tls-item" onclick="toolCircleClick()">
+                @*<li class="x-ul-clear-style x-menu-tls-item" onclick="toolCircleClick()">
                     <span class="x-menu-icon-bg x-menu-icon-blank"></span>
                     <b class="x-b-v"></b>
                     <i>圆形选择器</i>
@@ -37,29 +37,29 @@
                     <b class="x-b-v"></b>
                     <i>不规则选择器</i>
                     <b class="x-b-h"></b>
-                </li>
+                </li>*@
                 <li class="x-ul-clear-style x-menu-tls-item" onclick="toolTraceMoveClick()">
                     <span class="x-menu-icon-bg x-menu-icon-blank"></span>
                     <b class="x-b-v"></b>
-                    <i>轨迹回放</i>
+                    <i>轨迹查询</i>
                     <b class="x-b-h"></b>
                 </li>
-                <li class="x-ul-clear-style x-menu-tls-item" onclick="toolMeasureClick()">
+                @*<li class="x-ul-clear-style x-menu-tls-item" onclick="toolMeasureClick()">
                     <span class="x-menu-icon-bg x-menu-icon-blank"></span>
                     <b class="x-b-v"></b>
                     <i>测量距离</i>
-                </li>
+                </li>*@
                 <li class="x-ul-clear-style x-menu-tls-item" onclick="toolClearMapClick()">
                     <span class="x-menu-icon-bg x-menu-icon-blank"></span>
                     <b class="x-b-v"></b>
                     <i>清空地图</i>
                     <b class="x-b-h"></b>
                 </li>
-                <li class="x-ul-clear-style x-menu-tls-item" onclick="toolAnotherClick()">
+                @*<li class="x-ul-clear-style x-menu-tls-item" onclick="toolAnotherClick()">
                     <span class="x-menu-icon-bg x-menu-icon-tip"></span>
                     <b class="x-b-v"></b>
                     <i>其它工具</i>
-                </li>
+                </li>*@
             </ul>
         </div>
     </div>
@@ -193,6 +193,7 @@
         // 各类型区间选择器处理函数
         function toolSelectHd(url, paramerters) {
             $.post(url, paramerters, function (data) {
+                debugger;
                 if (!!data.data && data.code === 0) {
                     renderSelectResult(data.data);
                 }
