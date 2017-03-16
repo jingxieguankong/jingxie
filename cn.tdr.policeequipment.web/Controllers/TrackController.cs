@@ -1,17 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace cn.tdr.policeequipment.web.Controllers
+﻿namespace cn.tdr.policeequipment.web.Controllers
 {
-    public class TrackController : Controller
+    using System.Web.Mvc;
+    using Newtonsoft.Json.Linq;
+    using Models;
+    using module;
+
+    public class TrackController : AuthController
     {
         // GET: Track
-        public ActionResult Index()
+        public ActionResult Index(int w, int h)
         {
-            return View();
+            ViewBag.ViewWidth = w;
+            ViewBag.ViewHeight = h;
+            return View(TableOfficerTrackHeaderModel.Header);
+        }
+
+        [HttpGet]
+        public JObject GetData(string pattern, int page, int rows)
+        {
+            var count = 0;
+            var module = new OfficerTrackModule(CurrentUser);
+            var items = module.Page(pattern, page, rows, out count);
+            var data = TableOfficerTrackDataModel.Model.GetJson(items, count, TableOfficerTrackHeaderModel.Header);
+            return data;
         }
     }
 }

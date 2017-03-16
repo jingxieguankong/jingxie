@@ -7,13 +7,9 @@
     {
         private readonly string Owner = string.Empty;
     
-        public DbContext(string connectionStringName, string owner)
+        public DbContext(string connectionStringName, string owner="U_JXGK")
             :base($"name={connectionStringName}")
         {
-            if (string.IsNullOrWhiteSpace(owner))
-            {
-                throw new System.ArgumentNullException(nameof(owner));
-            }
             Owner = owner;
         }
         
@@ -28,14 +24,20 @@
             modelBuilder.Entity<Equipment>().ToTable("tb_Equipment");
             modelBuilder.Entity<EquipmentAllopatryExcept>().ToTable("tb_EquipmentAllopatryExcept");
             modelBuilder.Entity<EquipmentDispatch>().ToTable("tb_EquipmentDispatch");
+            modelBuilder.Entity<EquipmentLocation>().ToTable("tb_EquipmentLocation");
+            modelBuilder.Entity<EquipmentMoveTrail>().ToTable("tb_EquipmentMoveTrail");
             modelBuilder.Entity<Hit>().ToTable("tb_Hit");
             modelBuilder.Entity<Officer>().ToTable("tb_Officer");
+            modelBuilder.Entity<OfficerAttendance>().ToTable("tb_OfficerAttendance");
+            modelBuilder.Entity<OfficerLocation>().ToTable("tb_OfficerLocation");
+            modelBuilder.Entity<OfficerMoveTrail>().ToTable("tb_OfficerMoveTrail");
             modelBuilder.Entity<Organization>().ToTable("tb_Organization");
             modelBuilder.Entity<PoliceType>().ToTable("tb_PoliceType");
             modelBuilder.Entity<StandardEquipment>().ToTable("tb_StandardEquipment");
             modelBuilder.Entity<Station>().ToTable("tb_Station");
             modelBuilder.Entity<StockAlert>().ToTable("tb_StockAlert");
             modelBuilder.Entity<Storage>().ToTable("tb_Storage");
+            modelBuilder.Entity<TagLocation>().ToTable("tb_TagLocation");
             modelBuilder.Entity<TagMoveTrail>().ToTable("tb_TagMoveTrail");
             modelBuilder.Entity<ActionLog>().ToTable("tb_sys_ActionLog");
             modelBuilder.Entity<Feature>().ToTable("tb_sys_Feature");
@@ -51,14 +53,20 @@
         public virtual DbSet<Equipment> EquipmentItems { get; set; }
         public virtual DbSet<EquipmentAllopatryExcept> EquipmentAllopatryExceptItems { get; set; }
         public virtual DbSet<EquipmentDispatch> EquipmentDispatchItems { get; set; }
+        public virtual DbSet<EquipmentLocation> EquipmentLocationItems { get; set; }
+        public virtual DbSet<EquipmentMoveTrail> EquipmentMoveTrailItems { get; set; }
         public virtual DbSet<Hit> HitItems { get; set; }
         public virtual DbSet<Officer> OfficerItems { get; set; }
+        public virtual DbSet<OfficerAttendance> OfficerAttendanceItems { get; set; }
+        public virtual DbSet<OfficerLocation> OfficerLocationItems { get; set; }
+        public virtual DbSet<OfficerMoveTrail> OfficerMoveTrailItems { get; set; }
         public virtual DbSet<Organization> OrganizationItems { get; set; }
         public virtual DbSet<PoliceType> PoliceTypeItems { get; set; }
         public virtual DbSet<StandardEquipment> StandardEquipmentItems { get; set; }
         public virtual DbSet<Station> StationItems { get; set; }
         public virtual DbSet<StockAlert> StockAlertItems { get; set; }
         public virtual DbSet<Storage> StorageItems { get; set; }
+        public virtual DbSet<TagLocation> TagLocationItems { get; set; }
         public virtual DbSet<TagMoveTrail> TagMoveTrailItems { get; set; }
         public virtual DbSet<ActionLog> ActionLogItems { get; set; }
         public virtual DbSet<Feature> FeatureItems { get; set; }

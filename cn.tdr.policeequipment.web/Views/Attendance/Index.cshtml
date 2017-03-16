@@ -1,0 +1,69 @@
+﻿@using cn.tdr.policeequipment.web.Models
+@model TableAttendanceHeaderModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_PartialDataGrid",
+    new DataGridPageModel<TableHeaderModel>
+    {
+        dataAction = Url.Action("GetData"),
+        formModel = new GridEditFormModel
+        {
+            formPartialPage = "_PartialAttendanceForm",
+            formAction = Url.Action("FormSubmit"),
+            formModel = Model
+        },
+        headerPartialPage = "_PartialAttendanceTableRow",
+        headerPartialPageModel = new GridRowModel<TableHeaderModel>
+        {
+            actionFormart = "fmtOper",
+            headerModel = Model
+        },
+        options = ",autoRowHeight:false,pagination:true,pageSize:20",
+        toolbarPartialPage = "_PartialAttendanceTableBar",
+        tableHeight = ViewBag.ViewHeight
+    })
+
+@section scripts{
+<script type="text/javascript">
+
+    function fmtOrg(val, row) {
+        return val.name;
+    }
+
+    function fmtCode(val, row) {
+        return val.code;
+    }
+
+    function fmtOfficer(val, row) {
+        return val.name;
+    }
+
+    function fmtDate(val, row) {
+        if (!val) {
+            return "( 未完成 )";
+        }
+
+        var date = new Date(val / 10000);
+        return date.getFullYear() + '年 ' + (date.getMonth() + 1) + '月 ' + date.getDate() + '日' + date.getHours() + ' 时' + date.getMinutes() + ' 分' + date.getSeconds() + ' 秒';
+    }
+
+    function fmtLng(val, row) {
+        if (!val) {
+            return "( 未完成 )";
+        }
+
+        return '约 ' + parseInt(val / (60 * 1000 * 10000)) + ' 分钟';
+    }
+
+    function queryClear() {
+        $('#pattern').textbox('setValue', '');
+    }
+
+    setQueryParams({
+        pattern: function () { return $('#pattern').val(); }
+    });
+
+</script>
+}

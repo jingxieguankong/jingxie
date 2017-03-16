@@ -1,0 +1,57 @@
+﻿@using cn.tdr.policeequipment.web.Models
+@model TableOfficerTrackHeaderModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_PartialDataGrid",
+    new DataGridPageModel<TableHeaderModel>
+    {
+        dataAction = Url.Action("GetData"),
+        formModel = new GridEditFormModel
+        {
+            formPartialPage = "_PartialOfficerTrackForm",
+            formAction = Url.Action("FormSubmit"),
+            formModel = Model
+        },
+        headerPartialPage = "_PartialOfficerTrackTableRow",
+        headerPartialPageModel = new GridRowModel<TableHeaderModel>
+        {
+            actionFormart = "fmtOper",
+            headerModel = Model
+        },
+        options = ",autoRowHeight:false,pagination:true,pageSize:20",
+        toolbarPartialPage = "_PartialOfficerTrackTableBar",
+        tableHeight = ViewBag.ViewHeight
+    })
+
+@section scripts{
+<script type="text/javascript">    
+
+    function fmtOrg(val, row) {
+        return val.name;
+    }
+
+    function fmtCode(val, row) {
+        return val.code;
+    }
+
+    function fmtOfficer(val, row) {
+        return val.name;
+    }
+
+    function fmtDate(val, row) {
+        var date = new Date(val / 10000);
+        return date.getFullYear() + '年 ' + (date.getMonth() + 1) + '月 ' + date.getDate() + '日' + date.getHours() + ' 时' + date.getMinutes() + ' 分' + date.getSeconds() + ' 秒';
+    }
+
+    function queryClear() {
+        $('#pattern').textbox('setValue', '');
+    }
+
+    setQueryParams({
+        pattern: function () { return $('#pattern').val(); }
+    });
+
+</script>
+}

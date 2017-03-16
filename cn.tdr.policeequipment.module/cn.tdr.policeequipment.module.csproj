@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttendanceModule.cs" />
     <Compile Include="AuthModule.cs" />
     <Compile Include="CabinetModule.cs" />
     <Compile Include="EqtTypeModule.cs" />
@@ -52,9 +53,11 @@
     <Compile Include="MenuModule.cs" />
     <Compile Include="MessageModule.cs" />
     <Compile Include="models\AccountModels.cs" />
+    <Compile Include="models\AttendanceModels.cs" />
     <Compile Include="models\CabinetModels.cs" />
     <Compile Include="models\EquipmentModels.cs" />
     <Compile Include="models\OfficerModels.cs" />
+    <Compile Include="models\OfficerTrackModels.cs" />
     <Compile Include="models\PoliceTypeModes.cs" />
     <Compile Include="models\RoleModels.cs" />
     <Compile Include="models\StorageModels.cs" />
@@ -63,6 +66,7 @@
     <Compile Include="Module.cs" />
     <Compile Include="MyModule.cs" />
     <Compile Include="OfficerModule.cs" />
+    <Compile Include="OfficerTrackModule.cs" />
     <Compile Include="OrgModule.cs" />
     <Compile Include="PasswdModule.cs" />
     <Compile Include="PoliceTypeModule.cs" />

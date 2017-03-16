@@ -1017,6 +1017,7 @@
     <Compile Include="Controllers\PoliceTypeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SigninController.cs" />
+    <Compile Include="Controllers\SiteController.cs" />
     <Compile Include="Controllers\StorageController.cs" />
     <Compile Include="Controllers\TrackController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -1025,10 +1026,12 @@
     </Compile>
     <Compile Include="Models\DispatchModels.cs" />
     <Compile Include="Models\OfficerModels.cs" />
+    <Compile Include="Models\TableAttendanceModels.cs" />
     <Compile Include="Models\TableCabinetModels.cs" />
     <Compile Include="Models\TableEqtTypeModels.cs" />
     <Compile Include="Models\MenuModels.cs" />
     <Compile Include="Models\TableEquipmentModels.cs" />
+    <Compile Include="Models\TableOfficerTrackModels.cs" />
     <Compile Include="Models\TableOrgModels.cs" />
     <Compile Include="Models\Pointer.cs" />
     <Compile Include="Models\TableModels.cs" />
@@ -1125,6 +1128,14 @@
     <Content Include="Views\Equipment\_PartialEquipmentTableBar.cshtml" />
     <Content Include="Views\Equipment\_PartialEquipmentForm.cshtml" />
     <Content Include="Views\Officer\_PartialBindEquipmentForm.cshtml" />
+    <Content Include="Views\Attendance\Index.cshtml" />
+    <Content Include="Views\Track\Index.cshtml" />
+    <Content Include="Views\Attendance\_PartialAttendanceTableRow.cshtml" />
+    <Content Include="Views\Attendance\_PartialAttendanceTableBar.cshtml" />
+    <Content Include="Views\Track\_PartialOfficerTrackTableBar.cshtml" />
+    <Content Include="Views\Track\_PartialOfficerTrackTableRow.cshtml" />
+    <Content Include="Views\Attendance\_PartialAttendanceForm.cshtml" />
+    <Content Include="Views\Track\_PartialOfficerTrackForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1135,8 +1146,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Filters\" />
-    <Folder Include="Views\Attendance\" />
-    <Folder Include="Views\Track\" />
+    <Folder Include="Views\Site\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cn.tdr.common\cn.tdr.common.csproj">
