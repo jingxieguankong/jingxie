@@ -49,6 +49,7 @@
     <Compile Include="FeatureStatus.cs" />
     <Compile Include="FeatureType.cs" />
     <Compile Include="LocationStatus.cs" />
+    <Compile Include="OfficerLocaionExceptStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AccountLoginStatus.cs" />
     <Compile Include="QueryEqtDataType.cs" />

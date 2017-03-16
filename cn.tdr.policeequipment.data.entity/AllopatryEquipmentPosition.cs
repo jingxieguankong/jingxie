@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public class AllopatryEquipmentPosition:LogicDeletableEntity                                                                                                                                         
+    public class AllopatryEquipmentPosition: Entity
     {
          
         /// <summary>
@@ -17,13 +17,13 @@
         public string EquipId{ get; set; }
          
         /// <summary>
-        /// 描述警械出现位置的 GPS 经度
+        /// 描述当前标签在哪一个位置的基站范围内
         /// </summary>
-        public double Lon{ get; set; }
+        public string SiteId{ get; set; }
          
         /// <summary>
-        /// 描述警械出现位置的 GPS 维度
+        /// 标签上报时间
         /// </summary>
-        public double Lat{ get; set; }
+        public long UpTime{ get; set; }
     }
 }

@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public class EquipmentAllopatryExcept:LogicDeletableEntity                                                                                                                                         
+    public class EquipmentAllopatryExcept: Entity
     {
          
         /// <summary>
@@ -20,5 +20,10 @@
         /// 描述当前异常的处理状态。0：未处理；1：已处理。
         /// </summary>
         public short Status{ get; set; }
+         
+        /// <summary>
+        /// 处理时间
+        /// </summary>
+        public long DTime{ get; set; }
     }
 }

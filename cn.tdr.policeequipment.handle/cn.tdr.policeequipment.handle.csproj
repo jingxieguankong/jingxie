@@ -40,8 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllopatryEquipmentPositionHandle.cs" />
     <Compile Include="CabinetHandle.cs" />
     <Compile Include="EqtTypeHandle.cs" />
+    <Compile Include="EquipmentAllopatryExceptHandle.cs" />
     <Compile Include="EquipmentHandle.cs" />
     <Compile Include="EquipmentLocationHandle.cs" />
     <Compile Include="EquipmentTrackHandle.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="RoleHandle.cs" />
     <Compile Include="SiteHandle.cs" />
     <Compile Include="StandardEquipmentHandle.cs" />
+    <Compile Include="StationHandle.cs" />
     <Compile Include="StorageHandle.cs" />
     <Compile Include="TagLocationHandle.cs" />
     <Compile Include="TagTrackHandle.cs" />
