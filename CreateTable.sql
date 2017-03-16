@@ -1,4 +1,5 @@
-﻿drop table "tb_AllopatryEquipmentPosition" cascade constraints;
+﻿
+drop table "tb_AllopatryEquipmentPosition" cascade constraints;
 
 drop table "tb_Cabinet" cascade constraints;
 
@@ -60,8 +61,8 @@ create table "tb_AllopatryEquipmentPosition"
    "Id"                 varchar(32)          not null,
    "AeId"               varchar(32)          not null,
    "EquipId"            varchar(32)          not null,
-   "Lon"                number(15,8)         not null,
-   "Lat"                number(15,8)         not null,
+   "SiteId"             varchar(32)          not null,
+   "UpTime"             number(18,0)         not null,
    constraint PK_TB_ALLOPATRYEQUIPMENTPOSITI primary key ("Id")
 );
 
@@ -77,11 +78,11 @@ comment on column "tb_AllopatryEquipmentPosition"."AeId" is
 comment on column "tb_AllopatryEquipmentPosition"."EquipId" is
 '关联警械主键，标识当前位置出现的警械';
 
-comment on column "tb_AllopatryEquipmentPosition"."Lon" is
-'描述警械出现位置的 GPS 经度';
+comment on column "tb_AllopatryEquipmentPosition"."SiteId" is
+'描述当前标签在哪一个位置的基站范围内';
 
-comment on column "tb_AllopatryEquipmentPosition"."Lat" is
-'描述警械出现位置的 GPS 维度';
+comment on column "tb_AllopatryEquipmentPosition"."UpTime" is
+'标签上报时间';
 
 /*==============================================================*/
 /* Table: "tb_Cabinet"                                          */
@@ -309,6 +310,7 @@ create table "tb_EquipmentAllopatryExcept"
    "OfficerId"          varchar(32)          not null,
    "CTime"              number(18,0)         not null,
    "Status"             number(4,0)          not null,
+   "DTime"              number(18,0)         not null,
    constraint PK_TB_EQUIPMENTALLOPATRYEXCEPT primary key ("Id")
 );
 
@@ -326,6 +328,9 @@ comment on column "tb_EquipmentAllopatryExcept"."CTime" is
 
 comment on column "tb_EquipmentAllopatryExcept"."Status" is
 '描述当前异常的处理状态。0：未处理；1：已处理。';
+
+comment on column "tb_EquipmentAllopatryExcept"."DTime" is
+'处理时间';
 
 /*==============================================================*/
 /* Table: "tb_EquipmentDispatch"                                */
@@ -561,6 +566,7 @@ create table "tb_OfficerLocation"
 (
    "Id"                 varchar(32)          not null,
    "OfficerId"          varchar(32)          default '0' not null,
+   "EquipId"            varchar(32)          not null,
    "SiteId"             varchar(32)          not null,
    "Status"             number(4,0)          not null,
    "UpTime"             number(18,0)         not null,
@@ -575,6 +581,9 @@ comment on column "tb_OfficerLocation"."Id" is
 
 comment on column "tb_OfficerLocation"."OfficerId" is
 '关联警员主键，标识被布控的警员，同时标识警员布控';
+
+comment on column "tb_OfficerLocation"."EquipId" is
+'关联警械ID，标识布控的警械';
 
 comment on column "tb_OfficerLocation"."SiteId" is
 '描述当前标签在哪一个位置的基站范围内';

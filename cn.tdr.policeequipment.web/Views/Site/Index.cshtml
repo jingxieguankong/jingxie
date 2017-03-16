@@ -1,0 +1,138 @@
+﻿@using cn.tdr.policeequipment.web.Models
+@model TableSiteHeaderModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_PartialDataGrid",
+    new DataGridPageModel<TableHeaderModel>
+    {
+        dataAction = Url.Action("GetData"),
+        formModel = new GridEditFormModel
+        {
+            formPartialPage = "_PartialSiteForm",
+            formAction = Url.Action("FormSubmit"),
+            formModel = Model
+        },
+        headerPartialPage = "_PartialSiteTableRow",
+        headerPartialPageModel = new GridRowModel<TableHeaderModel>
+        {
+            actionFormart = "fmtOper",
+            headerModel = Model
+        },
+        options = ",autoRowHeight:false,pagination:true,pageSize:20",
+        toolbarPartialPage = "_PartialSiteTableBar",
+        tableHeight = ViewBag.ViewHeight
+    })
+
+@Html.Partial("_PartialMapSelector")
+
+@section scripts{
+<script type="text/javascript" src="@Url.Content("~/Scripts/pgis/js/EzMapAPI.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/pgis/js/EzServerClient.Extend.js")"></script>
+<script type="text/javascript">
+
+    function getRowData(id, cb) {
+        var data = grid().datagrid('getData');
+        for (var i = 0; i < data.rows.length; i++) {
+            var row = data.rows[i];
+            if (row.id == id) {
+                cb(row);
+                break;
+            }
+        }
+    }
+
+    function onEdit(e, id) {
+        getRowData(id, function (row) {
+            var defaults = {
+                orgId: row.org.id
+            };
+            $.extend(defaults, row);
+            showFormDlg(defaults);
+        });
+    }
+
+    function onDel(e, id, name) {
+        var defaults = {
+            name: name,
+            url: '@Url.Action("Remove")',
+            queryParams: { id: id }
+        };
+        onDelHd(defaults);
+    }
+
+    function fmtOper(val, row) {
+        var html = '<span class="x-a-cls" onclick="onEdit(this, \'' + val + '\' )">编辑</span>\
+                    <span class="x-a-cls" onclick="onDel(this, \'' + val + '\', \'' + row.siteId + '\' )">删除</span>';
+        return html;
+    }
+
+    function fmtOrg(val, row) {
+        return val.name;
+    }
+
+    function fmtCate(val, row) {
+        var text = "( 未知 )";
+
+        if (val == 0) {
+            text = "一般基站";
+        }
+
+        if (val == 1) {
+            text = "出勤基站";
+        }
+
+        return text;
+    }
+
+    function fmtGps(val, row) {
+        var text = "( 未设置 )";
+        if (!!row.lon && !!row.lat) {
+            text = '( ' + row.lon + ',' + row.lat + ' )';
+        }
+        return text;
+    }
+
+    function mapPointerGps(opts) {
+        var defaults = {
+            cb: function (data) { }
+        };
+        $.extend(defaults, opts);
+
+        // 显示 GPS 点选取器
+        xmwd.open({
+            lon: $('#lon').numberbox('getValue'),
+            lat: $('#lat').numberbox('getValue'),
+            cb: function (gps) {
+                $('#lon').numberbox('setValue', gps.lon);
+                $('#lat').numberbox('setValue', gps.lat);
+            }
+        });
+    }
+
+    function loadFormData(data) {
+        var defaults = {
+            id: null, name: null, orgId: null, lon: 0, lat: 0
+        };
+        $.extend(defaults, data);
+        form().form('load', defaults);
+    }
+
+    function showFormDlg(data) {
+        loadFormData(data);
+        xdlg.open();
+    }
+
+    function queryClear() {
+        $('#querySiteId').textbox('setValue', '');
+        $("#queryOrgId").combotree('setValue', '');
+    }
+
+    setQueryParams({
+        siteId: function () { return $('#querySiteId').val(); },
+        orgId: function () { return $("#queryOrgId").val(); }
+    });
+
+</script>
+}

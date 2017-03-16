@@ -53,6 +53,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AccountLoginStatus.cs" />
     <Compile Include="QueryEqtDataType.cs" />
+    <Compile Include="StationCategory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cn.tdr.common\cn.tdr.common.csproj">

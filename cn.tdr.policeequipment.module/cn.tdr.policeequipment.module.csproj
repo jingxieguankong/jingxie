@@ -60,6 +60,7 @@
     <Compile Include="models\OfficerTrackModels.cs" />
     <Compile Include="models\PoliceTypeModes.cs" />
     <Compile Include="models\RoleModels.cs" />
+    <Compile Include="models\StationModels.cs" />
     <Compile Include="models\StorageModels.cs" />
     <Compile Include="models\UpLoadDataModels.cs" />
     <Compile Include="models\UserInfo.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="PoliceTypeModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleModule.cs" />
+    <Compile Include="StationModule.cs" />
     <Compile Include="StorageModule.cs" />
     <Compile Include="UpLoadDataModule.cs" />
     <Compile Include="UserModule.cs" />
