@@ -48,5 +48,13 @@
                 });
             return items;
         }
+
+        public IEnumerable<OfficerAttendanceQueryModel> AttendanceSelect(string pattern, DateTime stime, DateTime etime)
+        {
+            var trackHandler = new OfficerTrackHandle(Repository);
+            var ocrHandler = new OfficerHandle(Repository);
+
+            return new OfficerAttendanceQueryModel[0];
+        }
     }
 }

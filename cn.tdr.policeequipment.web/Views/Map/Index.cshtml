@@ -38,10 +38,16 @@
                     <i>不规则选择器</i>
                     <b class="x-b-h"></b>
                 </li>*@
-                <li class="x-ul-clear-style x-menu-tls-item" onclick="toolTraceMoveClick()">
+                @*<li class="x-ul-clear-style x-menu-tls-item" onclick="toolTraceMoveClick()">
                     <span class="x-menu-icon-bg x-menu-icon-blank"></span>
                     <b class="x-b-v"></b>
                     <i>轨迹查询</i>
+                    <b class="x-b-h"></b>
+                </li>*@
+                <li class="x-ul-clear-style x-menu-tls-item" onclick="toolAttendanceClick()">
+                    <span class="x-menu-icon-bg x-menu-icon-blank"></span>
+                    <b class="x-b-v"></b>
+                    <i>警员出勤</i>
                     <b class="x-b-h"></b>
                 </li>
                 @*<li class="x-ul-clear-style x-menu-tls-item" onclick="toolMeasureClick()">
@@ -75,20 +81,40 @@
     <div id="x-rst-contaner">
         <ul id="x-rst-contaner-body" class="x-ul-clear-style">
             @*<li class="x-ul-clear-style x-rst-item">
-                    <div class="x-rst-item-header">
-                        <span class="x-span-number">8</span>
-                        <i>交通警察</i>
-                        <em class="x-menu-icon-bg"></em>
-                    </div>
-                    <ul class="x-ul-clear-style x-rst-item-body">
-                        <li class="x-ul-clear-style x-rst-item-item" onclick="resultItemClick(0,0,1)">
-                            <a href="javascript:void(0)">
-                                <span>{ 警员姓名 }</span>
-                                <em>{ 组织机构名称 }</em>
-                            </a>
-                        </li>
-                    </ul>
-                </li>*@
+                <div class="x-rst-item-header">
+                    <span class="x-span-number">8</span>
+                    <i>交通警察</i>
+                    <em class="x-menu-icon-bg"></em>
+                </div>
+                <ul class="x-ul-clear-style x-rst-item-body">
+                    <li class="x-ul-clear-style x-rst-item-item" onclick="resultItemClick(0,0,1)">
+                        <a href="javascript:void(0)">
+                            <span>{ 警员姓名 }</span>
+                            <em>{ 组织机构名称 }</em>
+                        </a>
+                    </li>
+                </ul>
+            </li>*@
+            @*<li class="x-ul-clear-style">
+                <div style="height:26px;line-height:26px; padding:5px;">
+                    <input type="text" id="pattern" name="pattern" style="width:190px; height:24px; line-height:24px; border:1px solid #d0d0d0;" />
+                    <button style="width:51px; height:26px; line-height:26px; cursor:pointer; border:1px solid #d0d0d0; position:relative; top:2px;" onclick="queryAttendance()">查询</button>
+                </div>
+            </li>
+            <li class="x-ul-clear-style x-rst-item x-data-att-item">
+                <div class="x-rst-item-header" onclick="resultItemHd(this)">
+                    <i>警员姓名—3月17日 10:45 (3时45分)</i>
+                    <em class="x-menu-icon-bg"></em>
+                </div>
+                <ul class="x-ul-clear-style x-rst-item-body">
+                    <li class="x-ul-clear-style x-rst-item-item" onclick="resultItemClick(0,0)">
+                        <a href="javascript:void(0)">
+                            <span>{ 基站编号 }</span>
+                            <em>2017-03-17 10:45:32</em>
+                        </a>
+                    </li>
+                </ul>
+            </li>*@
         </ul>
     </div>
 </div>
@@ -99,6 +125,8 @@
     <script src="~/Scripts/pgis/js/EzServerClient.Extend.js"></script>
     <script src="~/Scripts/pgis/js/Map.js"></script>
     <script type="text/javascript">
+
+        var myMapData = null;
 
         function toolitemHd() {
             var itval = 0;
@@ -226,6 +254,123 @@
             irregularSelector({
                 callback: function (data) {
                     toolSelectHd(url, { data: data });
+                }
+            });
+        }
+
+        function toolAttendanceClick() {
+            toolClearMapClick();
+            var tip = "请输入警员名称，或者警号 ...";
+            var html = '<li class="x-ul-clear-style">\
+                            <div style= "height:26px;line-height:26px; padding:5px;" >\
+                                <input type="text" id="x-pattern" name="x-pattern" value="'+ tip + '" promdata="' + tip +'" \
+                                       style="width:190px; height:24px; line-height:24px; border:1px solid #d0d0d0; color:#d0d0d0;" />\
+                                <button onclick="queryAttendance()"\
+                                        style="width:51px; height:26px; line-height:26px; cursor:pointer; border:1px solid #d0d0d0; position:relative; top:2px;">查询</button>\
+                            </div>\
+                        </li>';
+
+            $("#x-rst-contaner-body").html(html);
+            $('#x-pattern').focus(function () {
+                $(this).css('color', '#000000')
+                var val = $(this).val();
+                if (!!val && val == tip) {
+                    $(this).val('');
+                }
+
+            }).blur(function () {
+                if (!$(this).val()) {
+                    $(this).css('color', '#d0d0d0')
+                    $(this).val(tip);
+                }
+            });
+            $("#x-map-content").show();
+        }
+
+        function parseDate(timestamp) {
+            var date = new Date(timestamp / 10000);
+            return date;
+        }
+
+        function fmtFullDate(timestamp) {
+            var date = parseDate(timestamp);
+            var s = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+            return s;
+        }
+
+        function fmtDate(timestamp) {
+            var date = parseDate(timestamp);
+            var s = (date.getMonth() + 1) + '月' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes();
+            return s;
+        }
+
+        function fmtTimeLength(timelength) {
+
+            var text = '(进行中)';
+            if (!!timelength && timelength > 0) {
+                var tmins = parseInt(timelength / (60 * 1000 * 10000)); // 总分钟数
+                var hours = parseInt(tmins / 60); // 总小时数
+                var mins = tmins - (hours * 60); // 剩余小时数
+                text = '(' + hours + '时' + mins + '分)';
+            }
+            return text;
+        }
+
+        function rendAttendanceGroupItemItem(data) {
+            var defaults = {
+                name: null, lat: 0.00, lon: 0.00, time: 0
+            };
+            $.extend(defaults, data);
+            var html = '<li class="x-ul-clear-style x-rst-item-item" onclick="resultItemClick(' + defaults.lon + ',' + defaults.lat +')">\
+                            <a href= "javascript:void(0)" >\
+                                <span>'+ defaults.name + '</span>\
+                                <em>'+ fmtFullDate(defaults.time) +'</em>\
+                            </a >\
+                        </li >';
+            return html;
+        }
+
+        function rendAttendanceGroupItem(data) {
+            var html = '';
+            for (var i = 0; i < data.length; i++) {
+                html += rendAttendanceGroupItemItem(data[i]);
+            }
+            return html;
+        }
+
+        function rendAttendanceGroup(data) {
+            var defaults = {
+                name: null, stime: 0, etime: 0, length: 0, items: []
+            };
+            $.extend(defaults, data);
+            var html = '<li class="x-ul-clear-style x-rst-item x-data-att-item">\
+                            <div class="x-rst-item-header" onclick= "resultItemHd(this)" >\
+                                <i>'+ defaults.name + '—' + fmtDate(defaults.stime) + ' ' + fmtTimeLength(defaults.length) +'</i>\
+                                <em class="x-menu-icon-bg"></em>\
+                            </div >\
+                            <ul class="x-ul-clear-style x-rst-item-body">\
+                                '+ rendAttendanceGroupItem(defaults.items) + '\
+                            </ul>\
+                        </li >';
+            $("#x-rst-contaner-body").append(html);
+
+        }
+
+        function queryAttendance() {
+            $.get('@Url.Action("Attendance")', {
+                pattern: function () {
+                    var dpt = $("#x-pattern");
+                    var tip = dpt.attr('promdata');
+                    var val = dpt.val();
+                    if (val == tip) {
+                        val = '';
+                    }
+                    return val;
+                }
+            }, function (data) {
+                $("li.x-data-att-item").remove();
+                for (var i = 0; i < data.length; i++) {
+                    rendAttendanceGroup(data[i]);
                 }
             });
         }

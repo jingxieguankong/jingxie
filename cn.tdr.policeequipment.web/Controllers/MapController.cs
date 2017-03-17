@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
+    using common;
     using module;
     using cn.tdr.policeequipment.web.Models;
 
@@ -19,6 +20,26 @@
         public ActionResult DrawPoint()
         {
             return View();
+        }
+
+        [HttpGet]
+        public JsonResult Attendance(string pattern)
+        {
+            var module = new MapModule(CurrentUser);
+            var items = module.AttendanceSelect(pattern, DateTime.Now.Date.AddDays(-7), DateTime.Now);
+            var data = items.Select(t => new AttendanceGroupModel
+            {
+                etime = t.atd.ETime,
+                length = t.atd.TimeLength,
+                name = t.officer.Name,
+                stime = t.atd.STime,
+                items = t.tracks.Select(x => new AttendanceItemModel
+                {
+                    name = x.SiteId,
+                    time = x.UpTime
+                }).ToArray()
+            });
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
