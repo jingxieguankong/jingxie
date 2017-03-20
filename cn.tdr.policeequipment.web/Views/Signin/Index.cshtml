@@ -22,6 +22,7 @@
         <div class="x-login-login-r">
             @using (Html.BeginForm("Valid", "Signin", FormMethod.Post))
             {
+                <input type="hidden" id="returnUrl" name="returnUrl" value="@ViewBag.ReturnUrl" />
                 <div class="x-login-form-header"><h1>用户登录</h1></div>
                 <div class="x-login-login-r-input x-login-account">
                     <input type="text" id="userId" name="userId" value="@ViewBag.UserId" />

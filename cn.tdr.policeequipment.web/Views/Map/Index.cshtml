@@ -61,11 +61,12 @@
                     <i>清空地图</i>
                     <b class="x-b-h"></b>
                 </li>
-                @*<li class="x-ul-clear-style x-menu-tls-item" onclick="toolAnotherClick()">
+                <li class="x-ul-clear-style x-menu-tls-item" onclick="toolAnotherClick()">
                     <span class="x-menu-icon-bg x-menu-icon-tip"></span>
                     <b class="x-b-v"></b>
-                    <i>其它工具</i>
-                </li>*@
+                    <i><a href="@Url.Action("index", "admin")" target="_blank"
+                          style="text-decoration:none; color:#000000;">系统管理</a></i>
+                </li>
             </ul>
         </div>
     </div>
@@ -141,7 +142,7 @@
             }
         }
 
-        function resultItemHd(e) {
+        function resultItemHd(e, cb) {
             var cls = "x-rst-item-em-active";
             var itval = 0;
             var em = $(e).children("em");
@@ -149,6 +150,9 @@
             var items = $(e).siblings(".x-rst-item-body");
             if (!!em.hasClass(cls)) {
                 items.show(itval);
+                if (cb instanceof Function) {
+                    cb(e);
+                }
             } else {
                 items.hide(itval);
             }
@@ -156,18 +160,20 @@
 
         // 警力分布结果 click 事件回调函数
         function resultItemClick(x, y) {
-            move({
-                x: x,
-                y: y,
-                html: '<div style="height:23px;line-height:23px;">target</div>'
-            });
+            if (!!x, !!y) {
+                move({
+                    x: x,
+                    y: y,
+                    html: '( 待完善 )'
+                });
+            }
         }
 
         function addMarker(item) {
             locationMarker({
                 x: item.site.x,
                 y: item.site.y,
-                html: '<div style="height:23px;line-height:23px;">target ' + item.site.x + '</div>'
+                html: '( 待完善 )'
             });
         }
 
@@ -221,7 +227,7 @@
         // 各类型区间选择器处理函数
         function toolSelectHd(url, paramerters) {
             $.post(url, paramerters, function (data) {
-                debugger;
+                
                 if (!!data.data && data.code === 0) {
                     renderSelectResult(data.data);
                 }
@@ -341,11 +347,11 @@
 
         function rendAttendanceGroup(data) {
             var defaults = {
-                name: null, stime: 0, etime: 0, length: 0, items: []
+                name: null, stime: 0, etime: 0, length: 0, items: [], id: null
             };
             $.extend(defaults, data);
             var html = '<li class="x-ul-clear-style x-rst-item x-data-att-item">\
-                            <div class="x-rst-item-header" onclick= "resultItemHd(this)" >\
+                            <div class="x-rst-item-header" onclick= "atdResultItemHd(this, \''+ defaults.id +'\')" >\
                                 <i>'+ defaults.name + '—' + fmtDate(defaults.stime) + ' ' + fmtTimeLength(defaults.length) +'</i>\
                                 <em class="x-menu-icon-bg"></em>\
                             </div >\
@@ -355,6 +361,30 @@
                         </li >';
             $("#x-rst-contaner-body").append(html);
 
+        }
+
+        function atdResultItemHd(e, id) {
+            resultItemHd(e, function () {
+                toolClearMapClick();
+                for (var i = 0; i < myMapData.length; i++) {
+                    var row = myMapData[i];
+                    if (row.id == id) {
+                        atdTraceLine(row.items);
+                        break;
+                    }
+                }
+            });
+        }
+
+        function atdTraceLine(items) {
+            
+            var arr = [];
+            var html = '( 待完善 )';
+            for (var i = 0; i < items.length; i++) {
+                var d = items[i];
+                arr.push({ x: d.lon, y: d.lat, html: html });
+            }
+            myMapTrackLine(arr);
         }
 
         function queryAttendance() {
@@ -375,6 +405,27 @@
                     rendAttendanceGroup(data[i]);
                 }
             });
+        }
+
+        function myMapTrackLine(data) {
+            
+            if (data instanceof Array) {
+                //一次性绘制完轨迹线段
+                traceLine({
+                    items: data // 移动轨迹个节点位置
+                });
+
+                //动态绘制轨迹线段
+                //traceMove({
+                //    items: data // 移动轨迹个节点位置
+                //});
+
+                //添加基站标注
+                var markers = [];
+                for (var i = 0; i < data.length; i++) {
+                    locationMarker(data[i]);
+                }
+            }
         }
 
         //轨迹回放功能 click 事件回调函数
@@ -406,29 +457,7 @@
                      { x: 120.67968, y: 27.85306, html: "" }
             ];
 
-            //一次性绘制完轨迹线段
-            traceLine({
-                items: data // 移动轨迹个节点位置
-            });
-
-            //动态绘制轨迹线段
-            //traceMove({
-            //    items: data // 移动轨迹个节点位置
-            //});
-
-            //添加基站标注
-            var markers = [];
-            for (var i = 0; i < data.length; i++) {
-                (function (j) {
-                    var vPoint = new Point(data[j].x, data[j].y);
-                    var marker = new Marker(vPoint, pgisMap.MarkerIcon.BaseStation);
-                    marker.addListener("click", function () {
-                        marker.openInfoWindowHtml(data[j].html);
-                    });
-                    markers.push(marker);
-                })(i);
-            }
-            pgisMap.AddMarkers(markers);
+            myMapTrackLine(data);
         }
 
         //测量距离 click 事件回调函数

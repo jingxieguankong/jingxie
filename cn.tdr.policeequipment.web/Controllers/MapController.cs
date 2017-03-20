@@ -29,6 +29,7 @@
             var items = module.AttendanceSelect(pattern, DateTime.Now.Date.AddDays(-7), DateTime.Now);
             var data = items.Select(t => new AttendanceGroupModel
             {
+                id = t.atd.Id,
                 etime = t.atd.ETime,
                 length = t.atd.TimeLength,
                 name = t.officer.Name,
@@ -36,7 +37,9 @@
                 items = t.tracks.Select(x => new AttendanceItemModel
                 {
                     name = x.station.SiteId,
-                    time = x.track.UpTime
+                    time = x.track.UpTime,
+                    lat = x.station.Lat,
+                    lon = x.station.Lon
                 }).ToArray()
             });
             return Json(data, JsonRequestBehavior.AllowGet);

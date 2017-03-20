@@ -7,16 +7,17 @@
 
     public class SigninController : AnonymousController
     {
-        public ActionResult Index(string msg, string userId, string passwd)
+        public ActionResult Index(string msg, string userId, string passwd, string returnUrl)
         {
             ViewBag.ErrorMsg = msg;
             ViewBag.UserId = userId;
             ViewBag.Passwd = passwd;
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Valid(string userId, string passwd)
+        public ActionResult Valid(string userId, string passwd, string returnUrl)
         {
             if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(passwd))
             {
@@ -30,6 +31,11 @@
                 if (status == AccountLoginStatus.Success)
                 {
                     CacheCurrentUser(user);
+                    if (!string.IsNullOrWhiteSpace(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+
                     return RedirectToAction("index", "admin");
                 }
 
@@ -59,7 +65,7 @@
                     msg = "账户不存在 .";
                 }
 
-                return RedirectToAction(nameof(Index), new { msg = msg, userId = userId, passwd = passwd });
+                return RedirectToAction(nameof(Index), new { msg = msg, userId = userId, passwd = passwd, returnUrl=returnUrl });
             }
         }
     }

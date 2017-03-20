@@ -13,9 +13,10 @@
         // 1
         protected override void OnAuthentication(AuthenticationContext filterContext)
         {
+            var returnUrl = Request.RawUrl;
             if (null == CurrentUser)
             {
-                var url = (new UrlHelper(filterContext.RequestContext)).Action("Index", "Signin");
+                var url = (new UrlHelper(filterContext.RequestContext)).Action("Index", "Signin", new { returnUrl = returnUrl });
                 var redirect = $"<script type='text/javascript'>top.location.href = '{url}';</script>";
                 filterContext.Result = new ContentResult { Content = redirect };
             }

@@ -36,6 +36,12 @@
                 select new { location = lc, officer = oc, org = org, ptp = ptp, station = st };
 
             // 此处进一步查询
+            if (!User.IsSupperAdministrator)
+            {
+                var orgId = User.Organization.Id;
+                query = query.Where(t => t.org.Id == orgId);
+            }
+
             var xmin = x1;
             var xmax = x2;
             if (x1 > x2)
@@ -51,22 +57,24 @@
                 ymin = y2;
                 ymax = y1;
             }
-            query = query.Where(t => t.station.Lon >= xmin && t.station.Lon <= xmax && t.station.Lat >= ymin && t.station.Lat <= ymax);
-            if (!User.IsSupperAdministrator)
-            {
-                var orgId = User.Organization.Id;
-                query = query.Where(t => t.org.Id == orgId);
-            }
-
             var items = query.OrderByDescending(t => t.location.UpTime).ToArray()
-                .Select(t => new OfficerDispatchQueryModel
-                {
-                    location = t.location,
-                    officer = t.officer,
-                    org = t.org,
-                    ptp = t.ptp,
-                    station = t.station
-                });
+                .Select(t => {
+                    OfficerDispatchQueryModel m = null;
+                    if (string.IsNullOrWhiteSpace(t.station.SiteId) || 
+                        (t.station.Lon >= xmin && t.station.Lon <= xmax && t.station.Lat >= ymin && t.station.Lat <= ymax)
+                    )
+                    {
+                        m = new OfficerDispatchQueryModel
+                        {
+                            location = t.location,
+                            officer = t.officer,
+                            org = t.org,
+                            ptp = t.ptp,
+                            station = t.station
+                        };
+                    }
+                    return m;
+                }).Where(t => t != null).ToArray();
             return items;
         }
 

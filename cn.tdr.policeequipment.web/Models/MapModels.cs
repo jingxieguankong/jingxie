@@ -2,6 +2,8 @@
 {
     public class AttendanceGroupModel
     {
+        public string id { get; set; }
+
         /// <summary>
         /// 警员名称
         /// </summary>
