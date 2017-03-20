@@ -35,8 +35,8 @@
                 stime = t.atd.STime,
                 items = t.tracks.Select(x => new AttendanceItemModel
                 {
-                    name = x.SiteId,
-                    time = x.UpTime
+                    name = x.station.SiteId,
+                    time = x.track.UpTime
                 }).ToArray()
             });
             return Json(data, JsonRequestBehavior.AllowGet);

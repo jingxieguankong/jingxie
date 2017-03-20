@@ -1,5 +1,6 @@
 ﻿namespace cn.tdr.policeequipment.module.models
 {
+    using System.Collections.Generic;
     using data.entity;
 
     public class OfficerDispatchQueryModel
@@ -17,8 +18,6 @@
 
     public class OfficerAttendanceQueryModel
     {
-        public Station station { get; set; }
-
         public OfficerAttendance atd { get; set; }
 
         public Officer officer { get; set; }
@@ -27,6 +26,13 @@
 
         public Organization org { get; set; }
 
-        public OfficerMoveTrail[] tracks { get; set; }
+        public IEnumerable<OfficerAttendanceTrackModel> tracks { get; set; }
+    }
+
+    public class OfficerAttendanceTrackModel
+    {
+        public Station station { get; set; }
+
+        public OfficerMoveTrail track { get; set; }
     }
 }

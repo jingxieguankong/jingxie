@@ -230,6 +230,7 @@
 
         // 矩形区间选择 click 事件回调函数
         function toolRectangleClick() {
+            toolClearMapClick();
             var url = "@Url.Action("rectangle", "map")";
             rectangleSelector({
                 callback: function (data) {
@@ -368,6 +369,7 @@
                     return val;
                 }
             }, function (data) {
+                myMapData = data;
                 $("li.x-data-att-item").remove();
                 for (var i = 0; i < data.length; i++) {
                     rendAttendanceGroup(data[i]);
