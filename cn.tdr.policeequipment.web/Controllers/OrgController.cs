@@ -85,7 +85,7 @@
                 m.Id = id;
                 flag = mod.Modify(m, t => t.Id == id);
             }
-            return Json(new { code = 0, msg = "Ok", data = flag }, "text/json", System.Text.Encoding.UTF8);
+            return Json(new { code = 0, msg = "Ok", data = flag }, "text/html");
         }
 
         public JsonResult Remove(string id)

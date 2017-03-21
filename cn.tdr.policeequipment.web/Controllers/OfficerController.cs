@@ -56,7 +56,7 @@
                 data = module.Modify(officer, t => t.Id == id);
             }
 
-            return Json(new { code = 0, msg = "Ok", data = data }, "text/json");
+            return Json(new { code = 0, msg = "Ok", data = data }, "text/html");
         }
 
         [HttpPost]
@@ -85,7 +85,7 @@
                 data = true;
             }
 
-            return Json(new { code = code, msg = msg, data = data }, "text/json");
+            return Json(new { code = code, msg = msg, data = data }, "text/html");
         }
 
         [HttpPost]

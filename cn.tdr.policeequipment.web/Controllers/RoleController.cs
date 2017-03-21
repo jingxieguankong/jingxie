@@ -54,7 +54,7 @@
                 Status = (short)AccountStatus.Normal
             };
             var data = module.Add(role);
-            return Json(new { code = 0, msg = "Ok", data = data });
+            return Json(new { code = 0, msg = "Ok", data = data }, "text/html");
         }
 
         [HttpPost]
@@ -96,7 +96,7 @@
                 Status = 0
             };
             var data = module.Add(feature);
-            return Json(new { code = 0, msg = "Ok", data = data }, "text/json");
+            return Json(new { code = 0, msg = "Ok", data = data }, "text/html");
         }
 
         [HttpGet]

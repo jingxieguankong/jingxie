@@ -39,7 +39,7 @@
 <div data-options="region:'center'" class="easyui-layout x-clear-border">
     <div data-options="region:'north',collapsed:false" class="x-clear-border x-header-body" style="border-left-width:1px;"></div>
     <div id="x-main-center" data-options="region:'center'" class="easyui-tabs x-clear-border">
-        <div title="首页" data-options="selected:true">
+        <div title="首页"  data-options="selected:true,">
             
         </div>
     </div>
@@ -48,11 +48,11 @@
 @section scripts{
     <script type="text/javascript">
         var userDetail = function () {
-            $.messager.alert('提示', '用户详细信息 !', 'info');
+            onMenuItemClick('详细信息', '@Url.Action("inf", "my")');
         };
 
         var changePwd = function () {
-            $.messager.alert('提示', '修改密码 !', 'info');
+            onMenuItemClick('修改密码', '@Url.Action("passwd", "my")');
         };
 
         var onExit = function () {
@@ -64,26 +64,42 @@
             return false;
         };
 
+        var sbdwd = 0;
+        var sbdhg = 0;
         var onMenuItemClick = function (title, src) {
             var barwidth = 0;
             var bottomMargin = 5;
-            var tbs = $("#x-main-center");
-            var firstp = tbs.tabs("getTab", 0);
-            var width = firstp.width() - barwidth;
-            var height = firstp.height() - bottomMargin;
 
+            var tbs = $("#x-main-center");
+            if (!sbdwd && !sbdhg) {
+                var firstp = tbs.tabs("getTab", 0);
+                sbdwd = firstp.width() - barwidth;
+                sbdhg = firstp.height() - bottomMargin;
+            }
+
+            var closable = true;
             var f = tbs.tabs("exists", title);
+            if (f && title == '首页') {
+                tbs.tabs('close', 0)
+                f = false;
+                closable = false;
+            }
+
             if (!f) {
                 tbs.tabs("add", {
                     title: title,
                     selected: true,
-                    closable: true,
-                    content: '<iframe src="' + src + '?h='+height+'&w='+width+'" frameBorder="0" style="overflow-x:hidden; width:' + (width) + 'px; height:' + (height) + 'px;" class="x-clear-border" scrolling="auto"></iframe>'
+                    closable: closable,
+                    content: '<iframe src="' + src + '?h=' + sbdhg + '&w=' + sbdwd + '" frameBorder="0" style="overflow-x:hidden; width:' + (sbdwd) + 'px; height:' + (sbdhg) + 'px;" class="x-clear-border" scrolling="auto"></iframe>'
                 });
             }
             else {
                 tbs.tabs("select", title);
             }
         };
+
+        $(document).ready(function () {
+            onMenuItemClick('首页', '@Url.Action("index", "my")');
+        });
     </script>
 }

@@ -131,7 +131,8 @@
 
     setQueryParams({
         siteId: function () { return $('#querySiteId').val(); },
-        orgId: function () { return $("#queryOrgId").val(); }
+        orgId: function () { return $("#queryOrgId").val(); },
+        tt: function () { return (new Date()).getTime(); }
     });
 
 </script>

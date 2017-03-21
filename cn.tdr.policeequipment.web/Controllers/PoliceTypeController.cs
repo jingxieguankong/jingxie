@@ -58,7 +58,7 @@
                 ptp.Id = id;
                 data = module.Modify(ptp, t => t.Id == id);
             }
-            return Json(new { code = 0, msg = "Ok", data = data }, "text/json");
+            return Json(new { code = 0, msg = "Ok", data = data }, "text/html");
         }
 
         [HttpPost]
@@ -84,7 +84,7 @@
                 PtId = ptpId
             };
             var data = module.Add(item);
-            return Json(new { code = 0, msg = "Ok", data = data });
+            return Json(new { code = 0, msg = "Ok", data = data }, "text/html");
         }
 
         [HttpPost]

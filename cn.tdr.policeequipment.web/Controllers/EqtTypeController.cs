@@ -77,7 +77,7 @@
                 cate.Id = id;
                 data = module.Modify(cate, t => t.Id == id);
             }
-            return Json(new { code = 0, msg = "Ok", data = data });
+            return Json(new { code = 0, msg = "Ok", data = data }, "text/html");
         }
 
         public JsonResult Remove(string id)

@@ -89,7 +89,9 @@
     }
 
     function setQueryParams(data) {
-        var queryParams = {};
+        var queryParams = {
+            tt: function () { return (new Date()).getTime(); }
+        };
         $.extend(queryParams, data);
         grid().datagrid({
             queryParams: queryParams

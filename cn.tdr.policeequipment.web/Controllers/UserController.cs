@@ -63,7 +63,7 @@
                 data = module.Modify(user, t => t.Id == id);
             }
 
-            return Json(new { code = 0, msg = "Ok", data = data });
+            return Json(new { code = 0, msg = "Ok", data = data }, "text/html");
         }
 
         [HttpPost]

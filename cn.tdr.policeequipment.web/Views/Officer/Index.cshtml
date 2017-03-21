@@ -305,7 +305,8 @@
         orgId: function () { return $('#queryOrgId').val(); },
         ptId: function () { return $('#queryPtpId').val(); },
         name: function () { return $('#queryName').val(); },
-        code: function () { return $('#queryCode').val(); }
+        code: function () { return $('#queryCode').val(); },
+        tt: function () { return (new Date()).getTime(); }
     });
 
     var sexTreeData = [

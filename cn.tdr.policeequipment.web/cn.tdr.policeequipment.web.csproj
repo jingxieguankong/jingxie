@@ -1012,6 +1012,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\MyController.cs" />
     <Compile Include="Controllers\OfficerController.cs" />
     <Compile Include="Controllers\OrgController.cs" />
     <Compile Include="Controllers\PoliceTypeController.cs" />
@@ -1142,6 +1143,9 @@
     <Content Include="Views\Site\_PartialSiteTableRow.cshtml" />
     <Content Include="Views\Site\_PartialSiteTableBar.cshtml" />
     <Content Include="Views\Site\_PartialSiteForm.cshtml" />
+    <Content Include="Views\My\Index.cshtml" />
+    <Content Include="Views\My\Passwd.cshtml" />
+    <Content Include="Views\My\Inf.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

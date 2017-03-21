@@ -72,8 +72,8 @@
                 m.Id = id;
                 flag = mod.Modify(m);
             }
-            
-            return Json(new { code = 0, msg = "Ok", data = flag }, "text/json", Encoding.UTF8);
+
+            return Json(new { code = 0, msg = "Ok", data = flag }, "text/html");
         }
 
         [HttpPost]

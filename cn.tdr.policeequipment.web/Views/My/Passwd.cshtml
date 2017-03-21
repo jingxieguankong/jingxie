@@ -1,0 +1,66 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="padding-left:50px; padding-top:30px;">
+    <form id="xform" action="@Url.Action("Modify")" method="post">
+        <div style="margin-bottom:20px">
+            <input id="oldPwd" name="oldPwd" class="easyui-passwordbox" prompt="密码 ..." iconWidth="28" 
+                   data-options="required:true"
+                   style="width:200px;height:34px;padding:10px;line-height:34px;">
+        </div>
+        <div style="margin-bottom:20px">
+            <input id="newPwd" name="newPwd" class="easyui-passwordbox" prompt="新密码 ..." iconWidth="28" 
+                   data-options="required:true"
+                   style="width:200px;height:34px;padding:10px;line-height:34px;">
+        </div>
+        <div style="margin-bottom:20px">
+            <input id="cfPwd" name="cfPwd" class="easyui-passwordbox" prompt="确认新密码 ..." iconWidth="28" 
+                   data-options="required:true"
+                   style="width:200px;height:34px;padding:10px;line-height:34px;">
+        </div>
+        <div style="margin-bottom:20px">
+            <a href="javascript:void(0);" class="easyui-linkbutton" onclick="fmSubmit(); return false;" 
+               style="width:80px; height:26px; line-height:26px;">提交</a>
+        </div>
+        <div id="xmsg" style="margin-bottom:20px; color:darkred;">@ViewBag.Msg</div>
+    </form>
+</div>
+
+@section scripts{
+<script type="text/javascript">
+
+    function fmSubmit() {
+        var oldVal = $("#oldPwd").passwordbox('getValue');
+        var newVal = $("#newPwd").passwordbox('getValue');
+        var cfVal = $("#cfPwd").passwordbox('getValue');
+
+        if (!oldVal) {
+            $("#xmsg").text('请输入密码 !');
+            return;
+        }
+
+        if (!newVal) {
+            $("#xmsg").text('请输入新密码 !');
+            return;          
+        }
+
+        if (newVal != cfVal) {
+            $("#xmsg").text('新密码与确认密码不一致 !');
+            return;
+        }
+
+        // 提交
+        $("#xform").form('submit', {
+            success: function (data) {
+                var defaults = { code: 0, msg: null, data: false };
+                var data = eval('(' + data + ')');
+                $.extend(defaults, data);
+                $("#xmsg").text(defaults.msg);
+            }
+        });
+    }
+
+</script>
+}

@@ -50,7 +50,8 @@
     }
 
     setQueryParams({
-        pattern: function () { return $('#pattern').val(); }
+        pattern: function () { return $('#pattern').val(); },
+        tt: function () { return (new Date()).getTime(); }
     });
 
 </script>

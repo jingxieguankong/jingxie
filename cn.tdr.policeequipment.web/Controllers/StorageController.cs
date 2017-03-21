@@ -63,7 +63,7 @@
                 stg.Id = id;
                 data = module.Modify(stg, t => t.Id == id);
             }
-            return Json(new { code = 0, msg = "Ok", data = data }, "text/json");
+            return Json(new { code = 0, msg = "Ok", data = data }, "text/html");
         }
 
         [HttpPost]

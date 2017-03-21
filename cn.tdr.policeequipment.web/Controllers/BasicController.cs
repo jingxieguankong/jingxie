@@ -1,5 +1,6 @@
 ﻿namespace cn.tdr.policeequipment.web.Controllers
 {
+    using System;
     using System.Web.Mvc;
     using module.models;
 
@@ -37,11 +38,12 @@
 
         protected override void OnException(ExceptionContext filterContext)
         {
-            //filterContext.ExceptionHandled = true; // 标识异常已经处理
+            filterContext.ExceptionHandled = true; // 标识异常已经处理
             // 其它异常相关处理
 
             // 继续执行系统定义处理
             base.OnException(filterContext);
         }
+        
     }
 }

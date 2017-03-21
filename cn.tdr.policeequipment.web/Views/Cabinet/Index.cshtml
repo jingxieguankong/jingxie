@@ -133,7 +133,8 @@
 
     setQueryParams({
         orgId: function () { return $('#queryOrgId').val(); },
-        name: function () { return $('#queryName').val(); }
+        name: function () { return $('#queryName').val(); },
+        tt: function () { return (new Date()).getTime(); }
     });
 
     </script>

@@ -85,4 +85,15 @@
         return v;
     }
 
+    function setQueryParams(data) {
+        debugger;
+        var queryParams = {
+            tt: function () { return (new Date()).getTime(); }
+        };
+        $.extend(queryParams, data);
+        grid().treegrid({
+            queryParams: queryParams
+        });
+    }    
+
 </script>

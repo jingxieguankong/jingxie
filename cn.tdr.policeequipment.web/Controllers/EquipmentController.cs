@@ -85,7 +85,7 @@
                 data = module.Modify(eqt, t => t.Id == id);
             }
 
-            return Json(new { code = 0, msg = "Ok", data = data }, "text/json");
+            return Json(new { code = 0, msg = "Ok", data = data }, "text/html");
         }
 
         [HttpPost]
